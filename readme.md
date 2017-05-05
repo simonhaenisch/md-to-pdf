@@ -7,6 +7,7 @@ Simple tool to convert a markdown file to pdf. Uses [marked](https://www.npmjs.c
 Clone repo, then install the package with `npm`:
 
 ```plain
+git clone https://github.com/simonhaenisch/md-to-pdf
 cd md-to-pdf
 npm install -g
 ```
