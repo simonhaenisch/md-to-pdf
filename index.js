@@ -54,6 +54,9 @@ ${marked(markdownString)}
 // get or create pdf file name
 const pdfFileName = outFile || path.join(path.parse(mdFile).dir, path.parse(mdFile).name + '.pdf');
 
+// get base dir to look for assets => assume paths are relative to markdown file path
+const baseDir = path.resolve(process.cwd(), path.parse(mdFile).dir);
+
 // create pdf from html string
 html2pdf.create(htmlString, {
     format: 'A4',
@@ -63,6 +66,7 @@ html2pdf.create(htmlString, {
         bottom: '30mm',
         left: '20mm'
     },
+    base: "file://" + baseDir + '/',
 // write to pdf file
 }).toFile(pdfFileName, (err, res) => {
     if (err) {

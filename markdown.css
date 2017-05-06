@@ -70,3 +70,8 @@ h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 .page-break {
     page-break-after: always;
 }
+
+img {
+    max-width: 100%;
+    margin: 0 1em;
+}
