@@ -1,6 +1,6 @@
 # Markdown to PDF
 
-**A simple CLI tool to convert markdown to pdf**. Uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to convert `html` to `pdf`. The stylesheet is very simple, it is just meant to be a boilerplate.
+**A simple CLI tool to convert markdown to pdf**. Uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to convert `html` to `pdf`. The stylesheet is very simple, it is just meant to be a boilerplate. The whole source code is just ~160 lines (js + css) including comments.
 
 ## Installation
 
