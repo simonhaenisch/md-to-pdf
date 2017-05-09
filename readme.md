@@ -22,6 +22,8 @@ md-to-pdf readme.md
 md2pdf readme.md ~/readme.pdf
 ```
 
+Paths to images can be relative to the markdown file location (or if they are absolute, they need to use the `file://` protocol).
+
 **Page Break:** Place an element with class `page-break` to force a page break at a certain point of the document, e. g.:
 
 ```md
