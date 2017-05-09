@@ -1,15 +1,14 @@
 # Markdown to PDF
 
-Simple tool to convert a markdown file to pdf. Uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to convert `html` to `pdf`.
+A simple CLI tool to convert **markdown to pdf**. Uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to convert `html` to `pdf`. The stylesheet is very simple, it is just meant to be a boilerplate.
 
 ## Installation
 
-Clone repo, then install the package with `npm`:
+Clone repo, then install globally with `npm`:
 
-```plain
-git clone https://github.com/simonhaenisch/md-to-pdf
-cd md-to-pdf
-npm install -g
+```sh
+git clone "https://github.com/simonhaenisch/md-to-pdf" && cd md-to-pdf
+npm i -g
 ```
 
 After that `md-to-pdf` (or alias `md2pdf`) is globally available from anywhere in your command line/terminal.
@@ -31,4 +30,6 @@ md2pdf readme.md ~/readme.pdf
 
 ## Customization
 
-If you don't like the style, just change `markdown.css` to your liking. The paper format and borders can be changed in `index.js`.
+If you don't like the style, just change `markdown.css` to your liking. The paper format and borders can be changed in `index.js`. 
+
+Pull requests are welcome. Just keep it simple! 🤓

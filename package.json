@@ -1,7 +1,7 @@
 {
   "name": "md-to-pdf",
   "version": "1.0.0",
-  "description": "CLI tool to convert Markdown files to PDF with Node.js",
+  "description": "CLI tool for converting Markdown files to PDF with Node.js",
   "main": "index.js",
   "bin": {
     "md-to-pdf": "./index.js",
