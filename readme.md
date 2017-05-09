@@ -11,7 +11,7 @@ git clone "https://github.com/simonhaenisch/md-to-pdf" && cd md-to-pdf
 npm i -g
 ```
 
-After that `md-to-pdf` (or alias `md2pdf`) is globally available from anywhere in your command line/terminal.
+After that the command `md-to-pdf` (or alias `md2pdf`) is globally available from anywhere in your command line/terminal.
 
 ## Usage
 
