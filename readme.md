@@ -32,6 +32,6 @@ Paths to images can be relative to the markdown file location (or if they are ab
 
 ## Customization
 
-If you don't like the style, just change `markdown.css` to your liking. The paper format and borders can be changed in `index.js`. Just install globally again (run `npm i -g`) after changing anything to apply the changes.
+If you don't like the style, just change `markdown.css` to your liking. The paper format and borders can be changed in `index.js`. Install globally again (run `npm i -g`) after changing anything to apply the changes.
 
 Pull requests are welcome. Just keep it simple! 🤓
