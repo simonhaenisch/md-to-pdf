@@ -8,6 +8,7 @@ Clone repo, then install globally with `npm`:
 
 ```sh
 git clone "https://github.com/simonhaenisch/md-to-pdf" && cd md-to-pdf
+
 npm i -g
 ```
 
