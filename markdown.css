@@ -73,5 +73,5 @@ h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 
 img {
     max-width: 100%;
-    margin: 0 1em;
+    margin: 1em 0;
 }

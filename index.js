@@ -12,8 +12,8 @@ const pageOptions = {
         top: '30mm',
         right: '40mm',
         bottom: '30mm',
-        left: '20mm'
-    }
+        left: '20mm',
+    },
 };
 
 // get command line arguments
