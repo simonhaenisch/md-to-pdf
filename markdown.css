@@ -44,6 +44,14 @@ p {
     margin: 0.25em 0 1em;
 }
 
+blockquote {
+    margin: 0.5em 0;
+    padding-left: 0.5em;
+    padding-right: 1em;
+    border-left: 4px solid #dfdfdf;
+    font-style: italic;
+}
+
 ul, ol {
     margin: 0;
     padding: 0 1.5em 0.125em;
