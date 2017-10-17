@@ -45,7 +45,7 @@ p {
 }
 
 blockquote {
-    margin: 0.5em 0;
+    margin: 0.5em 0 1em;
     padding-left: 0.5em;
     padding-right: 1em;
     border-left: 4px solid #dfdfdf;
@@ -54,7 +54,7 @@ blockquote {
 
 ul, ol {
     margin: 0;
-    padding: 0 1.5em 0.125em;
+    padding: 0 1.5em 0.5em;
 }
 
 pre, code {
