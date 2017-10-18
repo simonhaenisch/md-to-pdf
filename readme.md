@@ -12,11 +12,11 @@ git clone "https://github.com/simonhaenisch/md-to-pdf" && cd md-to-pdf
 npm i -g
 ```
 
-After that the command `md-to-pdf` (or alias `md2pdf`) is globally available from anywhere in your command line/terminal.
+Then the command `md-to-pdf` (or alias `md2pdf`) will be globally available from anywhere in your command line.
 
 ## Usage
 
-The first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown file name and save it into the directory that contains the markdown file.
+The first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file.
 
 ```sh
 md-to-pdf readme.md
@@ -27,12 +27,12 @@ Paths to images can be relative to the markdown file location (or if they are ab
 
 **Page Break:** Place an element with class `page-break` to force a page break at a certain point of the document, e. g.:
 
-```md
+```html
 <div class="page-break"></div>
 ```
 
 ## Customization
 
-If you don't like the style, just change `markdown.css` to your liking. The paper format and borders can be changed in `index.js`. ~Install globally again (run `npm i -g`) after changing anything to apply the changes.~ NPM 5 uses symlinks, so all changes are reflected immediately without re-installing the package globally.
+The paper format and borders can be changed in `index.js` (see https://github.com/marcbachmann/node-html-pdf#options for a full list of options). If you don't like the style, just change `markdown.css` to your liking. ~Install globally again (run `npm i -g`) after changing anything to apply the changes.~ NPM 5 uses symlinks, so all changes are reflected immediately without re-installing the package globally.
 
 Pull requests are welcome. Just keep it simple! 🤓
