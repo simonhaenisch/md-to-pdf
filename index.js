@@ -4,37 +4,21 @@ const fs = require('fs');
 const path = require('path');
 const marked = require('marked');
 const html2pdf = require('html-pdf');
-
-// --
-// Options
-
-const pageOptions = {
-	format: 'A4',
-	border: {
-		top: '30mm',
-		right: '40mm',
-		bottom: '30mm',
-		left: '20mm',
-	},
-};
-
-// set file encoding
-const fileEncoding = 'utf-8';
+const config = require('./config');
 
 // --
 // Process CLI Arguments
 
-// get command line arguments
 const mdFile = process.argv[2];
 const outFile = process.argv[3];
 
-// check command line parameter
+// make sure that a markdown file was specified
 if (mdFile === undefined) {
-	console.error('Error: missing argument, no markdown file specified.');
+	console.error('Error: no markdown file specified.');
 	process.exit(1);
 }
 
-// check if command line parameter is actually a call for help
+// check if first command line parameter is actually a call for help
 if (['-h', '--h', '/h', '?', '/?'].indexOf(mdFile.toLowerCase()) === 0) {
 	console.log(`
 usage: md-to-pdf path/to/file.md [path/to/output.pdf]
@@ -51,16 +35,16 @@ usage: md-to-pdf path/to/file.md [path/to/output.pdf]
 // Generate HTML from Markdown
 
 // get readme content
-const markdownString = fs.readFileSync(mdFile, fileEncoding);
+const markdownString = fs.readFileSync(mdFile, config.fileEncoding);
 
 // get css content
-const cssString = fs.readFileSync(__dirname + '/markdown.css', fileEncoding);
+const cssString = fs.readFileSync(__dirname + '/markdown.css', config.fileEncoding);
 
 // combine everything into one html string
 const htmlString = `<!DOCTYPE html>
 <html>
 <head>
-<meta charset="${fileEncoding}">
+<meta charset="${config.fileEncoding}">
 <style>
 ${cssString}
 </style>
@@ -84,7 +68,7 @@ const pdfFileName = outFile || path.join(parsedMdFilePath.dir, `${parsedMdFilePa
 const basePath = path.resolve(process.cwd(), parsedMdFilePath.dir);
 
 // compose object from base path and page options
-const html2pdfOptions = Object.assign({}, { base: `file://${basePath}/` }, pageOptions);
+const html2pdfOptions = Object.assign({}, { base: `file://${basePath}/` }, config.pageOptions);
 
 // create pdf from html string
 html2pdf.create(htmlString, html2pdfOptions).toFile(pdfFileName, (err, res) => {
