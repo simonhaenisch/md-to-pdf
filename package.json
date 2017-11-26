@@ -1,20 +1,24 @@
 {
-  "name": "md-to-pdf",
-  "version": "1.0.0",
-  "description": "CLI tool for converting Markdown files to PDF with Node.js",
-  "main": "index.js",
-  "bin": {
-    "md-to-pdf": "./index.js",
-    "md2pdf": "./index.js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Simon Hänisch",
-  "license": "none",
-  "repository": "https://github.com/simonhaenisch/md-to-pdf",
-  "dependencies": {
-    "html-pdf": "^2.1.0",
-    "marked": "^0.3.6"
-  }
+	"name": "md-to-pdf",
+	"version": "1.0.1",
+	"description": "CLI tool for converting Markdown files to PDF with Node.js",
+	"engines": {
+		"node": ">= 8.3.0"
+	},
+	"main": "index.js",
+	"bin": {
+		"md-to-pdf": "./index.js",
+		"md2pdf": "./index.js"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Simon Hänisch",
+	"license": "none",
+	"repository": "https://github.com/simonhaenisch/md-to-pdf",
+	"dependencies": {
+		"html-pdf": "^2.1.0",
+		"iconv-lite": "^0.4.19",
+		"marked": "^0.3.6"
+	}
 }

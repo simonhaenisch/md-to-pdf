@@ -10,6 +10,10 @@ module.exports = {
 		},
 	},
 
+	// name of the css file to use for styling
+	cssFileName: 'markdown.css',
+
 	// encoding for css and markdown files
-	fileEncoding: 'utf-8',
-}
+	markdownFileEncoding: 'utf-8',
+	cssFileEncoding: 'utf-8',
+};
