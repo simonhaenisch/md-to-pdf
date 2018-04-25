@@ -1,7 +1,8 @@
 {
 	"name": "markdown-to-pdf",
 	"version": "1.0.0",
-	"description": "CLI tool for converting Markdown files to PDF with Node.js",
+	"description": "CLI tool for converting Markdown files to PDF",
+	"keywords": ["markdown-to-pdf", "pdf-generation", "documentation", "assignments", "homework", "markdown", "pdf"],
 	"engines": {
 		"node": ">= 8.3.0"
 	},
@@ -10,11 +11,8 @@
 		"markdown-to-pdf": "./index.js",
 		"md2pdf": "./index.js"
 	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
 	"author": "Simon Haenisch (https://simonhaenisch.com)",
-	"license": "UNLICENSED",
+	"license": "Unlicense",
 	"repository": "https://github.com/simonhaenisch/md-to-pdf",
 	"dependencies": {
 		"arg": "2.0.0",
