@@ -67,8 +67,11 @@ ol {
 	padding: 0 1.5em 0.5em;
 }
 
-pre,
-code {
+pre {
+	white-space: pre-wrap;
+}
+
+pre code {
 	font-size: 1em;
 	font-family: 'Source Code Pro Regular', monospace;
 	padding: 0.125em 0.25em;
