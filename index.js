@@ -33,19 +33,23 @@ const args = arg({
 	'-v': '--version',
 });
 
-const mdFilePath = args._[0];
-const outputPath = args._[1];
+// --
+// Main
 
-if (args['--version']) {
-	console.log(require('./package').version);
-	process.exit();
-}
+const main = args => {
+	const mdFilePath = args._[0];
+	const outputPath = args._[1];
 
-if (args['--help'] || mdFilePath === undefined) {
-	help();
-}
+	if (args['--version']) {
+		console.log(require('./package').version);
+		return;
+	}
 
-const main = (mdFilePath, outputPath, args) => {
+	if (args['--help'] || mdFilePath === undefined) {
+		help();
+		return;
+	}
+
 	const md = readFile(join(__dirname, mdFilePath), args['--md-file-encoding'] || config.defaultEncoding);
 
 	const css = readFile(
@@ -61,9 +65,9 @@ const main = (mdFilePath, outputPath, args) => {
 		`${args['--highlight-style'] || config.highlightStyle}.css`,
 	);
 
-	const html = getHtml(md, css, highlightStylePath, args['--marked-options']);
+	const html = getHtml(md, css, highlightStylePath, JSON.parse(args['--marked-options'] || null));
 
-	writePdf(mdFilePath, outputPath, html, args['--html-pdf-options'], (err, res) => {
+	writePdf(mdFilePath, outputPath, html, JSON.parse(args['--html-pdf-options'] || null), (err, res) => {
 		if (err) {
 			console.error(err);
 			process.exit(1);
@@ -73,4 +77,7 @@ const main = (mdFilePath, outputPath, args) => {
 	});
 };
 
-main(mdFilePath, outputPath, args);
+// --
+// Run
+
+main(args);
