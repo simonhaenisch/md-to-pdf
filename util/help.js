@@ -9,8 +9,8 @@ const help = `
     -v, --version            Output version
     --stylesheet             Set path to a CSS file that will be used for styling
     --highlight-style        Set style to be used by highlight.js (default: github)
-    --marked-options         Set custom options for marked
-    --html-pdf-options       Set custom page options for html-pdf
+    --marked-options         Set custom options for marked (as a JSON string)
+    --html-pdf-options       Set custom page options for html-pdf (as a JSON string)
     --md-file-encoding       Set the file encoding for the markdown file
     --stylesheet-encoding    Set the file encoding for the stylesheet
 
@@ -30,7 +30,15 @@ const help = `
 
   ${chalk.gray('–')} Convert file.md using custom-markdown.css
 
-    ${chalk.cyan('$ md2pdf path/to/file.md --stylesheet custom-markdown.css')}
+    ${chalk.cyan('$ md2pdf file.md --stylesheet custom-markdown.css')}
+
+  ${chalk.gray('–')} Convert file.md using the Monokai theme for code highlighting
+
+    ${chalk.cyan('$ md2pdf file.md --highlight-style monokai')}
+
+  ${chalk.gray('–')} Convert file.md using custom page options
+
+    ${chalk.cyan('$ md2pdf file.md --html-pdf-options \'{ "format": "letter", "border": "1in" }\'')}
 `;
 
 module.exports = () => console.log(help);
