@@ -9,7 +9,7 @@ module.exports = (mdFilePath, outputPath, html, optionsFromCliArgs, callback) =>
 
 	const options = {
 		base: `file://${assetBasePath}/`,
-		...config.pageOptions,
+		...config.htmlPdfOptions,
 		...optionsFromCliArgs,
 	};
 

@@ -1,6 +1,12 @@
 module.exports = {
+	// see https://marked.js.org/#/USING_ADVANCED.md
+	markedOptions: {
+		gfm: true,
+		tables: true,
+	},
+
 	// see https://github.com/marcbachmann/node-html-pdf#options
-	pageOptions: {
+	htmlPdfOptions: {
 		format: 'A4',
 		border: {
 			top: '30mm',
@@ -8,12 +14,6 @@ module.exports = {
 			bottom: '30mm',
 			left: '20mm',
 		},
-	},
-
-	// see https://marked.js.org/#/USING_ADVANCED.md
-	markedOptions: {
-		gfm: true,
-		tables: true,
 	},
 
 	// see https://github.com/isagalaev/highlight.js/tree/master/src/styles
