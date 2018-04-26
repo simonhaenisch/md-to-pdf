@@ -5,7 +5,7 @@
 ## Installation
 
 ```sh
-git clone https://github.com/simonhaenisch/md-to-pdf
+git clone "https://github.com/simonhaenisch/md-to-pdf"
 cd md-to-pdf
 npm i -g
 ```
