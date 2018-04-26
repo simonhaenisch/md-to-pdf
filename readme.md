@@ -5,10 +5,12 @@
 ## Installation
 
 ```sh
-npm i -g markdown-to-pdf
+git clone https://github.com/simonhaenisch/md-to-pdf
+cd md-to-pdf
+npm i -g
 ```
 
-Now the commands `markdown-to-pdf` and `md2pdf` (just because it's shorter) will be globally available from anywhere in your command line.
+Now the commands `md-to-pdf` and `md2pdf` (just because it's shorter) will be globally available from anywhere in your command line.
 
 ## Usage
 
@@ -32,8 +34,8 @@ For markdown, GFM and tables are enabled by default (see `util/config.js` for de
 
 ---
 
-## Development
+## Customization/Development
 
-Clone this repo to your machine and run `npm i -g` within the directory. NPM 5+ uses symlinks for local global packages, so all changes are reflected immediately without re-installing the package globally.
+You can just start making changes to the files in this repository. NPM 5+ uses symlinks for local global packages, so all changes are reflected immediately without re-installing the package globally. This also means that you can just do a `git pull` to get the latest version onto your machine.
 
 Pull requests are welcome. Just keep it simple! 🤓

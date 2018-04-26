@@ -1,5 +1,5 @@
 {
-	"name": "markdown-to-pdf",
+	"name": "md-to-pdf",
 	"version": "1.0.0",
 	"description": "CLI tool for converting Markdown files to PDF",
 	"keywords": ["markdown-to-pdf", "pdf-generation", "documentation", "assignments", "homework", "markdown", "pdf"],
@@ -13,7 +13,7 @@
 	},
 	"author": "Simon Haenisch (https://simonhaenisch.com)",
 	"license": "Unlicense",
-	"repository": "https://github.com/simonhaenisch/markdown-to-pdf",
+	"repository": "https://github.com/simonhaenisch/md-to-pdf",
 	"dependencies": {
 		"arg": "2.0.0",
 		"chalk": "2.4.0",
