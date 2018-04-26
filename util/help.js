@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 
 const help = `
-  ${chalk.bold('$ markdown-to-pdf')} [options] <path/to/file.md> [path/to/output.pdf]
+  ${chalk.bold('$ md-to-pdf')} [options] <path/to/file.md> [path/to/output.pdf]
 
   ${chalk.dim('Options:')}
 
