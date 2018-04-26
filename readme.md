@@ -17,16 +17,16 @@ Now the commands `md-to-pdf` and `md2pdf` (just because it's shorter) will be gl
 ```
 $ md-to-pdf [options] <path/to/file.md> [path/to/output.pdf]
 
-  Options:
+Options:
 
-    -h, --help               Output usage information
-    -v, --version            Output version
-    --stylesheet             Set path to a CSS file that will be used for styling
-    --highlight-style        Set style to be used by highlight.js (default: github)
-    --marked-options         Set custom options for marked (as a JSON string)
-    --html-pdf-options       Set custom page options for html-pdf (as a JSON string)
-    --md-file-encoding       Set the file encoding for the markdown file
-    --stylesheet-encoding    Set the file encoding for the stylesheet
+  -h, --help               Output usage information
+  -v, --version            Output version
+  --stylesheet             Set path to a CSS file that will be used for styling
+  --highlight-style        Set style to be used by highlight.js (default: github)
+  --marked-options         Set custom options for marked (as a JSON string)
+  --html-pdf-options       Set custom page options for html-pdf (as a JSON string)
+  --md-file-encoding       Set the file encoding for the markdown file
+  --stylesheet-encoding    Set the file encoding for the stylesheet
 ```
 
 The first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file. Run `md2pdf --help` for examples on how to use the cli options.
