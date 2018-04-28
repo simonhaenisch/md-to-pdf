@@ -2,7 +2,15 @@
 	"name": "md-to-pdf",
 	"version": "1.0.0",
 	"description": "CLI tool for converting Markdown files to PDF",
-	"keywords": ["markdown-to-pdf", "pdf-generation", "documentation", "assignments", "homework", "markdown", "pdf"],
+	"keywords": [
+		"markdown-to-pdf",
+		"pdf-generation",
+		"documentation",
+		"assignments",
+		"homework",
+		"markdown",
+		"pdf"
+	],
 	"engines": {
 		"node": ">= 8.3.0"
 	},
