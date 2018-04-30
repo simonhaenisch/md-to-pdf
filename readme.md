@@ -34,13 +34,30 @@ The first argument is `path/to/file.md` and the second one optionally specifies 
 
 Paths to images can be relative to the markdown file location (or if they are absolute, they need to use the `file://` protocol).
 
-**Page Break:** Place an element with class `page-break` to force a page break at a certain point of the document, e. g.:
+#### Page Break
+
+Place an element with class `page-break` to force a page break at a certain point of the document, e. g.:
 
 ```html
 <div class="page-break"></div>
 ```
 
-For markdown, GFM and tables are enabled by default (see `util/config.js` for default options). The default highlight.js styling for code blocks is `github`. For advanced options see the following links:
+#### Header/Footer
+
+Place an element with id `pageHeader`/`pageFooter` in your document, e. g.:
+
+```html
+<div id="pageHeader">Jane Doe</div>
+<div id="pageFooter"><i>Page {{page}} of {{pages}}</i></div>
+```
+
+Refer to the [html-pdf docs](https://github.com/marcbachmann/node-html-pdf#footers-and-headers) for more info about headers and footers.
+
+#### Default and Advanced Options
+
+For markdown, GFM and tables are enabled by default (see `util/config.js` for default options). The default highlight.js styling for code blocks is `github`.
+
+For advanced options see the following links:
 
 * [Marked Advanced Options](https://marked.js.org/#/USING_ADVANCED.md)
 * [html-pdf Options](https://github.com/marcbachmann/node-html-pdf#options)
