@@ -73,7 +73,7 @@ For advanced options see the following links:
 | `--html-pdf-options` | `'{"format": "Letter", border: "1in" }'` |
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
-| `--configFile` | `path/to/config.json` |
+| `--config-file` | `path/to/config.json` |
 
 Example `config.json`:
 
