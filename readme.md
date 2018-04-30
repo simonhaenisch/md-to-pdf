@@ -1,5 +1,7 @@
 # Markdown to PDF
 
+![Screenshot of markdown file and resulting PDF](https://file-eivrbvqdij.now.sh)
+
 **A simple CLI tool to convert markdown to pdf**. It uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to further convert the `html` to `pdf`. It also uses [highlight.js](https://highlightjs.org) for code highlighting.
 
 ## Installation
