@@ -27,6 +27,7 @@ Options:
   --html-pdf-options       Set custom page options for html-pdf (as a JSON string)
   --md-file-encoding       Set the file encoding for the markdown file
   --stylesheet-encoding    Set the file encoding for the stylesheet
+  --config-file            Set path to a configuration file (JSON or JS)
 ```
 
 The first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file. Run `md2pdf --help` for examples on how to use the cli options.
@@ -45,7 +46,36 @@ For markdown, GFM and tables are enabled by default (see `util/config.js` for de
 * [html-pdf Options](https://github.com/marcbachmann/node-html-pdf#options)
 * [highlight.js Styles](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
 
----
+## Options
+
+Option | Examples
+- | -
+`--stylesheet` | `path/to/style.css`
+`--highlight-style` | `monokai`, `solarized-light`
+`--marked-options` | `'{"gfm": false }'`
+`--html-pdf-options` | `'{"format": "Letter", border: "1in" }'`
+`--md-file-encoding` | `utf-8`, `windows1252`
+`--stylesheet-encoding` | `utf-8`, `windows1252`
+`--configFile` | `path/to/config.json`
+
+Example `config.json`:
+
+```json
+{
+  "markedOptions": {
+    "headerIds": false,
+    "smartypants": true,
+  },
+  "htmlPdfOptions": {
+    "format": "A5",
+    "border": "10mm"
+  },
+  "highlightStyle": "monokai",
+  "stylesheet": "path/to/style.css",
+  "defaultEncoding": "utf-8"
+  }
+}
+```
 
 ## Customization/Development
 
