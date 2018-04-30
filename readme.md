@@ -65,15 +65,15 @@ For advanced options see the following links:
 
 ## Options
 
-Option | Examples
-- | -
-`--stylesheet` | `path/to/style.css`
-`--highlight-style` | `monokai`, `solarized-light`
-`--marked-options` | `'{"gfm": false }'`
-`--html-pdf-options` | `'{"format": "Letter", border: "1in" }'`
-`--md-file-encoding` | `utf-8`, `windows1252`
-`--stylesheet-encoding` | `utf-8`, `windows1252`
-`--configFile` | `path/to/config.json`
+| Option | Examples |
+| - | - |
+| `--stylesheet` | `path/to/style.css` |
+| `--highlight-style` | `monokai`, `solarized-light` |
+| `--marked-options` | `'{"gfm": false }'` |
+| `--html-pdf-options` | `'{"format": "Letter", border: "1in" }'` |
+| `--md-file-encoding` | `utf-8`, `windows1252` |
+| `--stylesheet-encoding` | `utf-8`, `windows1252` |
+| `--configFile` | `path/to/config.json` |
 
 Example `config.json`:
 
