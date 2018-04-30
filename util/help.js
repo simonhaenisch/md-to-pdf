@@ -13,6 +13,7 @@ const help = `
     --html-pdf-options       Set custom page options for html-pdf (as a JSON string)
     --md-file-encoding       Set the file encoding for the markdown file
     --stylesheet-encoding    Set the file encoding for the stylesheet
+    --config-file            Set path to a configuration file (JSON or JS)
 
   ${chalk.dim('Examples:')}
 

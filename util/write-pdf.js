@@ -1,9 +1,8 @@
 const html2pdf = require('html-pdf');
-const config = require('./config');
 const getPdfFilePath = require('./get-pdf-file-path');
 const getAssetBasePath = require('./get-asset-base-path');
 
-module.exports = (mdFilePath, outputPath, html, optionsFromCliArgs, callback) => {
+module.exports = (mdFilePath, outputPath, html, config, optionsFromCliArgs, callback) => {
 	const pdfFilePath = outputPath || getPdfFilePath(mdFilePath);
 	const assetBasePath = getAssetBasePath(mdFilePath);
 

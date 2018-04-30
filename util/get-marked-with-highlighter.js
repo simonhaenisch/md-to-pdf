@@ -1,6 +1,5 @@
 const marked = require('marked');
 const { getLanguage, highlight } = require('highlight.js');
-const config = require('./config');
 
 const renderer = new marked.Renderer();
 
@@ -13,7 +12,7 @@ renderer.code = (code, language) => {
 		: `<pre><code>${code}</code></pre>`;
 };
 
-module.exports = optionsFromCliArgs => {
+module.exports = (config, optionsFromCliArgs) => {
 	marked.setOptions({ ...config.markedOptions, renderer, optionsFromCliArgs });
 
 	return marked;
