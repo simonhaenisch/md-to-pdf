@@ -12,8 +12,8 @@ renderer.code = (code, language) => {
 		: `<pre><code>${code}</code></pre>`;
 };
 
-module.exports = (config, optionsFromCliArgs) => {
-	marked.setOptions({ ...config.markedOptions, renderer, optionsFromCliArgs });
+module.exports = config => {
+	marked.setOptions({ ...config.marked_options, renderer });
 
 	return marked;
 };

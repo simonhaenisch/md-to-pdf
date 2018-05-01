@@ -16,7 +16,7 @@ const writePdf = require('./util/write-pdf');
 let config = require('./util/config');
 
 // --
-// Process CLI Arguments
+// Configure CLI Arguments
 
 const args = arg({
 	'--help': Boolean,
@@ -35,16 +35,6 @@ const args = arg({
 });
 
 // --
-// Merge User Config
-
-if (args['--config-file']) {
-	config = {
-		...config,
-		...require(path.resolve(args['--config-file'])),
-	};
-}
-
-// --
 // Main
 
 const main = (args, config) => {
@@ -61,23 +51,45 @@ const main = (args, config) => {
 		return;
 	}
 
-	const md = readFile(path.resolve(mdFilePath), args['--md-file-encoding'] || config.defaultEncoding);
+	const md = readFile(path.resolve(mdFilePath), args['--md-file-encoding'] || config.md_file_encoding);
 
-	const css = readFile(
-		path.resolve(args['--stylesheet'] || config.stylesheet),
-		args['--stylesheet-encoding'] || config.defaultEncoding,
-	);
+	// @todo: parse front-matter and merge config
+
+	if (args['--config-file']) {
+		try {
+			config = { ...config, ...require(path.resolve(args['--config-file'])) };
+		} catch (err) {
+			console.warn(`Warning: couldn't read config file: ${args['--config-file']}`);
+		}
+	}
+
+	for (const option of [
+		{ name: 'stylesheet', type: 'string' },
+		{ name: 'stylesheet-encoding', type: 'string' },
+		{ name: 'highlight-style', type: 'string' },
+		{ name: 'marked-options', type: 'json' },
+		{ name: 'html-pdf-options', type: 'json' },
+	]) {
+		const value = args[`--${option.name}`];
+		const key = option.name.replace('-', '_');
+		if (value) {
+			config[key] = option.type === 'json' ? JSON.parse(value) : value;
+		}
+	}
+
+	const css = readFile(path.resolve(__dirname, config.stylesheet), config.stylesheet_encoding);
 
 	const highlightStylePath = path.resolve(
+		__dirname,
 		'node_modules',
 		'highlight.js',
 		'styles',
-		`${args['--highlight-style'] || config.highlightStyle}.css`,
+		`${config.highlight_style}.css`,
 	);
 
-	const html = getHtml(md, css, highlightStylePath, config, JSON.parse(args['--marked-options'] || null));
+	const html = getHtml(md, css, highlightStylePath, config);
 
-	writePdf(mdFilePath, outputPath, html, config, JSON.parse(args['--html-pdf-options'] || null), (err, res) => {
+	writePdf(mdFilePath, outputPath, html, config, (err, res) => {
 		if (err) {
 			console.error(err);
 			process.exit(1);

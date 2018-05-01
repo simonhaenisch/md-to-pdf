@@ -1,12 +1,22 @@
+// --
+// In config keys, dashes of cli flag names are replaced with underscores.
+
 module.exports = {
+	// name of the css file to use for styling
+	stylesheet: 'markdown.css',
+
+	// see https://github.com/isagalaev/highlight.js/tree/master/src/styles
+	// (without .css)
+	highlight_style: 'github',
+
 	// see https://marked.js.org/#/USING_ADVANCED.md
-	markedOptions: {
+	marked_options: {
 		gfm: true,
 		tables: true,
 	},
 
 	// see https://github.com/marcbachmann/node-html-pdf#options
-	htmlPdfOptions: {
+	html_pdf_options: {
 		format: 'A4',
 		border: {
 			top: '30mm',
@@ -16,13 +26,7 @@ module.exports = {
 		},
 	},
 
-	// see https://github.com/isagalaev/highlight.js/tree/master/src/styles
-	// (without .css)
-	highlightStyle: 'github',
-
-	// name of the css file to use for styling
-	stylesheet: 'markdown.css',
-
-	// default encoding for css and markdown files
-	defaultEncoding: 'utf-8',
+	// encoding
+	md_file_encoding: 'utf-8',
+	stylesheet_encoding: 'utf-8',
 };

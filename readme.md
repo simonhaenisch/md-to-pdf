@@ -81,22 +81,24 @@ For advanced options see the following links:
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
 
-Example `config.json`:
+In Frontmatter and config files replace the dashes (`-`) of the cli flag names with underscores (`_`). Priority from low to high if the same option exists in multiple configs: defaults, front-matter, config file, cli arguments. 
+
+Example `config.json` (can also be a `.js` that default exports an object):
 
 ```json
 {
-  "markedOptions": {
+  "stylesheet": "path/to/style.css",
+  "highlight_style": "monokai",
+  "marked_options": {
     "headerIds": false,
     "smartypants": true,
   },
-  "htmlPdfOptions": {
+  "html_pdf_options": {
     "format": "A5",
     "border": "10mm"
   },
-  "highlightStyle": "monokai",
-  "stylesheet": "path/to/style.css",
-  "defaultEncoding": "utf-8"
-  }
+  "md_file_encoding": "utf-8",
+  "stylesheet_encoding": "utf-8"
 }
 ```
 

@@ -7,6 +7,6 @@ module.exports = (md, css, highlightStylePath, config, optionsFromCliArgs) => `<
 ${css}
 </style>
 </head><body>
-${marked(config, optionsFromCliArgs)(md)}
+${marked(config)(md)}
 </body></html>
 `;
