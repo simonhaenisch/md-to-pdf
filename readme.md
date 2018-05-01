@@ -12,7 +12,11 @@ cd md-to-pdf
 npm i -g
 ```
 
-Now the commands `md-to-pdf` and `md2pdf` (just because it's shorter) will be globally available from anywhere in your command line.
+After this, the commands `md-to-pdf` and `md2pdf` (as a shorthand) are globally available in your command line.
+
+## Update
+
+If you already cloned this repository before, you can simply do a `git pull` to pull the latest changes in from the master branch. You don't need to re-install the package because NPM 5+ uses symlinks (at least on Unix systems).
 
 ## Usage
 
