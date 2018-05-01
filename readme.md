@@ -2,7 +2,7 @@
 
 ![Screenshot of markdown file and resulting PDF](https://file-eivrbvqdij.now.sh)
 
-**A simple CLI tool to convert markdown to pdf**. It uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to further convert the `html` to `pdf`. It also uses [highlight.js](https://highlightjs.org) for code highlighting.
+**A simple CLI tool to convert markdown to pdf**. It uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to further convert the `html` to `pdf`. It also uses [highlight.js](https://highlightjs.org) for code highlighting. The whole source code of this tool is only ~160 lines of JS and ~80 lines of CSS, so it is easy to clone and modify.
 
 ## Installation
 
@@ -12,7 +12,7 @@ cd md-to-pdf
 npm i -g
 ```
 
-After this, the commands `md-to-pdf` and `md2pdf` (as a shorthand) are globally available in your command line.
+After this, the commands `md-to-pdf` and `md2pdf` (as a shorthand) are globally available in your cli.
 
 ## Update
 
