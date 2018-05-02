@@ -5,6 +5,7 @@
 
 const path = require('path');
 const arg = require('arg');
+const parseFrontMatter = require('gray-matter');
 
 // --
 // Utils
@@ -51,9 +52,13 @@ const main = (args, config) => {
 		return;
 	}
 
-	const md = readFile(path.resolve(mdFilePath), args['--md-file-encoding'] || config.md_file_encoding);
+	const mdFileContent = readFile(path.resolve(mdFilePath), args['--md-file-encoding'] || config.md_file_encoding);
 
-	// @todo: parse front-matter and merge config
+	const { content: md, data: frontMatterConfig } = parseFrontMatter(mdFileContent);
+
+	if (frontMatterConfig) {
+		config = { ...config, ...frontMatterConfig };
+	}
 
 	if (args['--config-file']) {
 		try {

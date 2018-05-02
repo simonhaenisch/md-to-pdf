@@ -25,6 +25,7 @@
 	"dependencies": {
 		"arg": "2.0.0",
 		"chalk": "2.4.0",
+		"gray-matter": "4.0.1",
 		"highlight.js": "9.12.0",
 		"html-pdf": "2.2.0",
 		"iconv-lite": "0.4.21",

@@ -81,7 +81,21 @@ For advanced options see the following links:
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
 
-In Frontmatter and config files replace the dashes (`-`) of the cli flag names with underscores (`_`). Priority from low to high if the same option exists in multiple configs: defaults, front-matter, config file, cli arguments. 
+The options can be set with front-matter or a config file. In that case, replace the dashes (`-`) of the cli flag names with underscores (`_`). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
+
+Example front-matter:
+
+```markdown
+---
+stylesheet: path/to/style.css
+highlight_style: monokai
+html_pdf_options:
+  format: A5
+  border: 10mm
+---
+
+# Content
+```
 
 Example `config.json` (can also be a `.js` that default exports an object):
 
