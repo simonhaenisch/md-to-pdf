@@ -5,7 +5,7 @@
 
 const path = require('path');
 const arg = require('arg');
-const parseFrontMatter = require('gray-matter');
+const grayMatter = require('gray-matter');
 
 // --
 // Utils
@@ -54,7 +54,7 @@ const main = (args, config) => {
 
 	const mdFileContent = readFile(path.resolve(mdFilePath), args['--md-file-encoding'] || config.md_file_encoding);
 
-	const { content: md, data: frontMatterConfig } = parseFrontMatter(mdFileContent);
+	const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
 
 	if (frontMatterConfig) {
 		config = { ...config, ...frontMatterConfig };
