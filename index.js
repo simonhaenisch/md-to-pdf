@@ -5,6 +5,7 @@
 
 const path = require('path');
 const arg = require('arg');
+const chalk = require('chalk');
 const grayMatter = require('gray-matter');
 
 // --
@@ -38,7 +39,7 @@ const args = arg({
 // --
 // Main
 
-const main = (args, config) => {
+async function main(args, config) {
 	const mdFilePath = args._[0];
 	const outputPath = args._[1];
 
@@ -94,17 +95,17 @@ const main = (args, config) => {
 
 	const html = getHtml(md, css, highlightStylePath, config);
 
-	writePdf(mdFilePath, outputPath, html, config, (err, res) => {
-		if (err) {
-			console.error(err);
-			process.exit(1);
-		}
+	
 
-		console.log('PDF created successfully:', res.filename);
-	});
-};
+	const pdf = await writePdf(mdFilePath, outputPath, html, config);
+
+	console.log(`PDF created successfully: ${chalk.bold(pdf.filename)}`);
+	return 0;
+}
 
 // --
 // Run
 
-main(args, config);
+main(args, config)
+	.then(process.exit)
+	.catch(err => console.error(err) && process.exit(1));
