@@ -2,7 +2,7 @@
 
 ![Screenshot of markdown file and resulting PDF](https://file-eivrbvqdij.now.sh)
 
-**A simple CLI tool to convert markdown to pdf**. It uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to further convert the `html` to `pdf`. It also uses [highlight.js](https://highlightjs.org) for code highlighting. The whole source code of this tool is only ~160 lines of JS and ~80 lines of CSS, so it is easy to clone and modify.
+**A simple CLI tool to convert markdown to pdf**. It uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to further convert the `html` to `pdf`. It also uses [highlight.js](https://highlightjs.org) for code highlighting. The whole source code of this tool is only ~160 lines of JS and ~80 lines of CSS, so it is easy to clone and customize.
 
 ## Installation
 
@@ -25,15 +25,17 @@ $ md-to-pdf [options] <path/to/file.md> [path/to/output.pdf]
 
 Options:
 
-  -h, --help               Output usage information
-  -v, --version            Output version
-  --stylesheet             Set path to a CSS file that will be used for styling
-  --highlight-style        Set style to be used by highlight.js (default: github)
-  --marked-options         Set custom options for marked (as a JSON string)
-  --html-pdf-options       Set custom page options for html-pdf (as a JSON string)
-  --md-file-encoding       Set the file encoding for the markdown file
-  --stylesheet-encoding    Set the file encoding for the stylesheet
-  --config-file            Set path to a configuration file (JSON or JS)
+  -h, --help              Output usage information
+  -v, --version           Output version
+  --stylesheet            Path to a local or remote stylesheet (can be passed multiple times)
+  --css                   String of styles (can be used to overwrite stylesheets)
+  --body-class            Classes to be added to the body tag (can be passed multiple times)
+  --highlight-style       Style to be used by highlight.js (default: github)
+  --marked-options        Set custom options for marked (as a JSON string)
+  --html-pdf-options      Set custom options for html-pdf (as a JSON string)
+  --md-file-encoding      Set the file encoding for the markdown file
+  --stylesheet-encoding   Set the file encoding for the stylesheet
+  --config-file           Path to a JSON or JS configuration file
 ```
 
 The first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file. Run `md2pdf --help` for examples on how to use the cli options.
@@ -73,7 +75,9 @@ For advanced options see the following links:
 
 | Option | Examples |
 | - | - |
-| `--stylesheet` | `path/to/style.css` |
+| `--stylesheet` | `path/to/style.css`, `https://example.org/stylesheet.css` |
+| `--css` | `body { color: tomato; }` |
+| `--body_class` | `markdown-body` |
 | `--highlight-style` | `monokai`, `solarized-light` |
 | `--marked-options` | `'{"gfm": false }'` |
 | `--html-pdf-options` | `'{"format": "Letter", border: "1in" }'` |
@@ -81,13 +85,15 @@ For advanced options see the following links:
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
 
-The options can be set with front-matter or a config file. In that case, replace the dashes (`-`) of the cli flag names with underscores (`_`). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
+The options can also be set with front-matter or a config file (except `md-file-encoding`). In that case, replace the dashes (`-`) of the cli flag names with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (or an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
 
 Example front-matter:
 
 ```markdown
 ---
-stylesheet: path/to/style.css
+stylesheet:
+  - path/to/style.css
+body_class: markdown-body
 highlight_style: monokai
 html_pdf_options:
   format: A5
@@ -101,7 +107,12 @@ Example `config.json` (can also be a `.js` that default exports an object):
 
 ```json
 {
-  "stylesheet": "path/to/style.css",
+  "stylesheet": [
+    "path/to/style.css",
+    "https://example.org/stylesheet.css"
+  ],
+  "css": "body { color: tomato; }",
+  "body_class": "markdown-body",
   "highlight_style": "monokai",
   "marked_options": {
     "headerIds": false,
@@ -111,13 +122,26 @@ Example `config.json` (can also be a `.js` that default exports an object):
     "format": "A5",
     "border": "10mm"
   },
-  "md_file_encoding": "utf-8",
   "stylesheet_encoding": "utf-8"
 }
+```
+
+#### Github Styles
+
+Here is an example front-matter for how to get Github style output:
+
+```markdown
+---
+stylesheet: https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css
+body_class: markdown-body
+css: >-
+  .markdown-body { font-size: 11px; }
+  .markdown-body pre>code { white-space: pre-wrap; }
+---
 ```
 
 ## Customization/Development
 
 You can just start making changes to the files in this repository. NPM 5+ uses symlinks for local global packages, so all changes are reflected immediately without re-installing the package globally. This also means that you can just do a `git pull` to get the latest version onto your machine.
 
-Pull requests are welcome. Just keep it simple! 🤓
+Ideas, feature requests and PRs are welcome. Just keep it simple! 🤓

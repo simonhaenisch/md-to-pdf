@@ -12,6 +12,11 @@ renderer.code = (code, language) => {
 		: `<pre><code>${code}</code></pre>`;
 };
 
+/**
+ * Returns a marked renderer with a code highlighter.
+ * @param {Object} config Configuration object
+ * @param {Object} config.marked_options Options for marked
+ */
 module.exports = config => {
 	marked.setOptions({ ...config.marked_options, renderer });
 

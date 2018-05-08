@@ -5,15 +5,17 @@ const help = `
 
   ${chalk.dim('Options:')}
 
-    -h, --help               Output usage information
-    -v, --version            Output version
-    --stylesheet             Set path to a CSS file that will be used for styling
-    --highlight-style        Set style to be used by highlight.js (default: github)
-    --marked-options         Set custom options for marked (as a JSON string)
-    --html-pdf-options       Set custom page options for html-pdf (as a JSON string)
-    --md-file-encoding       Set the file encoding for the markdown file
-    --stylesheet-encoding    Set the file encoding for the stylesheet
-    --config-file            Set path to a configuration file (JSON or JS)
+    -h, --help              Output usage information
+    -v, --version           Output version
+    --stylesheet            Path to a local or remote stylesheet (can be passed multiple times)
+    --css                   String of styles (can be used to overwrite stylesheets)
+    --body-class            Classes to be added to the body tag (can be passed multiple times)
+    --highlight-style       Style to be used by highlight.js (default: github)
+    --marked-options        Set custom options for marked (as a JSON string)
+    --html-pdf-options      Set custom options for html-pdf (as a JSON string)
+    --md-file-encoding      Set the file encoding for the markdown file
+    --stylesheet-encoding   Set the file encoding for the stylesheet
+    --config-file           Path to a JSON or JS configuration file
 
   ${chalk.dim('Examples:')}
 

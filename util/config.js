@@ -1,9 +1,15 @@
-// --
-// In config keys, dashes of cli flag names are replaced with underscores.
+const path = require('path');
 
+// In config keys, dashes of cli flag names are replaced with underscores.
 module.exports = {
-	// name of the css file to use for styling
-	stylesheet: 'markdown.css',
+	// list of css files to use for styling
+	stylesheet: [path.resolve(__dirname, '..', 'markdown.css')],
+
+	// custom css styles
+	css: '',
+
+	// list of classes for the body tag
+	body_class: [],
 
 	// see https://github.com/isagalaev/highlight.js/tree/master/src/styles
 	// (without .css)

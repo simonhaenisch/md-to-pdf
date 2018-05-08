@@ -1,3 +1,8 @@
 const { parse, resolve } = require('path');
 
-module.exports = mdFilePath => resolve(process.cwd(), parse(mdFilePath).dir);
+/**
+ * Returns the assets base path, which is the directory of the source markdown
+ * file.
+ * @param {String} mdFilePath Path to the source markdown file
+ */
+module.exports = mdFilePath => resolve(parse(mdFilePath).dir);
