@@ -85,7 +85,7 @@ For advanced options see the following links:
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
 
-The options can also be set with front-matter or a config file (except `md-file-encoding`). In that case, replace the dashes (`-`) of the cli flag names with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (or an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
+The options can also be set with front-matter or a config file (except for `--md-file-encoding`). In that case, replace the dashes (`-`) of the cli flag names with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (or as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
 
 Example front-matter:
 
