@@ -16,7 +16,7 @@ const { createStyleTag, createLinkTag } = require('./util/helpers');
 const readFile = require('./util/read-file');
 const getHtml = require('./util/get-html');
 const writePdf = require('./util/write-pdf');
-let config = require('./util/config');
+const config = require('./util/config');
 
 // --
 // Configure CLI Arguments
@@ -75,7 +75,7 @@ async function main(args, config) {
 	// sanitize array arguments
 	for (const option of ['stylesheet', 'body_class']) {
 		if (!Array.isArray(config[option])) {
-			config[option] = [config[option]].filter(value => !!value);
+			config[option] = [config[option]].filter(value => Boolean(value));
 		}
 	}
 
@@ -132,5 +132,5 @@ async function main(args, config) {
 // Run
 
 main(args, config)
-	.then(process.exit)
+	.then(process.exit) // eslint-disable-line promise/prefer-await-to-then
 	.catch(err => console.error(err) && process.exit(1));
