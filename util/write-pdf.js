@@ -1,7 +1,7 @@
 const { sep } = require('path');
 const html2pdf = require('html-pdf');
 const getPdfFilePath = require('./get-pdf-file-path');
-const getAssetsBasePath = require('./get-assets-base-path');
+const { getDir } = require('./helpers');
 
 /**
  * Create a PDF and write it to disk.
@@ -14,7 +14,7 @@ const getAssetsBasePath = require('./get-assets-base-path');
  */
 module.exports = (mdFilePath, outputPath, html, config) => {
 	const pdfFilePath = outputPath || getPdfFilePath(mdFilePath);
-	const assetsBasePath = getAssetsBasePath(mdFilePath);
+	const assetsBasePath = getDir(mdFilePath);
 
 	const options = { base: `file://${assetsBasePath}${sep}`, ...config.html_pdf_options };
 
