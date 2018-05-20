@@ -15,6 +15,9 @@
 		"node": ">= 8.3.0"
 	},
 	"main": "index.js",
+	"scripts": {
+		"test": "xo && ava"
+	},
 	"bin": {
 		"markdown-to-pdf": "./index.js",
 		"md2pdf": "./index.js"
@@ -30,5 +33,25 @@
 		"html-pdf": "2.2.0",
 		"iconv-lite": "0.4.21",
 		"marked": "0.3.19"
+	},
+	"devDependencies": {
+		"ava": "0.25.0",
+		"xo": "0.21.1"
+	},
+	"prettier": {
+		"printWidth": 120,
+		"singleQuote": true,
+		"tabWidth": 2,
+		"trailingComma": "all",
+		"useTabs": true,
+		"bracketSpacing": true
+	},
+	"xo": {
+		"prettier": true,
+		"rules": {
+			"camelcase": ["error", { "properties": "never" }],
+			"capitalized-comments": "off",
+			"valid-jsdoc": ["warn", { "requireReturnType": false }]
+		}
 	}
 }
