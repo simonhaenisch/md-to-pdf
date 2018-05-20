@@ -16,7 +16,7 @@
 	},
 	"main": "index.js",
 	"scripts": {
-		"test": "xo && ava"
+		"test": "xo && nyc ava"
 	},
 	"bin": {
 		"markdown-to-pdf": "./index.js",
@@ -36,6 +36,7 @@
 	},
 	"devDependencies": {
 		"ava": "0.25.0",
+		"nyc": "11.8.0",
 		"xo": "0.21.1"
 	},
 	"prettier": {
@@ -49,9 +50,19 @@
 	"xo": {
 		"prettier": true,
 		"rules": {
-			"camelcase": ["error", { "properties": "never" }],
+			"camelcase": [
+				"error",
+				{
+					"properties": "never"
+				}
+			],
 			"capitalized-comments": "off",
-			"valid-jsdoc": ["warn", { "requireReturnType": false }]
+			"valid-jsdoc": [
+				"warn",
+				{
+					"requireReturnType": false
+				}
+			]
 		}
 	}
 }
