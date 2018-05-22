@@ -11,22 +11,22 @@ const readFile = require('./util/read-file');
 
 test('getHtml should return a valid html document', t => {
 	const html = getHtml('', [], { body_class: [] }).replace(/\n/g, '');
-	t.is('<!DOCTYPE html><html><head></head><body class=""></body></html>', html);
+	t.regex(html, /<!DOCTYPE html>.*<html>.*<head>.*<body class="">.*<\/body>.*<\/html>/);
 });
 
 test('getHtml should inject rendered markdown', t => {
 	const html = getHtml('# Foo', [], { body_class: [] }).replace(/\n/g, '');
-	t.true(html.includes('<body class=""><h1 id="foo">Foo</h1></body>'));
+	t.regex(html, /<body class=""><h1 id="foo">Foo<\/h1>.*<\/body>/);
 });
 
 test('getHtml should inject head tags', t => {
 	const html = getHtml('', ['<style></style>', '<link/>'], { body_class: [] }).replace(/\n/g, '');
-	t.true(html.includes('<head><style></style><link/></head>'));
+	t.regex(html, /<head><style><\/style><link\/><\/head>/);
 });
 
 test('getHtml should inject body classes', t => {
-	const html = getHtml('', [], { body_class: ['foo', 'bar'] });
-	t.true(html.includes('<body class="foo bar">'));
+	const html = getHtml('', [], { body_class: ['foo', 'bar'] }).replace(/\n/g, '');
+	t.regex(html, /<body class="foo bar">/);
 });
 
 // --
