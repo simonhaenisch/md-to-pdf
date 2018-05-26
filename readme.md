@@ -16,7 +16,7 @@ After this, the commands `md-to-pdf` and `md2pdf` (as a shorthand) are globally 
 
 ## Update
 
-If you already cloned this repository before, you can simply do a `git pull` to pull the latest changes in from the master branch. You don't need to re-install the package because NPM 5+ uses symlinks (at least on Unix systems).
+If you already cloned this repository before, you can simply do a `git pull` to pull the latest changes in from the master branch. You don't need to re-install the package (because NPM 5+ uses symlinks, at least on Unix systems), unless there have been changes to packages.
 
 ## Usage
 
@@ -128,7 +128,7 @@ Example `config.json` (can also be a `.js` that default exports an object):
 
 #### Github Styles
 
-Here is an example front-matter for how to get Github style output:
+Here is an example front-matter for how to get Github-like output:
 
 ```markdown
 ---
