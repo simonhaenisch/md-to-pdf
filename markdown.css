@@ -57,7 +57,7 @@ blockquote {
 	margin: 0.5em 0 1em;
 	padding-left: 0.5em;
 	padding-right: 1em;
-	border-left: 4px solid #dfdfdf;
+	border-left: 4px solid gainsboro;
 	font-style: italic;
 }
 
@@ -95,4 +95,32 @@ h6 code {
 img {
 	max-width: 100%;
 	margin: 1em 0;
+}
+
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+	display: block;
+	margin: 0 0 1em;
+	width: 100%;
+	overflow: auto;
+}
+
+table th,
+table td {
+	padding: 0.5em 1em;
+	border: 1px solid gainsboro;
+}
+
+table th {
+	font-weight: 600;
+}
+
+table tr {
+	background-color: white;
+	border-top: 1px solid gainsboro;
+}
+
+table tr:nth-child(2n) {
+	background-color: whitesmoke;
 }
