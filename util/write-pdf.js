@@ -55,7 +55,7 @@ module.exports = async (mdFilePath, outputPath, html, config) => {
 	if (config.devtools) {
 		await new Promise(resolve => page.on('close', resolve));
 	} else {
-		await page.pdf({ path: pdfFilePath, ...config.pdf_options });
+		await page.pdf({ path: pdfFilePath, printBackground: true, ...config.pdf_options });
 	}
 
 	browser.close();
