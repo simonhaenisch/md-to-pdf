@@ -2,7 +2,7 @@
 
 ![Screenshot of markdown file and resulting PDF](https://file-yqytrzalxh.now.sh)
 
-**A simple CLI tool to convert markdown to pdf**. It uses [marked](https://www.npmjs.com/package/marked) to convert `markdown` to `html` and [html-pdf](https://www.npmjs.com/package/html-pdf) to further convert the `html` to `pdf`. It also uses [highlight.js](https://highlightjs.org) for code highlighting. The whole source code of this tool is only ~160 lines of JS and ~80 lines of CSS, so it is easy to clone and customize.
+**A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is only ~200 lines of JS and ~100 lines of CSS, so it is easy to clone and customize.
 
 ## Installation
 
@@ -16,7 +16,7 @@ After this, the commands `md-to-pdf` and `md2pdf` (as a shorthand) are globally 
 
 ## Update
 
-If you already cloned this repository before, you can simply do a `git pull` to pull the latest changes in from the master branch. You don't need to re-install the package (because NPM 5+ uses symlinks, at least on Unix systems), unless there have been changes to packages.
+If you already cloned this repository before, you can simply do a `git pull` to pull the latest changes in from the master branch. Unless there have been changes to packages, you don't need to re-install the package (because NPM 5+ uses symlinks, at least on Unix systems).
 
 ## Usage
 
@@ -32,19 +32,20 @@ Options:
   --body-class            Classes to be added to the body tag (can be passed multiple times)
   --highlight-style       Style to be used by highlight.js (default: github)
   --marked-options        Set custom options for marked (as a JSON string)
-  --html-pdf-options      Set custom options for html-pdf (as a JSON string)
+  --pdf-options           Set custom options for the generated PDF (as a JSON string)
   --md-file-encoding      Set the file encoding for the markdown file
   --stylesheet-encoding   Set the file encoding for the stylesheet
   --config-file           Path to a JSON or JS configuration file
+  --devtools              Open the browser with Devtools instead of saving the PDF (for debugging)
 ```
 
 The first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file. Run `md2pdf --help` for examples on how to use the cli options.
 
-Paths to images can be relative to the markdown file location (or if they are absolute, they need to use the `file://` protocol).
+Paths to local images have to be relative to the markdown file location and the files have to be within the same directory the markdown file lives in (or subdirectories of it).
 
 #### Page Break
 
-Place an element with class `page-break` to force a page break at a certain point of the document, e. g.:
+Place an element with class `page-break` to force a page break at a certain point of the document (uses the CSS rule `page-break-after: always`), e. g.:
 
 ```html
 <div class="page-break"></div>
@@ -52,14 +53,40 @@ Place an element with class `page-break` to force a page break at a certain poin
 
 #### Header/Footer
 
-Place an element with id `pageHeader`/`pageFooter` in your document, e. g.:
+Set the PDF option `displayHeaderFooter` to `true`, then use `headerTemplate` and `footerTemplate` with the provided classes to inject printing values, e. g. with front-matter (the styles in the `<style/>` tag of the header template will be applied to both header and footer):
 
-```html
-<div id="pageHeader">Jane Doe</div>
-<div id="pageFooter"><i>Page {{page}} of {{pages}}</i></div>
+```markdown
+---
+pdf_options:
+  format: A4
+  margin:
+    top: 30mm
+    bottom: 30mm
+    left: 20mm
+    right: 20mm
+  displayHeaderFooter: true
+  headerTemplate: |-
+    <style>
+      section {
+        margin: 0 auto;
+        font-family: system-ui;
+        font-size: 11px;
+      }
+    </style>
+    <section>
+      <span class="date"></span>
+    </section>
+  footerTemplate: |-
+    <section>
+      <div>
+        Page <span class="pageNumber"></span>
+        of <span class="totalPages"></span>
+      </div>
+    </section>
+---
 ```
 
-Refer to the [html-pdf docs](https://github.com/marcbachmann/node-html-pdf#footers-and-headers) for more info about headers and footers.
+Refer to the [puppeteer docs](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions) for more info about headers and footers.
 
 #### Default and Advanced Options
 
@@ -67,8 +94,8 @@ For markdown, GFM and tables are enabled by default (see `util/config.js` for de
 
 For advanced options see the following links:
 
-* [Marked Advanced Options](https://marked.js.org/#/USING_ADVANCED.md)
-* [html-pdf Options](https://github.com/marcbachmann/node-html-pdf#options)
+* [Marked Advanced Options](https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md)
+* [Puppeteer PDF Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions)
 * [highlight.js Styles](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
 
 ## Options
@@ -80,12 +107,13 @@ For advanced options see the following links:
 | `--body_class` | `markdown-body` |
 | `--highlight-style` | `monokai`, `solarized-light` |
 | `--marked-options` | `'{"gfm": false }'` |
-| `--html-pdf-options` | `'{"format": "Letter", border: "1in" }'` |
+| `--pdf-options` | `'{"format": "Letter", margin: null }'` |
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
+| `--devtools` | Add this flag to open the browser/devtools instead of writing the PDF to the file system. Good for debugging. |
 
-The options can also be set with front-matter or a config file (except for `--md-file-encoding`). In that case, replace the dashes (`-`) of the cli flag names with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (or as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
+The options can also be set with front-matter or a config file (except for `--md-file-encoding`). In that case, leave the leading dashes (`--`) and replace the hyphens (`-`) within the cli flag names with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (or as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
 
 Example front-matter:
 
@@ -134,10 +162,10 @@ Here is an example front-matter for how to get Github-like output:
 ---
 stylesheet: https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css
 body_class: markdown-body
-css: >-
+css: |-
   .page-break { page-break-after: always; }
   .markdown-body { font-size: 11px; }
-  .markdown-body pre>code { white-space: pre-wrap; }
+  .markdown-body pre > code { white-space: pre-wrap; }
 ---
 ```
 
