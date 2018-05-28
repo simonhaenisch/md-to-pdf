@@ -3,19 +3,20 @@
 	"version": "1.2.0",
 	"description": "CLI tool for converting Markdown files to PDF",
 	"keywords": [
-		"markdown-to-pdf",
-		"pdf-generation",
 		"documentation",
 		"assignments",
 		"homework",
 		"markdown",
-		"pdf"
+		"pdf",
+		"pdf-generation",
+		"markdown-to-pdf"
 	],
 	"engines": {
 		"node": ">= 8.3.0"
 	},
 	"main": "index.js",
 	"scripts": {
+		"start": "node . --help",
 		"test": "xo && nyc ava"
 	},
 	"bin": {
@@ -28,11 +29,13 @@
 	"dependencies": {
 		"arg": "2.0.0",
 		"chalk": "2.4.0",
+		"get-port": "3.2.0",
 		"gray-matter": "4.0.1",
 		"highlight.js": "9.12.0",
-		"html-pdf": "2.2.0",
 		"iconv-lite": "0.4.21",
-		"marked": "0.3.19"
+		"marked": "0.3.19",
+		"puppeteer": "1.4.0",
+		"serve": "6.5.8"
 	},
 	"devDependencies": {
 		"ava": "0.25.0",

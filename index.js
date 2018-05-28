@@ -12,7 +12,6 @@ const grayMatter = require('gray-matter');
 // Utils
 
 const help = require('./util/help');
-const { createStyleTag, createLinkTag } = require('./util/helpers');
 const readFile = require('./util/read-file');
 const getHtml = require('./util/get-html');
 const writePdf = require('./util/write-pdf');
@@ -29,10 +28,11 @@ const args = arg({
 	'--body-class': [String],
 	'--highlight-style': String,
 	'--marked-options': String,
-	'--html-pdf-options': String,
+	'--pdf-options': String,
 	'--md-file-encoding': String,
 	'--stylesheet-encoding': String,
 	'--config-file': String,
+	'--devtools': Boolean,
 
 	// aliases
 	'-h': '--help',
@@ -80,30 +80,11 @@ async function main(args, config) {
 	}
 
 	// merge cli args into config
-	for (const option of [
-		{ name: '--stylesheet' },
-		{ name: '--css' },
-		{ name: '--body-class' },
-		{ name: '--highlight-style' },
-		{ name: '--marked-options', json: true },
-		{ name: '--html-pdf-options', json: true },
-		{ name: '--stylesheet-encoding' },
-	]) {
-		const value = args[option.name];
-		const key = option.name.substring(2).replace(/-/g, '_');
-		if (value) {
-			config[key] = option.json ? JSON.parse(value) : value;
-		}
-	}
-
-	const headTags = [];
-
-	for (const stylesheet of config.stylesheet) {
-		const tag = stylesheet.startsWith('http')
-			? createLinkTag(stylesheet)
-			: createStyleTag(readFile(path.resolve(stylesheet), config.stylesheet_encoding));
-
-		headTags.push(tag);
+	const jsonArgs = ['--marked-options', 'pdf-options'];
+	for (const arg of Object.entries(args)) {
+		const [argKey, argValue] = arg;
+		const key = argKey.substring(2).replace(/-/g, '_');
+		config[key] = jsonArgs.includes(argKey) ? JSON.parse(argValue) : argValue;
 	}
 
 	const highlightStylesheet = path.resolve(
@@ -114,17 +95,16 @@ async function main(args, config) {
 		`${config.highlight_style}.css`,
 	);
 
-	headTags.push(createLinkTag(`file://${highlightStylesheet}`));
+	config.stylesheet.push(highlightStylesheet);
 
-	if (config.css) {
-		headTags.push(createStyleTag(config.css));
-	}
-
-	const html = getHtml(md, headTags, config);
+	const html = getHtml(md, config);
 
 	const pdf = await writePdf(mdFilePath, outputPath, html, config);
 
-	console.log(`${chalk.green('PDF created successfully:')} ${chalk.bold(pdf.filename)}`);
+	if (pdf.filename) {
+		console.log(`${chalk.green('PDF created successfully:')} ${chalk.bold(pdf.filename)}`);
+	}
+
 	return 0;
 }
 

@@ -21,10 +21,10 @@ module.exports = {
 		tables: true,
 	},
 
-	// see https://github.com/marcbachmann/node-html-pdf#options
-	html_pdf_options: {
+	// see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions
+	pdf_options: {
 		format: 'A4',
-		border: {
+		margin: {
 			top: '30mm',
 			right: '40mm',
 			bottom: '30mm',
@@ -35,4 +35,7 @@ module.exports = {
 	// encoding
 	md_file_encoding: 'utf-8',
 	stylesheet_encoding: 'utf-8',
+
+	// open chromium with devtools instead of saving the pdf
+	devtools: false,
 };

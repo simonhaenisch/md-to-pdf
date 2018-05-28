@@ -14,12 +14,11 @@ renderer.code = (code, language) => {
 
 /**
  * Get a marked renderer with an attached highlighter.
- * @param {Object} config Configuration object
- * @param {Object} config.marked_options Options for marked
+ * @param {Object} options Marked cnfiguration object
  * @returns a marked renderer with highlight.js parser attached
  */
-module.exports = config => {
-	marked.setOptions({ ...config.marked_options, renderer });
+module.exports = options => {
+	marked.setOptions({ ...options, renderer });
 
 	return marked;
 };

@@ -12,10 +12,11 @@ const help = `
     --body-class            Classes to be added to the body tag (can be passed multiple times)
     --highlight-style       Style to be used by highlight.js (default: github)
     --marked-options        Set custom options for marked (as a JSON string)
-    --html-pdf-options      Set custom options for html-pdf (as a JSON string)
+    --pdf-options           Set custom options for the generated PDF (as a JSON string)
     --md-file-encoding      Set the file encoding for the markdown file
     --stylesheet-encoding   Set the file encoding for the stylesheet
     --config-file           Path to a JSON or JS configuration file
+    --devtools              Open the browser with Devtools instead of saving the PDF (for debugging)
 
   ${chalk.dim('Examples:')}
 
@@ -41,7 +42,7 @@ const help = `
 
   ${chalk.gray('–')} Convert file.md using custom page options
 
-    ${chalk.cyan('$ md2pdf file.md --html-pdf-options \'{ "format": "letter", "border": "1in" }\'')}
+    ${chalk.cyan('$ md2pdf file.md --pdf-options \'{ "format": "Letter", "margin": null }\'')}
 `;
 
 module.exports = () => console.log(help);

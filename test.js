@@ -1,31 +1,30 @@
 const path = require('path');
 const test = require('ava');
+const serve = require('serve');
+const getPort = require('get-port');
+const config = require('./util/config');
 const getHtml = require('./util/get-html');
 const getMarkedWithHighlighter = require('./util/get-marked-with-highlighter');
 const getPdfFilePath = require('./util/get-pdf-file-path');
-const { getDir, createStyleTag, createLinkTag } = require('./util/helpers');
+const { getDir } = require('./util/helpers');
 const readFile = require('./util/read-file');
+const waitForLocalhost = require('./util/wait-for-localhost');
 
 // --
 // get-html
 
 test('getHtml should return a valid html document', t => {
-	const html = getHtml('', [], { body_class: [] }).replace(/\n/g, '');
+	const html = getHtml('', config).replace(/\n/g, '');
 	t.regex(html, /<!DOCTYPE html>.*<html>.*<head>.*<body class="">.*<\/body>.*<\/html>/);
 });
 
 test('getHtml should inject rendered markdown', t => {
-	const html = getHtml('# Foo', [], { body_class: [] }).replace(/\n/g, '');
+	const html = getHtml('# Foo', config).replace(/\n/g, '');
 	t.regex(html, /<body class=""><h1 id="foo">Foo<\/h1>.*<\/body>/);
 });
 
-test('getHtml should inject head tags', t => {
-	const html = getHtml('', ['<style></style>', '<link/>'], { body_class: [] }).replace(/\n/g, '');
-	t.regex(html, /<head><style><\/style><link\/><\/head>/);
-});
-
 test('getHtml should inject body classes', t => {
-	const html = getHtml('', [], { body_class: ['foo', 'bar'] }).replace(/\n/g, '');
+	const html = getHtml('', { ...config, body_class: ['foo', 'bar'] }).replace(/\n/g, '');
 	t.regex(html, /<body class="foo bar">/);
 });
 
@@ -60,16 +59,6 @@ test('getDir should get the directory the given file is in', t => {
 	t.is('/var/foo', getDir(filePath));
 });
 
-test('createStyleTag should wrap a string of CSS rules in a style tag', t => {
-	const css = 'body { color: tomato; }';
-	t.is('<style>body { color: tomato; }</style>', createStyleTag(css));
-});
-
-test('createLinkTag should return a link tag for the given path', t => {
-	const filePath = 'file:///var/foo/bar.css';
-	t.is('<link rel="stylesheet" href="file:///var/foo/bar.css">', createLinkTag(filePath));
-});
-
 // --
 // read-file
 
@@ -77,4 +66,22 @@ test('readFile should return the content of a file', t => {
 	const gitignoreContent = '.nyc_output\n.vscode\n';
 	t.is(gitignoreContent, readFile('.gitignore'));
 	t.is(gitignoreContent, readFile('.gitignore', 'windows1252'));
+});
+
+// --
+// wait-for-localhost
+test('waitForLocalhost should resolve once the server is available', async t => {
+	t.plan(2);
+
+	const port = await getPort();
+
+	t.true(typeof port === 'number');
+
+	const server = serve(__dirname, { port, local: true, clipless: true, silent: true });
+
+	await waitForLocalhost(port);
+
+	t.pass();
+
+	server.stop();
 });
