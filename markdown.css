@@ -75,6 +75,8 @@ pre code {
 	font-size: 1em;
 	font-family: 'Source Code Pro Regular', monospace;
 	padding: 0.125em 0.25em;
+	background-color: gainsboro;
+	border-radius: 0.25em;
 }
 
 h1 code,
