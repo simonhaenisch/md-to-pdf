@@ -1,4 +1,4 @@
-const { sep } = require('path');
+const path = require('path');
 const html2pdf = require('html-pdf');
 const getPdfFilePath = require('./get-pdf-file-path');
 const { getDir } = require('./helpers');
@@ -16,7 +16,7 @@ module.exports = (mdFilePath, outputPath, html, config) => {
 	const pdfFilePath = outputPath || getPdfFilePath(mdFilePath);
 	const assetsBasePath = getDir(mdFilePath);
 
-	const options = { base: `file://${assetsBasePath}${sep}`, ...config.html_pdf_options };
+	const options = { base: `file://${assetsBasePath}${path.sep}`, ...config.html_pdf_options };
 
 	return new Promise((resolve, reject) => {
 		html2pdf.create(html, options).toFile(pdfFilePath, (err, res) => (err ? reject(err) : resolve(res)));
