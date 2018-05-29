@@ -1,6 +1,6 @@
 # Markdown to PDF
 
-![Screenshot of markdown file and resulting PDF](https://file-yqytrzalxh.now.sh)
+![Screenshot of markdown file and resulting PDF](https://file-boswoulruu.now.sh)
 
 **A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is only ~200 lines of JS and ~100 lines of CSS, so it is easy to clone and customize.
 
@@ -59,11 +59,7 @@ Set the PDF option `displayHeaderFooter` to `true`, then use `headerTemplate` an
 ---
 pdf_options:
   format: A4
-  margin:
-    top: 30mm
-    bottom: 30mm
-    left: 20mm
-    right: 20mm
+  margin: 30mm 20mm
   displayHeaderFooter: true
   headerTemplate: |-
     <style>
@@ -107,13 +103,15 @@ For advanced options see the following links:
 | `--body_class` | `markdown-body` |
 | `--highlight-style` | `monokai`, `solarized-light` |
 | `--marked-options` | `'{"gfm": false }'` |
-| `--pdf-options` | `'{"format": "Letter", margin: null }'` |
+| `--pdf-options` | `'{"format": "Letter", margin: "20mm" }'` |
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
 | `--devtools` | Add this flag to open the browser/devtools instead of writing the PDF to the file system. Good for debugging. |
 
 The options can also be set with front-matter or a config file (except for `--md-file-encoding`). In that case, leave the leading dashes (`--`) and replace the hyphens (`-`) within the cli flag names with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (or as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
+
+**`pdf_options.margin`:** Instead of an object as stated in the Puppeteer docs, it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
 
 Example front-matter:
 
@@ -125,7 +123,7 @@ body_class: markdown-body
 highlight_style: monokai
 html_pdf_options:
   format: A5
-  border: 10mm
+  margin: 10mm
 ---
 
 # Content
@@ -148,7 +146,7 @@ Example `config.json` (can also be a `.js` that default exports an object):
   },
   "html_pdf_options": {
     "format": "A5",
-    "border": "10mm"
+    "margin": "20mm"
   },
   "stylesheet_encoding": "utf-8"
 }
@@ -171,6 +169,6 @@ css: |-
 
 ## Customization/Development
 
-You can just start making changes to the files in this repository. NPM 5+ uses symlinks for local global packages, so all changes are reflected immediately without re-installing the package globally. This also means that you can just do a `git pull` to get the latest version onto your machine.
+You can just start making changes to the files in this repository. NPM 5+ uses symlinks for local global packages, so all changes are reflected immediately without re-installing the package globally (except when there are changes to required packages, then reinstall using `npm i -g`). This also means that you can just do a `git pull` to get the latest version onto your machine.
 
 Ideas, feature requests and PRs are welcome. Just keep it simple! 🤓
