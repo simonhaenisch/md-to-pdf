@@ -6,7 +6,7 @@ const config = require('./util/config');
 const getHtml = require('./util/get-html');
 const getMarkedWithHighlighter = require('./util/get-marked-with-highlighter');
 const getPdfFilePath = require('./util/get-pdf-file-path');
-const { getDir } = require('./util/helpers');
+const { getDir, getMarginObject } = require('./util/helpers');
 const readFile = require('./util/read-file');
 const waitForLocalhost = require('./util/wait-for-localhost');
 
@@ -57,6 +57,17 @@ test('getPdfFilePath should return the same path but with .pdf extension', t => 
 test('getDir should get the directory the given file is in', t => {
 	const filePath = path.posix.join('/', 'var', 'foo', 'bar.txt');
 	t.is('/var/foo', getDir(filePath));
+});
+
+test('getMarginObject should be able to handle all valid CSS margin inputs', t => {
+	t.deepEqual(getMarginObject('1em'), { top: '1em', right: '1em', bottom: '1em', left: '1em' });
+	t.deepEqual(getMarginObject('1px 2px'), { top: '1px', right: '2px', bottom: '1px', left: '2px' });
+	t.deepEqual(getMarginObject('1mm 2mm 3mm'), { top: '1mm', right: '2mm', bottom: '3mm', left: '2mm' });
+	t.deepEqual(getMarginObject('1in 2in 3in 4in'), { top: '1in', right: '2in', bottom: '3in', left: '4in' });
+	t.is(getMarginObject(null), null);
+	t.throws(() => getMarginObject({}));
+	t.throws(() => getMarginObject(0));
+	t.throws(() => getMarginObject('1em 2em 3em 4em 5em'));
 });
 
 // --

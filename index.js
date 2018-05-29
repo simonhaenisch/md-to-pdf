@@ -16,6 +16,7 @@ const readFile = require('./util/read-file');
 const getHtml = require('./util/get-html');
 const writePdf = require('./util/write-pdf');
 const config = require('./util/config');
+const { getMarginObject } = require('./util/helpers');
 
 // --
 // Configure CLI Arguments
@@ -95,6 +96,11 @@ async function main(args, config) {
 		const [argKey, argValue] = arg;
 		const key = argKey.substring(2).replace(/-/g, '_');
 		config[key] = jsonArgs.includes(argKey) ? JSON.parse(argValue) : argValue;
+	}
+
+	// sanitize the margin in pdf_options
+	if (typeof config.pdf_options.margin === 'string') {
+		config.pdf_options.margin = getMarginObject(config.pdf_options.margin);
 	}
 
 	const highlightStylesheet = path.resolve(
