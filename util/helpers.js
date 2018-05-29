@@ -18,22 +18,23 @@ module.exports.getMarginObject = margin => {
 		return null;
 	}
 
-	if (typeof margin === 'string') {
-		const margins = margin.split(' ');
-		const [top, right, bottom, left] = margins;
+	const [top, right, bottom, left, ...remaining] = margin.split(' ');
 
-		switch (margins.length) {
-			case 1:
-				return { top, right: top, bottom: top, left: top };
-			case 2:
-				return { top, right, bottom: top, left: right };
-			case 3:
-				return { top, right, bottom, left: right };
-			case 4:
-				return { top, right, bottom, left };
+	if (typeof margin === 'string' && remaining.length === 0) {
+		if (left) {
+			return { top, right, bottom, left };
+		}
 
-			default:
-				break; // will throw the error below
+		if (bottom) {
+			return { top, right, bottom, left: right };
+		}
+
+		if (right) {
+			return { top, right, bottom: top, left: right };
+		}
+
+		if (top) {
+			return { top, right: top, bottom: top, left: top };
 		}
 	}
 
