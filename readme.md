@@ -9,7 +9,7 @@
 ```sh
 git clone "https://github.com/simonhaenisch/md-to-pdf"
 cd md-to-pdf
-npm i -g
+npm link # or npm i -g
 ```
 
 After this, the commands `md-to-pdf` and `md2pdf` (as a shorthand) are globally available in your cli.
@@ -103,15 +103,13 @@ For advanced options see the following links:
 | `--body_class` | `markdown-body` |
 | `--highlight-style` | `monokai`, `solarized-light` |
 | `--marked-options` | `'{"gfm": false }'` |
-| `--pdf-options` | `'{"format": "Letter", margin: "20mm" }'` |
+| `--pdf-options` | `'{"format": "Letter", margin: "20mm" }'` **`margin`:** instead of an object (as stated in the Puppeteer docs), it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left). |
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
-| `--devtools` | Add this flag to open the browser/devtools instead of writing the PDF to the file system. Good for debugging. |
+| `--devtools` | Add this flag to open the browser with devtools instead of writing the PDF to the file system. Good for debugging the generated HTML before it's printed. |
 
 The options can also be set with front-matter or a config file (except for `--md-file-encoding`). In that case, leave the leading dashes (`--`) and replace the hyphens (`-`) within the cli flag names with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (or as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
-
-**`pdf_options.margin`:** Instead of an object as stated in the Puppeteer docs, it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
 
 Example front-matter:
 
