@@ -20,7 +20,7 @@
 		"test": "xo && nyc ava"
 	},
 	"bin": {
-		"markdown-to-pdf": "./index.js",
+		"md-to-pdf": "./index.js",
 		"md2pdf": "./index.js"
 	},
 	"author": "Simon Haenisch (https://simonhaenisch.com)",
