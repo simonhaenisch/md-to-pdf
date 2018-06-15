@@ -111,7 +111,7 @@ For advanced options see the following links:
 
 **`margin`:** instead of an object (as stated in the Puppeteer docs), it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
 
-The options can also be set with front-matter or a config file (except for `--md-file-encoding`). In that case, leave the leading dashes (`--`) and replace the hyphens (`-`) within the cli flag names with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (or as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
+The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). In that case, remove the leading dashes (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
 
 Example front-matter:
 
