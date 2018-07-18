@@ -130,7 +130,7 @@ stylesheet:
   - path/to/style.css
 body_class: markdown-body
 highlight_style: monokai
-html_pdf_options:
+pdf_options:
   format: A5
   margin: 10mm
 ---
@@ -153,7 +153,7 @@ Example `config.json` (can also be a `.js` that default exports an object):
     "headerIds": false,
     "smartypants": true,
   },
-  "html_pdf_options": {
+  "pdf_options": {
     "format": "A5",
     "margin": "20mm"
   },
