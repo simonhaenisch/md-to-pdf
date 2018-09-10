@@ -7,6 +7,7 @@ const { getDir } = require('./helpers');
 
 /**
  * Create a PDF and write it to disk.
+ *
  * @param {String} mdFilePath Path to the source markdown file
  * @param {String} [outputPath] Path that the PDF will be written to
  * @param {String} html HTML document as a string
@@ -15,6 +16,7 @@ const { getDir } = require('./helpers');
  * @param {String} config.css string with CSS rules
  * @param {Object} config.pdf_options Options for puppeteer
  * @param {Booleab} config.devtools Show the Devtools instead of saving the PDF
+ *
  * @returns a promise that resolves once the file is written and contains the
  * pdf's filename
  */

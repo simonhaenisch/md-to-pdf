@@ -14,7 +14,9 @@ renderer.code = (code, language) => {
 
 /**
  * Get a marked renderer with an attached highlighter.
+ *
  * @param {Object} options Marked cnfiguration object
+ *
  * @returns a marked renderer with highlight.js parser attached
  */
 module.exports = options => {
