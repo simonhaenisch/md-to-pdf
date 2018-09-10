@@ -35,7 +35,7 @@
 		"iconv-lite": "0.4.24",
 		"marked": "0.5.0",
 		"puppeteer": "1.8.0",
-		"serve": "6.5.8"
+		"serve-handler": "5.0.2"
 	},
 	"devDependencies": {
 		"ava": "0.25.0",

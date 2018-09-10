@@ -1,9 +1,25 @@
+const { createServer } = require('http');
+const serveHandler = require('serve-handler');
 const puppeteer = require('puppeteer');
-const serve = require('serve');
 const getPort = require('get-port');
 const getPdfFilePath = require('./get-pdf-file-path');
-const waitForLocalhost = require('./wait-for-localhost');
 const { getDir } = require('./helpers');
+
+/**
+ * Serve a directory using a HTTP server and the Serve handler.
+ *
+ * @param {string} path the directory to be served
+ * @param {number} port the port to run the server on
+ *
+ * @returns a promise that resolves with the server instance once the server is
+ * listening
+ */
+const serveDirectory = (path, port) =>
+	new Promise(resolve => {
+		const server = createServer((req, res) => serveHandler(req, res, { public: path }));
+
+		server.listen(port, () => resolve(server));
+	});
 
 /**
  * Create a PDF and write it to disk.
@@ -25,9 +41,7 @@ module.exports = async (mdFilePath, outputPath, html, config) => {
 	const assetsBasePath = getDir(mdFilePath);
 	const port = await getPort();
 
-	const server = serve(assetsBasePath, { port, local: true, clipless: true, silent: true });
-
-	await waitForLocalhost(port);
+	const server = await serveDirectory(assetsBasePath, port);
 
 	const browser = await puppeteer.launch({ devtools: config.devtools });
 
@@ -62,7 +76,7 @@ module.exports = async (mdFilePath, outputPath, html, config) => {
 	}
 
 	browser.close();
-	server.stop();
+	server.close();
 
 	return config.devtools ? {} : { filename: pdfFilePath };
 };

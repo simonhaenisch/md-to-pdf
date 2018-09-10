@@ -1,14 +1,11 @@
 const path = require('path');
 const test = require('ava');
-const serve = require('serve');
-const getPort = require('get-port');
 const config = require('./util/config');
 const getHtml = require('./util/get-html');
 const getMarkedWithHighlighter = require('./util/get-marked-with-highlighter');
 const getPdfFilePath = require('./util/get-pdf-file-path');
 const { getDir, getMarginObject } = require('./util/helpers');
 const readFile = require('./util/read-file');
-const waitForLocalhost = require('./util/wait-for-localhost');
 
 // --
 // get-html
@@ -78,22 +75,4 @@ test('readFile should return the content of a file', t => {
 	const gitignoreContent = '.nyc_output\n.vscode\n';
 	t.is(gitignoreContent, readFile('.gitignore'));
 	t.is(gitignoreContent, readFile('.gitignore', 'windows1252'));
-});
-
-// --
-// wait-for-localhost
-test('waitForLocalhost should resolve once the server is available', async t => {
-	t.plan(2);
-
-	const port = await getPort();
-
-	t.true(typeof port === 'number');
-
-	const server = serve(__dirname, { port, local: true, clipless: true, silent: true });
-
-	await waitForLocalhost(port);
-
-	t.pass();
-
-	server.stop();
 });
