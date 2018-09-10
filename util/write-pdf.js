@@ -50,7 +50,7 @@ module.exports = async (mdFilePath, outputPath, html, config) => {
 
 	// wait until requests array is empty (wish puppeteer could handle that)
 	await new Promise(resolve => {
-		const waitUntilEmpty = async array => (array.length > 0 ? setTimeout(() => waitUntilEmpty(array), 100) : resolve());
+		const waitUntilEmpty = array => (array.length > 0 ? setTimeout(() => waitUntilEmpty(array), 100) : resolve());
 		waitUntilEmpty(requests);
 	});
 

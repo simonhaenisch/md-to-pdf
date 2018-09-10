@@ -78,7 +78,7 @@ async function main(args, config) {
 	if (args['--config-file']) {
 		try {
 			config = { ...config, ...require(path.resolve(args['--config-file'])) };
-		} catch (err) {
+		} catch (error) {
 			console.warn(chalk.red(`Warning: couldn't read config file: ${args['--config-file']}`));
 		}
 	}
@@ -129,4 +129,4 @@ async function main(args, config) {
 
 main(args, config)
 	.then(process.exit) // eslint-disable-line promise/prefer-await-to-then
-	.catch(err => console.error(err) && process.exit(1));
+	.catch(error => console.error(error) && process.exit(1));
