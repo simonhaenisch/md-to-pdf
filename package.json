@@ -39,8 +39,14 @@
 	},
 	"devDependencies": {
 		"ava": "0.25.0",
+		"husky": "1.0.0-rc.13",
 		"nyc": "11.8.0",
 		"xo": "0.21.1"
+	},
+	"husky": {
+		"hooks": {
+			"post-merge": "git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep --quiet package.json && npm install"
+		}
 	},
 	"prettier": {
 		"printWidth": 120,
