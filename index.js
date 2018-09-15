@@ -6,6 +6,7 @@
 const path = require('path');
 const arg = require('arg');
 const chalk = require('chalk');
+const ora = require('ora');
 const grayMatter = require('gray-matter');
 
 // --
@@ -50,13 +51,15 @@ async function main(args, config) {
 
 	if (args['--version']) {
 		console.log(require('./package').version);
-		return 0;
+		return;
 	}
 
 	if (args['--help'] || mdFilePath === undefined) {
 		help();
-		return 0;
+		return;
 	}
+
+	const spinner = ora({ color: 'white', text: `generating PDF from ${chalk.underline(mdFilePath)}` }).start();
 
 	if (args['--html-pdf-options']) {
 		console.warn(
@@ -118,10 +121,10 @@ async function main(args, config) {
 	const pdf = await writePdf(mdFilePath, outputPath, html, config);
 
 	if (pdf.filename) {
-		console.log(`${chalk.green('PDF created successfully:')} ${chalk.bold(pdf.filename)}`);
+		spinner.succeed(`PDF created successfully: ${chalk.underline(pdf.filename)}`);
+	} else {
+		spinner.fail('Failed to created PDF');
 	}
-
-	return 0;
 }
 
 // --
