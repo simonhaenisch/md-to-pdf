@@ -16,6 +16,12 @@
 ## Installation
 
 ```sh
+npm i -g md-to-pdf
+```
+
+If you want to have your own copy to hack around with, clone the repository instead:
+
+```sh
 git clone "https://github.com/simonhaenisch/md-to-pdf"
 cd md-to-pdf
 npm link # or npm i -g
@@ -181,3 +187,12 @@ css: |-
 You can just start making changes to the files in this repository. NPM 5+ uses symlinks for local global packages, so all changes are reflected immediately without re-installing the package globally (except when there are changes to required packages, then reinstall using `npm i`). This also means that you can just do a `git pull` to get the latest version onto your machine.
 
 Ideas, feature requests and PRs are welcome. Just keep it simple! 🤓
+
+## Credits
+
+Huge thanks to:
+
+* [imcvampire](https://github.com/imcvampire) for handing over the npm package name.
+* [Sindre Sorhus](https://github.com/sindresorhus) for amazingly simple to use cli packages.
+* [Zeit](https://github.com/zeit) for the inspiration on how to write a cli tool.
+* [Josh Bruce](https://github.com/joshbruce) for [reviving Marked](https://github.com/markedjs/marked/issues/1106)
