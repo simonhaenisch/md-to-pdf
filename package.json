@@ -25,7 +25,8 @@
 	},
 	"author": "Simon Haenisch (https://simonhaenisch.com)",
 	"license": "Unlicense",
-	"repository": "https://github.com/simonhaenisch/md-to-pdf",
+	"repository": "simonhaenisch/md-to-pdf",
+	"homepage": "https://github.com/simonhaenisch/md-to-pdf#readme",
 	"dependencies": {
 		"arg": "2.0.0",
 		"chalk": "2.4.1",
