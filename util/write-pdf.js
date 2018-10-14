@@ -24,14 +24,14 @@ const serveDirectory = (path, port) =>
 /**
  * Create a PDF and write it to disk.
  *
- * @param {String} mdFilePath Path to the source markdown file
- * @param {String} [outputPath] Path that the PDF will be written to
- * @param {String} html HTML document as a string
- * @param {Object} config Configuration object
- * @param {String[]} config.stylesheet list of stylesheets (urls or paths)
- * @param {String} config.css string with CSS rules
- * @param {Object} config.pdf_options Options for puppeteer
- * @param {Booleab} config.devtools Show the Devtools instead of saving the PDF
+ * @param {string} mdFilePath path to the source markdown file
+ * @param {string} [outputPath] path that the PDF will be written to
+ * @param {string} html HTML document as a string
+ * @param {Object} config configuration object
+ * @param {string[]} config.stylesheet list of stylesheets (urls or paths)
+ * @param {string} config.css string with CSS rules
+ * @param {Object} config.pdf_options PDF options for Puppeteer
+ * @param {boolean} config.devtools show the Devtools instead of saving the PDF
  *
  * @returns a promise that resolves once the file is written and contains the
  * pdf's filename

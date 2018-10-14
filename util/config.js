@@ -1,27 +1,46 @@
 const path = require('path');
 
-// In config keys, dashes of cli flag names are replaced with underscores.
+/**
+ * In config keys, dashes of cli flag names are replaced with underscores.
+ */
 module.exports = {
-	// list of css files to use for styling
+	/**
+	 * List of css files to use for styling.
+	 */
 	stylesheet: [path.resolve(__dirname, '..', 'markdown.css')],
 
-	// custom css styles
+	/**
+	 * Custom css styles.
+	 */
 	css: '',
 
-	// list of classes for the body tag
+	/**
+	 * List of classes for the body tag.
+	 */
 	body_class: [],
 
-	// see https://github.com/isagalaev/highlight.js/tree/master/src/styles
-	// (without .css)
+	/**
+	 * Highlight.js stylesheet to use (without the .css extension).
+	 *
+	 * @see https://github.com/isagalaev/highlight.js/tree/master/src/styles
+	 */
 	highlight_style: 'github',
 
-	// see https://marked.js.org/#/USING_ADVANCED.md
+	/**
+	 * Options for the Marked parser.
+	 *
+	 * @see https://marked.js.org/#/USING_ADVANCED.md
+	 */
 	marked_options: {
 		gfm: true,
 		tables: true,
 	},
 
-	// see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions
+	/**
+	 * PDF options for Puppeteer.
+	 *
+	 * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions
+	 */
 	pdf_options: {
 		format: 'A4',
 		margin: {
@@ -32,10 +51,19 @@ module.exports = {
 		},
 	},
 
-	// encoding
+	/**
+	 * Markdown file encoding.
+	 */
 	md_file_encoding: 'utf-8',
+
+	/**
+	 * CSS stylesheet encoding.
+	 */
 	stylesheet_encoding: 'utf-8',
 
-	// open chromium with devtools instead of saving the pdf
+	/**
+	 * If true, open chromium with devtools instead of saving the pdf. This is
+	 * meant for development only, to inspect the rendered HTML.
+	 */
 	devtools: false,
 };

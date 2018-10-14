@@ -3,7 +3,7 @@ const { parse, resolve } = require('path');
 /**
  * Get the directory that a file is in.
  *
- * @param {String} filePath Path to the source markdown file
+ * @param {string} filePath path to the source markdown file
  *
  * @returns the assets base path, which is the directory of the source markdown
  * file
@@ -13,7 +13,7 @@ module.exports.getDir = filePath => resolve(parse(filePath).dir);
 /**
  * Get a margin object from a string.
  *
- * @param {String} margin A CSS-like margin setting
+ * @param {string} margin a CSS-like margin setting
  *
  * @returns object with keys 'top', 'right', 'bottom', 'left'
  */
