@@ -6,18 +6,21 @@
 const path = require('path');
 const arg = require('arg');
 const chalk = require('chalk');
-const ora = require('ora');
+const Listr = require('listr');
 const grayMatter = require('gray-matter');
+const getPort = require('get-port');
 
 // --
 // Utils
 
 const help = require('./util/help');
+const getMdFilesInDir = require('./util/get-md-files-in-dir');
 const readFile = require('./util/read-file');
+const serveDirectory = require('./util/serve-dir');
 const getHtml = require('./util/get-html');
 const writePdf = require('./util/write-pdf');
 const config = require('./util/config');
-const { getMarginObject } = require('./util/helpers');
+const { getMarginObject, getDir } = require('./util/helpers');
 
 // --
 // Configure CLI Arguments
@@ -46,21 +49,18 @@ const args = arg({
 // Main
 
 async function main(args, config) {
-	const mdFilePath = args._[0];
-	const outputPath = args._[1];
+	const input = args._[0];
+	const output = args._[1];
 
 	if (args['--version']) {
-		console.log(require('./package').version);
-		return;
+		return console.log(require('./package').version);
 	}
 
-	if (args['--help'] || mdFilePath === undefined) {
-		help();
-		return;
+	if (args['--help']) {
+		return help();
 	}
 
-	const spinner = ora({ color: 'white', text: `generating PDF from ${chalk.underline(mdFilePath)}` }).start();
-
+	// throw warning when using --html-pdf-options flag
 	if (args['--html-pdf-options']) {
 		console.warn(
 			[
@@ -70,14 +70,13 @@ async function main(args, config) {
 		);
 	}
 
-	// markdown file has to be processed first in order to get front-matter config
-	const mdFileContent = await readFile(path.resolve(mdFilePath), args['--md-file-encoding'] || config.md_file_encoding);
-	const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
+	const mdFiles = input ? [input] : await getMdFilesInDir('.');
 
-	if (frontMatterConfig) {
-		config = { ...config, ...frontMatterConfig };
+	if (mdFiles.length === 0) {
+		return help();
 	}
 
+	// merge config from config file
 	if (args['--config-file']) {
 		try {
 			config = { ...config, ...require(path.resolve(args['--config-file'])) };
@@ -86,44 +85,67 @@ async function main(args, config) {
 		}
 	}
 
-	// sanitize array arguments
-	for (const option of ['stylesheet', 'body_class']) {
-		if (!Array.isArray(config[option])) {
-			config[option] = [config[option]].filter(value => Boolean(value));
+	// serve directory of first file because all files will be in the same dir
+	const port = await getPort();
+	const server = await serveDirectory(getDir(mdFiles[0]), port);
+
+	// create list of tasks and run concurrently
+	await new Listr(
+		mdFiles.map(mdFile => ({
+			title: `generating PDF from ${chalk.underline(mdFile)}`,
+			task: () => convertToPdf(mdFile),
+		})),
+		{ concurrent: true, exitOnError: false },
+	)
+		.run()
+		.then(server.close)
+		.catch(error => (args['--debug'] && console.error(error)) || process.exit(1));
+
+	async function convertToPdf(mdFile) {
+		const mdFileContent = await readFile(path.resolve(mdFile), args['--md-file-encoding'] || config.md_file_encoding);
+
+		const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
+
+		// merge front-matter config
+		config = { ...config, ...frontMatterConfig };
+
+		// sanitize array cli arguments
+		for (const option of ['stylesheet', 'body_class']) {
+			if (!Array.isArray(config[option])) {
+				config[option] = [config[option]].filter(value => Boolean(value));
+			}
 		}
-	}
 
-	// merge cli args into config
-	const jsonArgs = ['--marked-options', 'pdf-options'];
-	for (const arg of Object.entries(args)) {
-		const [argKey, argValue] = arg;
-		const key = argKey.substring(2).replace(/-/g, '_');
-		config[key] = jsonArgs.includes(argKey) ? JSON.parse(argValue) : argValue;
-	}
+		// merge cli args into config
+		const jsonArgs = ['--marked-options', 'pdf-options'];
+		for (const arg of Object.entries(args)) {
+			const [argKey, argValue] = arg;
+			const key = argKey.substring(2).replace(/-/g, '_');
+			config[key] = jsonArgs.includes(argKey) ? JSON.parse(argValue) : argValue;
+		}
 
-	// sanitize the margin in pdf_options
-	if (typeof config.pdf_options.margin === 'string') {
-		config.pdf_options.margin = getMarginObject(config.pdf_options.margin);
-	}
+		// sanitize the margin in pdf_options
+		if (typeof config.pdf_options.margin === 'string') {
+			config.pdf_options.margin = getMarginObject(config.pdf_options.margin);
+		}
 
-	const highlightStylesheet = path.resolve(
-		__dirname,
-		'node_modules',
-		'highlight.js',
-		'styles',
-		`${config.highlight_style}.css`,
-	);
+		const highlightStylesheet = path.resolve(
+			__dirname,
+			'node_modules',
+			'highlight.js',
+			'styles',
+			`${config.highlight_style}.css`,
+		);
 
-	config.stylesheet.push(highlightStylesheet);
+		config.stylesheet = [...new Set([...config.stylesheet, highlightStylesheet])];
 
-	const html = getHtml(md, config);
+		const html = getHtml(md, config);
 
-	const pdf = await writePdf(mdFilePath, outputPath, html, config);
+		const pdf = await writePdf(mdFile, output, html, { ...config, port });
 
-	if (pdf.filename) {
-		spinner.succeed(`PDF created successfully: ${chalk.underline(pdf.filename)}`);
-	} else {
-		spinner.fail('Failed to created PDF');
+		if (!pdf.filename) {
+			throw new Error(`Failed to create PDF`);
+		}
 	}
 }
 
@@ -131,5 +153,5 @@ async function main(args, config) {
 // Run
 
 main(args, config)
-	.then(process.exit)
-	.catch(error => console.error(error) && process.exit(1));
+	.then(() => process.exit(0))
+	.catch(error => console.error(error) || process.exit(1));

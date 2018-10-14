@@ -2,10 +2,11 @@
 
 ![Screenshot of markdown file and resulting PDF](https://file-boswoulruu.now.sh)
 
-**A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is only ~200 lines of JS and ~100 lines of CSS, so it is easy to clone and customize.
+**A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is only ~250 lines of JS and ~100 lines of CSS, so it is easy to clone and customize.
 
 **Highlights:**
 
+* Concurrently convert all Markdown files in the current directory
 * Use your own or remote stylesheets
 * Front-matter for configuration
 * Headers and Footers
@@ -31,12 +32,12 @@ After this, the commands `md-to-pdf` and `md2pdf` (as a shorthand) are globally 
 
 ## Update
 
-If you already cloned this repository before, you can simply do a `git pull` to pull the latest changes in from the master branch. Unless there have been changes to packages, you don't need to re-install the package (because NPM 5+ uses symlinks, at least on Unix systems).
+If you installed via npm, run `npm i -g md-to-pdf@latest` in your CLI. If you cloned this repository instead, you can simply do a `git pull` to get the latest changes from the master branch. Unless there have been changes to packages, you don't need to re-install the package (because NPM 5+ uses symlinks, at least on Unix systems). There is a post-merge hook that should run the install for you automatically.
 
 ## Usage
 
 ```
-$ md-to-pdf [options] <path/to/file.md> [path/to/output.pdf]
+$ md-to-pdf [options] [path/to/file.md] [path/to/output.pdf]
 
 Options:
 
@@ -51,12 +52,13 @@ Options:
   --md-file-encoding      Set the file encoding for the markdown file
   --stylesheet-encoding   Set the file encoding for the stylesheet
   --config-file           Path to a JSON or JS configuration file
-  --devtools              Open the browser with Devtools instead of saving the PDF (for debugging)
+  --devtools              Open the browser with devtools instead of creating PDF
+  --debug                 Show more output on errors
 ```
 
-The first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file. Run `md2pdf --help` for examples on how to use the cli options.
+If no arguments are given, all markdown files in the current directory will be converted. Otherwise, the first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file. Run `md2pdf --help` for examples on how to use the cli options.
 
-Paths to local images have to be relative to the markdown file location and the files have to be within the same directory the markdown file lives in (or subdirectories of it).
+Paths to local images have to be relative to the markdown file location and the files have to be within the same directory the markdown file lives in, or subdirectories of it.
 
 #### Page Break
 
@@ -123,10 +125,11 @@ For advanced options see the following links:
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
 | `--devtools` | opens the browser with devtools (for debugging) |
+| `--debug` | show more output on errors |
 
 **`margin`:** instead of an object (as stated in the Puppeteer docs), it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
 
-The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). In that case, remove the leading dashes (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, front-matter, config file, cli arguments.
+The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). In that case, remove the leading dashes (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
 
 Example front-matter:
 

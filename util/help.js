@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 
 const help = `
-  ${chalk.bold('$ md-to-pdf')} [options] <path/to/file.md> [path/to/output.pdf]
+  ${chalk.bold('$ md-to-pdf')} [options] [path/to/file.md] [path/to/output.pdf]
 
   ${chalk.dim('Options:')}
 
@@ -16,9 +16,14 @@ const help = `
     --md-file-encoding      Set the file encoding for the markdown file
     --stylesheet-encoding   Set the file encoding for the stylesheet
     --config-file           Path to a JSON or JS configuration file
-    --devtools              Open the browser with Devtools instead of saving the PDF (for debugging)
+    --devtools              Open the browser with devtools instead of creating PDF
+    --debug                 Show more output on errors
 
   ${chalk.dim('Examples:')}
+
+  ${chalk.gray('–')} Convert all markdown files in current directory
+
+    ${chalk.cyan('$ md2pdf')}
 
   ${chalk.gray('–')} Convert ./file.md and save to ./file.pdf
 

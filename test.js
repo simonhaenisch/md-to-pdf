@@ -6,6 +6,7 @@ const getMarkedWithHighlighter = require('./util/get-marked-with-highlighter');
 const getPdfFilePath = require('./util/get-pdf-file-path');
 const { getDir, getMarginObject } = require('./util/helpers');
 const readFile = require('./util/read-file');
+const getMdFilesInDir = require('./util/get-md-files-in-dir');
 
 // --
 // get-html
@@ -38,11 +39,11 @@ test('getMarkedWithHighlighter should highlight js code', t => {
 	t.true(html.includes('<code class="hljs js">'));
 });
 
-test('getMarkedWithHighlighter should not highlight unknown code', t => {
+test('getMarkedWithHighlighter should highlight unknown code as plaintext', t => {
 	const marked = getMarkedWithHighlighter({});
 	const html = marked('```\nvar foo="bar";\n```');
 
-	t.true(html.includes('<code>'));
+	t.true(html.includes('<code class="hljs plaintext">'));
 });
 
 // --
@@ -85,4 +86,12 @@ test('readFile should return the content of a file', async t => {
 
 	t.is(await readFile('.gitignore'), gitignoreContent);
 	t.is(await readFile('.gitignore', 'windows1252'), gitignoreContent);
+});
+
+// --
+// get-md-files-in-dir
+
+test('getMdFilesInDir should return the list of markdown files in a directory', async t => {
+	t.deepEqual(await getMdFilesInDir('./util'), []);
+	t.deepEqual(await getMdFilesInDir('.'), ['readme.md']);
 });

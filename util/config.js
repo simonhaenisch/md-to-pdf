@@ -39,6 +39,7 @@ module.exports = {
 	 * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions
 	 */
 	pdf_options: {
+		printBackground: true,
 		format: 'A4',
 		margin: {
 			top: '30mm',

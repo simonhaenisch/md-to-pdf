@@ -1,25 +1,5 @@
-const { createServer } = require('http');
-const serveHandler = require('serve-handler');
 const puppeteer = require('puppeteer');
-const getPort = require('get-port');
 const getPdfFilePath = require('./get-pdf-file-path');
-const { getDir } = require('./helpers');
-
-/**
- * Serve a directory using a HTTP server and the Serve handler.
- *
- * @param {string} path the directory to be served
- * @param {number} port the port to run the server on
- *
- * @returns a promise that resolves with the server instance once the server is
- * listening
- */
-const serveDirectory = (path, port) =>
-	new Promise(resolve => {
-		const server = createServer((req, res) => serveHandler(req, res, { public: path }));
-
-		server.listen(port, () => resolve(server));
-	});
 
 /**
  * Create a PDF and write it to disk.
@@ -38,10 +18,6 @@ const serveDirectory = (path, port) =>
  */
 module.exports = async (mdFilePath, outputPath, html, config) => {
 	const pdfFilePath = outputPath || getPdfFilePath(mdFilePath);
-	const assetsBasePath = getDir(mdFilePath);
-	const port = await getPort();
-
-	const server = await serveDirectory(assetsBasePath, port);
 
 	const browser = await puppeteer.launch({ devtools: config.devtools });
 
@@ -53,7 +29,7 @@ module.exports = async (mdFilePath, outputPath, html, config) => {
 	page.on('requestfinished', () => requests.pop());
 	page.on('requestfailed', () => requests.pop());
 
-	await page.goto(`http://localhost:${port}`, { waitUntil: 'networkidle0' });
+	await page.goto(`http://localhost:${config.port}`, { waitUntil: 'networkidle0' });
 	await page.setContent(html);
 
 	await config.stylesheet.map(async stylesheet => {
@@ -72,11 +48,10 @@ module.exports = async (mdFilePath, outputPath, html, config) => {
 		await new Promise(resolve => page.on('close', resolve));
 	} else {
 		await page.emulateMedia('screen');
-		await page.pdf({ path: pdfFilePath, printBackground: true, ...config.pdf_options });
+		await page.pdf({ path: pdfFilePath, ...config.pdf_options });
 	}
 
 	browser.close();
-	server.close();
 
 	return config.devtools ? {} : { filename: pdfFilePath };
 };
