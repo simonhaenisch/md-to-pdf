@@ -3,13 +3,16 @@
 	"version": "2.1.5",
 	"description": "CLI tool for converting Markdown files to PDF",
 	"keywords": [
+		"markdown-to-pdf",
+		"cli",
+		"pdf-generation",
 		"documentation",
 		"assignments",
 		"homework",
 		"markdown",
 		"pdf",
-		"pdf-generation",
-		"markdown-to-pdf"
+		"puppeteer",
+		"headless-chrome"
 	],
 	"engines": {
 		"node": ">= 8.3.0"
