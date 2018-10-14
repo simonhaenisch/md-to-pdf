@@ -12,16 +12,19 @@ const readFile = require('./util/read-file');
 
 test('getHtml should return a valid html document', t => {
 	const html = getHtml('', config).replace(/\n/g, '');
+
 	t.regex(html, /<!DOCTYPE html>.*<html>.*<head>.*<body class="">.*<\/body>.*<\/html>/);
 });
 
 test('getHtml should inject rendered markdown', t => {
 	const html = getHtml('# Foo', config).replace(/\n/g, '');
+
 	t.regex(html, /<body class=""><h1 id="foo">Foo<\/h1>.*<\/body>/);
 });
 
 test('getHtml should inject body classes', t => {
 	const html = getHtml('', { ...config, body_class: ['foo', 'bar'] }).replace(/\n/g, '');
+
 	t.regex(html, /<body class="foo bar">/);
 });
 
@@ -31,12 +34,14 @@ test('getHtml should inject body classes', t => {
 test('getMarkedWithHighlighter should highlight js code', t => {
 	const marked = getMarkedWithHighlighter({});
 	const html = marked('```js\nvar foo="bar";\n```');
+
 	t.true(html.includes('<code class="hljs js">'));
 });
 
 test('getMarkedWithHighlighter should not highlight unknown code', t => {
 	const marked = getMarkedWithHighlighter({});
 	const html = marked('```\nvar foo="bar";\n```');
+
 	t.true(html.includes('<code>'));
 });
 
@@ -45,7 +50,8 @@ test('getMarkedWithHighlighter should not highlight unknown code', t => {
 
 test('getPdfFilePath should return the same path but with .pdf extension', t => {
 	const mdFilePath = path.posix.join('/', 'var', 'foo', 'bar.md');
-	t.is('/var/foo/bar.pdf', getPdfFilePath(mdFilePath));
+
+	t.is(getPdfFilePath(mdFilePath), '/var/foo/bar.pdf');
 });
 
 // --
@@ -53,7 +59,8 @@ test('getPdfFilePath should return the same path but with .pdf extension', t => 
 
 test('getDir should get the directory the given file is in', t => {
 	const filePath = path.posix.join('/', 'var', 'foo', 'bar.txt');
-	t.is('/var/foo', getDir(filePath));
+
+	t.is(getDir(filePath), '/var/foo');
 });
 
 test('getMarginObject should be able to handle all valid CSS margin inputs', t => {
@@ -61,7 +68,9 @@ test('getMarginObject should be able to handle all valid CSS margin inputs', t =
 	t.deepEqual(getMarginObject('1px 2px'), { top: '1px', right: '2px', bottom: '1px', left: '2px' });
 	t.deepEqual(getMarginObject('1mm 2mm 3mm'), { top: '1mm', right: '2mm', bottom: '3mm', left: '2mm' });
 	t.deepEqual(getMarginObject('1in 2in 3in 4in'), { top: '1in', right: '2in', bottom: '3in', left: '4in' });
+
 	t.is(getMarginObject(null), null);
+
 	t.throws(() => getMarginObject(''));
 	t.throws(() => getMarginObject({}));
 	t.throws(() => getMarginObject(0));
@@ -73,6 +82,7 @@ test('getMarginObject should be able to handle all valid CSS margin inputs', t =
 
 test('readFile should return the content of a file', async t => {
 	const gitignoreContent = '.nyc_output\n.vscode\n';
-	t.is(gitignoreContent, await readFile('.gitignore'));
-	t.is(gitignoreContent, await readFile('.gitignore', 'windows1252'));
+
+	t.is(await readFile('.gitignore'), gitignoreContent);
+	t.is(await readFile('.gitignore', 'windows1252'), gitignoreContent);
 });
