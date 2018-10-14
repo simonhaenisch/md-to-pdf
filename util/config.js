@@ -31,10 +31,7 @@ module.exports = {
 	 *
 	 * @see https://marked.js.org/#/USING_ADVANCED.md
 	 */
-	marked_options: {
-		gfm: true,
-		tables: true,
-	},
+	marked_options: {},
 
 	/**
 	 * PDF options for Puppeteer.

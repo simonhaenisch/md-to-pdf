@@ -4,12 +4,10 @@ const { getLanguage, highlight } = require('highlight.js');
 const renderer = new marked.Renderer();
 
 renderer.code = (code, language) => {
-	// check whether the given language is available for highlight.js
-	const isAvailableLanguage = Boolean(language && getLanguage(language));
-	// highlight only if the language is valid
-	return isAvailableLanguage
-		? `<pre><code class="hljs ${language}">${highlight(language, code).value}</code></pre>`
-		: `<pre><code>${code}</code></pre>`;
+	// if the given language is not available in highlight.js, fall back to plaintext
+	language = (getLanguage(language) && language) || 'plaintext';
+
+	return `<pre><code class="hljs ${language}">${highlight(language, code).value}</code></pre>`;
 };
 
 /**
