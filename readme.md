@@ -197,5 +197,5 @@ Huge thanks to:
 
 * [imcvampire](https://github.com/imcvampire) for handing over the npm package name.
 * [Sindre Sorhus](https://github.com/sindresorhus) for amazingly simple to use cli packages.
-* [Zeit](https://github.com/zeit) for the inspiration on how to write a cli tool.
-* [Josh Bruce](https://github.com/joshbruce) for [reviving Marked](https://github.com/markedjs/marked/issues/1106)
+* [Zeit](https://github.com/zeit) for the inspiration on how to write cli tools.
+* [Josh Bruce](https://github.com/joshbruce) for [reviving Marked](https://github.com/markedjs/marked/issues/1106).
