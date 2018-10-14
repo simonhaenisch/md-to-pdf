@@ -9,7 +9,7 @@ html {
 body {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
 		'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-	line-height: 1.5;
+	line-height: 1.6;
 	font-size: 0.6875em; /* 11 pt */
 	color: #111;
 	margin: 0;
@@ -71,24 +71,25 @@ pre {
 	white-space: pre-wrap;
 }
 
-pre code {
-	display: block;
-	font-size: 1em;
-	font-family: 'Source Code Pro Regular', monospace;
-	padding: 0.5em;
-	background-color: #f8f8f8;
-	border-radius: 0.25em;
-}
-
 h1 code,
 h2 code,
 h3 code,
 h4 code,
 h5 code,
-h6 code {
-	font-size: inherit;
+h6 code,
+p code,
+pre code {
+	/* font-size: inherit; */
+	background-color: #f8f8f8;
+	padding: 0.1em 0.375em;
+	border-radius: 0.25em;
 	font-family: 'Source Code Pro', monospace;
-	color: #111;
+}
+
+pre code {
+	display: block;
+	padding: 0.5em;
+	font-size: 1em;
 }
 
 .page-break {
