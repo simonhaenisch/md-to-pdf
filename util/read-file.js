@@ -1,4 +1,5 @@
-const fs = require('fs');
+const { promisify } = require('util');
+const readFile = promisify(require('fs').readFile);
 const iconv = require('iconv-lite');
 
 /**
@@ -11,5 +12,5 @@ const iconv = require('iconv-lite');
  *
  * @returns a promise resolving with the file's content as a string
  */
-module.exports = (file, encoding = 'utf-8') =>
-	/utf-?8/i.test(encoding) ? fs.readFileSync(file, encoding) : iconv.decode(fs.readFileSync(file), encoding);
+module.exports = async (file, encoding = 'utf-8') =>
+	/utf-?8/i.test(encoding) ? readFile(file, { encoding }) : iconv.decode(await readFile(file), encoding);

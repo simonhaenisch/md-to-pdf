@@ -71,7 +71,7 @@ async function main(args, config) {
 	}
 
 	// markdown file has to be processed first in order to get front-matter config
-	const mdFileContent = readFile(path.resolve(mdFilePath), args['--md-file-encoding'] || config.md_file_encoding);
+	const mdFileContent = await readFile(path.resolve(mdFilePath), args['--md-file-encoding'] || config.md_file_encoding);
 	const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
 
 	if (frontMatterConfig) {
@@ -131,5 +131,5 @@ async function main(args, config) {
 // Run
 
 main(args, config)
-	.then(process.exit) // eslint-disable-line promise/prefer-await-to-then
+	.then(process.exit)
 	.catch(error => console.error(error) && process.exit(1));
