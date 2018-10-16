@@ -50,7 +50,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"post-merge": "git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep --quiet package.json && npm install"
+			"post-merge": "git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep --quiet package-lock.json && npm install"
 		}
 	},
 	"prettier": {
