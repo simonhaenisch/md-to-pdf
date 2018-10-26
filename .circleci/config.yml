@@ -18,7 +18,6 @@ jobs:
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "package-lock.json" }}
-            - dependency-cache- # fallback to using the latest cache if no exact match is found
 
       - run: npm install
 
@@ -30,16 +29,16 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
 
       - run:
-          name: make test-results dir
-          command: mkdir -p ~/test-results
+          name: make test-results dirs
+          command: mkdir -p ~/test-results/xo ~/test-results/ava
 
       - run:
           name: lint
-          command: npx xo --reporter junit > ~/test-results/xo.xml
+          command: npx xo --reporter junit > ~/test-results/xo/results.xml
 
       - run:
           name: test
-          command: npx ava --tap | npx tap-xunit > ~/test-results/ava.xml
+          command: npx ava --tap | npx tap-xunit > ~/test-results/ava/results.xml
 
       - store_test_results:
           path: ~/test-results
