@@ -46,4 +46,4 @@ jobs:
 
       - store_artifacts:
           path: coverage/lcov-report
-          prefix: nyc-report
+          destination: nyc-report
