@@ -3,10 +3,14 @@
 version: 2
 jobs:
   build:
+    branches:
+      only:
+        - master
+
     docker:
       - image: circleci/node:8.12
 
-    working_directory: ~/repo
+    working_directory: ~/md-to-pdf
 
     steps:
       - checkout
@@ -14,15 +18,30 @@ jobs:
       # download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - dependency-cache-{{ checksum "package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - dependency-cache-
 
       - run: npm install
+
+      - run: npm install tap-xunit --no-save
 
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
 
-      - run: npm test
+      - run:
+        name: make test-results dir
+        command: mkdir -p ~/test-results
+
+      - run:
+        name: lint
+        command: npx xo --reporter junit > ~/test-results/xo.xml
+
+      - run:
+        name: test
+        command: npx ava --tap | npx tap-xunit > ~/test-results/ava.xml
+
+      - store_test_results:
+        path: ~/test-results
