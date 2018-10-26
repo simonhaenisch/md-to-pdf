@@ -18,6 +18,7 @@ jobs:
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "package-lock.json" }}
+            - dependency-cache- # fall back to latest
 
       - run: npm install
 
@@ -38,7 +39,11 @@ jobs:
 
       - run:
           name: test
-          command: npx ava --tap | npx tap-xunit > ~/test-results/ava/results.xml
+          command: npx nyc --reporter=lcov ava --tap | npx tap-xunit > ~/test-results/ava/results.xml
 
       - store_test_results:
           path: ~/test-results
+
+      - store_artifacts:
+          path: coverage
+          prefix: coverage

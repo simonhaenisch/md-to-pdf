@@ -82,7 +82,7 @@ test('getMarginObject should be able to handle all valid CSS margin inputs', t =
 // read-file
 
 test('readFile should return the content of a file', async t => {
-	const gitignoreContent = '.nyc_output\n.vscode\n';
+	const gitignoreContent = '.vscode\n.nyc_output\ncoverage\n';
 
 	t.is(await readFile('.gitignore'), gitignoreContent);
 	t.is(await readFile('.gitignore', 'windows1252'), gitignoreContent);
