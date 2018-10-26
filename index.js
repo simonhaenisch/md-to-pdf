@@ -39,6 +39,7 @@ const args = arg({
 	'--stylesheet-encoding': String,
 	'--config-file': String,
 	'--devtools': Boolean,
+	'--debug': Boolean,
 
 	// aliases
 	'-h': '--help',
