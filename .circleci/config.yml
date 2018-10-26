@@ -22,8 +22,6 @@ jobs:
 
       - run: npm install
 
-      - run: npm install tap-xunit --no-save
-
       - save_cache:
           paths:
             - node_modules
