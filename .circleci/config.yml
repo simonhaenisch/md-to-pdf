@@ -45,9 +45,3 @@ jobs:
       - store_artifacts:
           path: coverage/lcov-report
           destination: nyc-report
-
-      - run:
-          name: md-to-pdf readme.md
-          command: |
-            node index.js readme.md
-            ls readme.pdf # this returns non-zero if it doesn't exist
