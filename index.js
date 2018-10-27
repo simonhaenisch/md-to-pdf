@@ -5,10 +5,11 @@
 
 const path = require('path');
 const arg = require('arg');
-const chalk = require('chalk');
+const chalk = require('chalk').default;
 const Listr = require('listr');
 const grayMatter = require('gray-matter');
 const getPort = require('get-port');
+const { watch } = require('chokidar');
 
 // --
 // Utils
@@ -28,6 +29,7 @@ const { getMarginObject, getDir } = require('./util/helpers');
 const args = arg({
 	'--help': Boolean,
 	'--version': Boolean,
+	'--watch': Boolean,
 	'--stylesheet': [String],
 	'--css': String,
 	'--body-class': [String],
@@ -44,6 +46,7 @@ const args = arg({
 	// aliases
 	'-h': '--help',
 	'-v': '--version',
+	'-w': '--watch',
 });
 
 // --
@@ -90,18 +93,28 @@ async function main(args, config) {
 	const port = await getPort();
 	const server = await serveDirectory(getDir(mdFiles[0]), port);
 
+	const getListrTask = mdFile => ({
+		title: `generating PDF from ${chalk.underline(mdFile)}`,
+		task: () => convertToPdf(mdFile),
+	});
+
 	// create list of tasks and run concurrently
-	await new Listr(
-		mdFiles.map(mdFile => ({
-			title: `generating PDF from ${chalk.underline(mdFile)}`,
-			task: () => convertToPdf(mdFile),
-		})),
-		{ concurrent: true, exitOnError: false },
-	)
+	await new Listr(mdFiles.map(getListrTask), { concurrent: true, exitOnError: false })
 		.run()
-		.then(server.close)
+		.then(() => {
+			if (args['--watch']) {
+				console.log(chalk.bgBlue('\n watching for changes \n'));
+
+				watch(mdFiles).on('change', async mdFile => {
+					await new Listr([getListrTask(mdFile)]).run().catch(error => args['--debug'] && console.error(error));
+				});
+			} else {
+				server.close();
+			}
+		})
 		.catch(error => (args['--debug'] && console.error(error)) || process.exit(1));
 
+	// this is the actual function to convert a file
 	async function convertToPdf(mdFile) {
 		const mdFileContent = await readFile(path.resolve(mdFile), args['--md-file-encoding'] || config.md_file_encoding);
 
@@ -153,6 +166,4 @@ async function main(args, config) {
 // --
 // Run
 
-main(args, config)
-	.then(() => process.exit(0))
-	.catch(error => console.error(error) || process.exit(1));
+main(args, config).catch(error => console.error(error) || process.exit(1));

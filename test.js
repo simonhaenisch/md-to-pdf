@@ -6,6 +6,7 @@ const getMarkedWithHighlighter = require('./util/get-marked-with-highlighter');
 const getPdfFilePath = require('./util/get-pdf-file-path');
 const { getDir, getMarginObject } = require('./util/helpers');
 const readFile = require('./util/read-file');
+const isMdFile = require('./util/is-md-file');
 const getMdFilesInDir = require('./util/get-md-files-in-dir');
 
 // --
@@ -86,6 +87,24 @@ test('readFile should return the content of a file', async t => {
 
 	t.is(await readFile('.gitignore'), gitignoreContent);
 	t.is(await readFile('.gitignore', 'windows1252'), gitignoreContent);
+});
+
+// --
+// is-md-file
+
+test('isMdFile should return true if the file extension indicates a markdown file', t => {
+	t.is(isMdFile('md.txt'), false);
+	t.is(isMdFile('.md.txt'), true);
+	t.is(isMdFile('test.txt'), false);
+	t.is(isMdFile('test.md'), true);
+	t.is(isMdFile('test.md.notmd'), false);
+	t.is(isMdFile('test.md.txt'), true);
+	t.is(isMdFile('test.mkd'), true);
+	t.is(isMdFile('test.mkd.txt'), true);
+	t.is(isMdFile('test.mdown'), true);
+	t.is(isMdFile('test.mdown.txt'), true);
+	t.is(isMdFile('test.markdown'), true);
+	t.is(isMdFile('test.markdown.txt'), true);
 });
 
 // --

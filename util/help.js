@@ -7,6 +7,7 @@ const help = `
 
     -h, --help              Output usage information
     -v, --version           Output version
+    -w, --watch             Watch the current file(s) for changes
     --stylesheet            Path to a local or remote stylesheet (can be passed multiple times)
     --css                   String of styles (can be used to overwrite stylesheets)
     --body-class            Classes to be added to the body tag (can be passed multiple times)

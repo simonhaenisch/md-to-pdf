@@ -1,7 +1,6 @@
 const { promisify } = require('util');
 const readDir = promisify(require('fs').readdir);
-
-const extensions = /\.(md|mkd|mdown|markdown)(\.txt)?$/i;
+const isMdFile = require('./is-md-file');
 
 /**
  * Read the directory at the given path and get the markdown files it contains.
@@ -10,4 +9,4 @@ const extensions = /\.(md|mkd|mdown|markdown)(\.txt)?$/i;
  *
  * @returns a promise that resolves with the list of markdown files
  */
-module.exports = async path => (await readDir(path)).filter(file => extensions.test(file));
+module.exports = async path => (await readDir(path)).filter(isMdFile);

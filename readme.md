@@ -1,6 +1,6 @@
 # Markdown to PDF
 
-[![CircleCI](https://circleci.com/gh/simonhaenisch/md-to-pdf.svg?style=shield)](https://circleci.com/gh/simonhaenisch/md-to-pdf)
+[![CircleCI](https://circleci.com/gh/simonhaenisch/md-to-pdf/tree/master.svg?style=shield)](https://circleci.com/gh/simonhaenisch/md-to-pdf)
 [![NPM version](https://img.shields.io/npm/v/md-to-pdf.svg)](https://www.npmjs.com/md-to-pdf)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 
@@ -11,6 +11,7 @@
 **Highlights:**
 
 * Concurrently convert all Markdown files in the current directory
+* Watch mode
 * Use your own or remote stylesheets
 * Front-matter for configuration
 * Headers and Footers
@@ -47,6 +48,7 @@ Options:
 
   -h, --help              Output usage information
   -v, --version           Output version
+  -w, --watch             Watch the current file(s) for changes
   --stylesheet            Path to a local or remote stylesheet (can be passed multiple times)
   --css                   String of styles (can be used to overwrite stylesheets)
   --body-class            Classes to be added to the body tag (can be passed multiple times)
@@ -128,8 +130,6 @@ For advanced options see the following links:
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
-| `--devtools` | opens the browser with devtools (for debugging) |
-| `--debug` | show more output on errors |
 
 **`margin`:** instead of an object (as stated in the Puppeteer docs), it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
 
