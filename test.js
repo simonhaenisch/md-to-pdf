@@ -71,9 +71,9 @@ test('getMarginObject should be able to handle all valid CSS margin inputs', t =
 	t.deepEqual(getMarginObject('1mm 2mm 3mm'), { top: '1mm', right: '2mm', bottom: '3mm', left: '2mm' });
 	t.deepEqual(getMarginObject('1in 2in 3in 4in'), { top: '1in', right: '2in', bottom: '3in', left: '4in' });
 
-	t.is(getMarginObject(null), null);
+	t.is(getMarginObject(''), null);
 
-	t.throws(() => getMarginObject(''));
+	t.throws(() => getMarginObject(null));
 	t.throws(() => getMarginObject({}));
 	t.throws(() => getMarginObject(0));
 	t.throws(() => getMarginObject('1em 2em 3em 4em 5em'));
