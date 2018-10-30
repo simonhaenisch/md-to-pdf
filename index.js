@@ -86,6 +86,10 @@ async function main(args, config) {
 			config = { ...config, ...require(path.resolve(args['--config-file'])) };
 		} catch (error) {
 			console.warn(chalk.red(`Warning: couldn't read config file: ${args['--config-file']}`));
+
+			if (args['--debug']) {
+				console.error(error);
+			}
 		}
 	}
 
