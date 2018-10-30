@@ -1,7 +1,7 @@
 {
 	"name": "md-to-pdf",
 	"version": "2.3.1",
-	"description": "CLI tool for converting Markdown files to PDF",
+	"description": "CLI tool for converting Markdown files to PDF.",
 	"keywords": [
 		"markdown-to-pdf",
 		"cli",
@@ -36,7 +36,7 @@
 		"chokidar": "2.0.4",
 		"get-port": "4.0.0",
 		"gray-matter": "4.0.1",
-		"highlight.js": "9.13.0",
+		"highlight.js": "9.13.1",
 		"iconv-lite": "0.4.24",
 		"listr": "0.14.2",
 		"marked": "0.5.1",
@@ -46,7 +46,7 @@
 	"devDependencies": {
 		"ava": "0.25.0",
 		"husky": "1.1.2",
-		"nyc": "13.0.1",
+		"nyc": "13.1.0",
 		"tap-xunit": "2.3.0",
 		"xo": "0.23.0"
 	},
