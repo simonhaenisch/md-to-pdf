@@ -78,18 +78,19 @@ h4 code,
 h5 code,
 h6 code,
 p code,
+li code,
 pre code {
 	/* font-size: inherit; */
 	background-color: #f8f8f8;
 	padding: 0.1em 0.375em;
 	border-radius: 0.25em;
-	font-family: 'Source Code Pro', monospace;
+	font-family: monospace;
+	font-size: 1.2em;
 }
 
 pre code {
 	display: block;
 	padding: 0.5em;
-	font-size: 1em;
 }
 
 .page-break {
