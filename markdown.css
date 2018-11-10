@@ -80,7 +80,6 @@ h6 code,
 p code,
 li code,
 pre code {
-	/* font-size: inherit; */
 	background-color: #f8f8f8;
 	padding: 0.1em 0.375em;
 	border-radius: 0.25em;
