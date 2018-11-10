@@ -31,10 +31,10 @@ module.exports.getMarginObject = margin => {
 	return left
 		? { top, right, bottom, left }
 		: bottom
-			? { top, right, bottom, left: right }
-			: right
-				? { top, right, bottom: top, left: right }
-				: top
-					? { top, right: top, bottom: top, left: top }
-					: null;
+		? { top, right, bottom, left: right }
+		: right
+		? { top, right, bottom: top, left: right }
+		: top
+		? { top, right: top, bottom: top, left: top }
+		: null;
 };
