@@ -1,26 +1,27 @@
-const chalk = require('chalk');
+const chalk = require('chalk').default;
 
 const help = `
   ${chalk.bold('$ md-to-pdf')} [options] [path/to/file.md] [path/to/output.pdf]
 
-  ${chalk.dim('Options:')}
+  ${chalk.dim.underline.bold('Options:')}
 
-    -h, --help              Output usage information
-    -v, --version           Output version
-    -w, --watch             Watch the current file(s) for changes
-    --stylesheet            Path to a local or remote stylesheet (can be passed multiple times)
-    --css                   String of styles (can be used to overwrite stylesheets)
-    --body-class            Classes to be added to the body tag (can be passed multiple times)
-    --highlight-style       Style to be used by highlight.js (default: github)
-    --marked-options        Set custom options for marked (as a JSON string)
-    --pdf-options           Set custom options for the generated PDF (as a JSON string)
-    --md-file-encoding      Set the file encoding for the markdown file
-    --stylesheet-encoding   Set the file encoding for the stylesheet
-    --config-file           Path to a JSON or JS configuration file
-    --devtools              Open the browser with devtools instead of creating PDF
-    --debug                 Show more output on errors
+    -h, --help ${chalk.dim('...............')} Output usage information
+    -v, --version ${chalk.dim('............')} Output version
+    -w, --watch ${chalk.dim('..............')} Watch the current file(s) for changes
+    --stylesheet ${chalk.dim('.............')} Path to a local or remote stylesheet (can be passed multiple times)
+    --css ${chalk.dim('....................')} String of styles (can be used to overwrite stylesheets)
+    --body-class ${chalk.dim('.............')} Classes to be added to the body tag (can be passed multiple times)
+    --highlight-style ${chalk.dim('........')} Style to be used by highlight.js (default: github)
+    --marked-options ${chalk.dim('.........')} Set custom options for marked (as a JSON string)
+    --pdf-options ${chalk.dim('............')} Set custom options for the generated PDF (as a JSON string)
+    --launch-options ${chalk.dim('.........')} Set custom launch options for Puppeteer
+    --md-file-encoding ${chalk.dim('.......')} Set the file encoding for the markdown file
+    --stylesheet-encoding ${chalk.dim('....')} Set the file encoding for the stylesheet
+    --config-file ${chalk.dim('............')} Path to a JSON or JS configuration file
+    --devtools ${chalk.dim('...............')} Open the browser with devtools instead of creating PDF
+    --debug ${chalk.dim('..................')} Show more output on errors
 
-  ${chalk.dim('Examples:')}
+  ${chalk.dim.underline.bold('Examples:')}
 
   ${chalk.gray('–')} Convert all markdown files in current directory
 

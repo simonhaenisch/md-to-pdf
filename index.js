@@ -37,6 +37,7 @@ const args = arg({
 	'--marked-options': String,
 	'--html-pdf-options': String,
 	'--pdf-options': String,
+	'--launch-options': String,
 	'--md-file-encoding': String,
 	'--stylesheet-encoding': String,
 	'--config-file': String,
@@ -64,7 +65,10 @@ async function main(args, config) {
 		return help();
 	}
 
-	// throw warning when using --html-pdf-options flag
+	/**
+	 * throw warning when using --html-pdf-options flag
+	 * @todo remove in a future version
+	 */
 	if (args['--html-pdf-options']) {
 		console.warn(
 			[
@@ -135,7 +139,7 @@ async function main(args, config) {
 		}
 
 		// merge cli args into config
-		const jsonArgs = ['--marked-options', '--pdf-options'];
+		const jsonArgs = ['--marked-options', '--pdf-options', '--launch-options'];
 		for (const arg of Object.entries(args)) {
 			const [argKey, argValue] = arg;
 			const key = argKey.substring(2).replace(/-/g, '_');

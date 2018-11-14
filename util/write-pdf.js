@@ -8,10 +8,12 @@ const getPdfFilePath = require('./get-pdf-file-path');
  * @param {string} [outputPath] path that the PDF will be written to
  * @param {string} html HTML document as a string
  * @param {Object} config configuration object
+ * @param {number} config.port port that the server runs on
  * @param {string[]} config.stylesheet list of stylesheets (urls or paths)
  * @param {string} config.css string with CSS rules
  * @param {Object} config.pdf_options PDF options for Puppeteer
  * @param {boolean} config.devtools show the Devtools instead of saving the PDF
+ * @param {puppeteer.LaunchOptions} config.launch_options browser launch options
  *
  * @returns a promise that resolves once the file is written and contains the
  * pdf's filename
@@ -19,7 +21,7 @@ const getPdfFilePath = require('./get-pdf-file-path');
 module.exports = async (mdFilePath, outputPath, html, config) => {
 	const pdfFilePath = outputPath || getPdfFilePath(mdFilePath);
 
-	const browser = await puppeteer.launch({ devtools: config.devtools });
+	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 	const page = await browser.newPage();
 

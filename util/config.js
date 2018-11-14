@@ -50,6 +50,13 @@ module.exports = {
 	},
 
 	/**
+	 * Launch options for Puppeteer.
+	 *
+	 * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
+	 */
+	launch_options: {},
+
+	/**
 	 * Markdown file encoding.
 	 */
 	md_file_encoding: 'utf-8',

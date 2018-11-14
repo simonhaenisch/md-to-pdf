@@ -46,20 +46,21 @@ $ md-to-pdf [options] [path/to/file.md] [path/to/output.pdf]
 
 Options:
 
-  -h, --help              Output usage information
-  -v, --version           Output version
-  -w, --watch             Watch the current file(s) for changes
-  --stylesheet            Path to a local or remote stylesheet (can be passed multiple times)
-  --css                   String of styles (can be used to overwrite stylesheets)
-  --body-class            Classes to be added to the body tag (can be passed multiple times)
-  --highlight-style       Style to be used by highlight.js (default: github)
-  --marked-options        Set custom options for marked (as a JSON string)
-  --pdf-options           Set custom options for the generated PDF (as a JSON string)
-  --md-file-encoding      Set the file encoding for the markdown file
-  --stylesheet-encoding   Set the file encoding for the stylesheet
-  --config-file           Path to a JSON or JS configuration file
-  --devtools              Open the browser with devtools instead of creating PDF
-  --debug                 Show more output on errors
+  -h, --help ............... Output usage information
+  -v, --version ............ Output version
+  -w, --watch .............. Watch the current file(s) for changes
+  --stylesheet ............. Path to a local or remote stylesheet (can be passed multiple times)
+  --css .................... String of styles (can be used to overwrite stylesheets)
+  --body-class ............. Classes to be added to the body tag (can be passed multiple times)
+  --highlight-style ........ Style to be used by highlight.js (default: github)
+  --marked-options ......... Set custom options for marked (as a JSON string)
+  --pdf-options ............ Set custom options for the generated PDF (as a JSON string)
+  --launch-options ......... Set custom launch options for Puppeteer
+  --md-file-encoding ....... Set the file encoding for the markdown file
+  --stylesheet-encoding .... Set the file encoding for the stylesheet
+  --config-file ............ Path to a JSON or JS configuration file
+  --devtools ............... Open the browser with devtools instead of creating PDF
+  --debug .................. Show more output on errors
 ```
 
 If no arguments are given, all markdown files in the current directory will be converted. Otherwise, the first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file. Run `md2pdf --help` for examples on how to use the cli options.
@@ -105,7 +106,7 @@ pdf_options:
 ---
 ```
 
-Refer to the [puppeteer docs](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions) for more info about headers and footers.
+Refer to the [Puppeteer docs](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions) for more info about headers and footers.
 
 #### Default and Advanced Options
 
@@ -115,6 +116,7 @@ For advanced options see the following links:
 
 * [Marked Advanced Options](https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md)
 * [Puppeteer PDF Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions)
+* [Puppeteer Launch Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions)
 * [highlight.js Styles](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
 
 ## Options
@@ -125,8 +127,9 @@ For advanced options see the following links:
 | `--css` | `body { color: tomato; }` |
 | `--body_class` | `markdown-body` |
 | `--highlight-style` | `monokai`, `solarized-light` |
-| `--marked-options` | `'{"gfm": false }'` |
-| `--pdf-options` | `'{"format": "Letter", margin: "20mm" }'` |
+| `--marked-options` | `'{ "gfm": false }'` |
+| `--pdf-options` | `'{ "format": "Letter", margin: "20mm" }'` |
+| `--launch-options` | `'{ "args": ["--no-sandbox"] }'` |
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
