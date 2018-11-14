@@ -135,7 +135,7 @@ async function main(args, config) {
 		}
 
 		// merge cli args into config
-		const jsonArgs = ['--marked-options', 'pdf-options'];
+		const jsonArgs = ['--marked-options', '--pdf-options'];
 		for (const arg of Object.entries(args)) {
 			const [argKey, argValue] = arg;
 			const key = argKey.substring(2).replace(/-/g, '_');
