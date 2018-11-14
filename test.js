@@ -112,5 +112,5 @@ test('isMdFile should return true if the file extension indicates a markdown fil
 
 test('getMdFilesInDir should return the list of markdown files in a directory', async t => {
 	t.deepEqual(await getMdFilesInDir('./util'), []);
-	t.deepEqual(await getMdFilesInDir('.'), ['CHANGELOG.md', 'readme.md']);
+	t.deepEqual(await getMdFilesInDir('.'), ['changelog.md', 'readme.md']);
 });
