@@ -152,9 +152,8 @@ async function main(args, config) {
 		}
 
 		const highlightStylesheet = path.resolve(
-			__dirname,
-			'node_modules',
-			'highlight.js',
+			path.dirname(require.resolve('highlight.js')),
+			'..',
 			'styles',
 			`${config.highlight_style}.css`,
 		);
