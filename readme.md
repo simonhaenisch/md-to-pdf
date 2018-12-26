@@ -205,3 +205,7 @@ Huge thanks to:
 * [imcvampire](https://github.com/imcvampire) for handing over the npm package name.
 * [Sindre Sorhus](https://github.com/sindresorhus) and [Zeit](https://github.com/zeit) for inspiration on how to write cli tools.
 * [Josh Bruce](https://github.com/joshbruce) for [reviving Marked](https://github.com/markedjs/marked/issues/1106).
+
+## License
+
+[The Unlicense](/license).
