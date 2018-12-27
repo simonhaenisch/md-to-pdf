@@ -1,6 +1,6 @@
 workflow "Main" {
   on = "push"
-  resolves = ["Lint"]
+  resolves = ["Test"]
 }
 
 action "Install" {
@@ -8,8 +8,8 @@ action "Install" {
   args = "install"
 }
 
-action "Lint" {
+action "Test" {
   uses = "actions/npm@e7aaefe"
   needs = ["Install"]
-  args = "run lint"
+  args = "test"
 }
