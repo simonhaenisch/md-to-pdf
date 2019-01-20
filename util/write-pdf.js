@@ -5,9 +5,9 @@ const getPdfFilePath = require('./get-pdf-file-path');
  * Create a PDF and write it to disk.
  *
  * @param {string} mdFilePath path to the source markdown file
- * @param {string} [outputPath] path that the PDF will be written to
  * @param {string} html HTML document as a string
  * @param {Object} config configuration object
+ * @param {string} [config.dest] path to write the output to
  * @param {number} config.port port that the server runs on
  * @param {string[]} config.stylesheet list of stylesheets (urls or paths)
  * @param {string} config.css string with CSS rules
@@ -15,11 +15,11 @@ const getPdfFilePath = require('./get-pdf-file-path');
  * @param {boolean} config.devtools show the Devtools instead of saving the PDF
  * @param {puppeteer.LaunchOptions} config.launch_options browser launch options
  *
- * @returns a promise that resolves once the file is written and contains the
+ * @returns a promise that resolves once the file is written that contains the
  * pdf's filename
  */
-module.exports = async (mdFilePath, outputPath, html, config) => {
-	const pdfFilePath = outputPath || getPdfFilePath(mdFilePath);
+module.exports = async (mdFilePath, html, config) => {
+	const pdfFilePath = config.dest || getPdfFilePath(mdFilePath);
 
 	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 

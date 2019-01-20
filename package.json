@@ -24,8 +24,8 @@
     "release": "np --standard-version --changelog-file=changelog.md"
   },
   "bin": {
-    "md-to-pdf": "./index.js",
-    "md2pdf": "./index.js"
+    "md-to-pdf": "./cli.js",
+    "md2pdf": "./cli.js"
   },
   "author": "Simon Haenisch (https://simonhaenisch.com)",
   "license": "Unlicense",

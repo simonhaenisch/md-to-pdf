@@ -5,6 +5,11 @@ const path = require('path');
  */
 module.exports = {
 	/**
+	 * Optional destination path for the output file (should use `.pdf` extension).
+	 */
+	dest: null,
+
+	/**
 	 * List of css files to use for styling.
 	 */
 	stylesheet: [path.resolve(__dirname, '..', 'markdown.css')],
