@@ -22,7 +22,11 @@ module.exports = async (mdFile, config, port, args = {}) => {
 	const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
 
 	// merge front-matter config
-	config = { ...config, ...frontMatterConfig };
+	config = {
+		...config,
+		...frontMatterConfig,
+		pdf_options: { ...config.pdf_options, ...frontMatterConfig.pdf_options },
+	};
 
 	// sanitize array cli arguments
 	for (const option of ['stylesheet', 'body_class']) {
