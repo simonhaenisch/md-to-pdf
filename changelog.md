@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/simonhaenisch/md-to-pdf/compare/v2.4.2...v2.5.0) (2019-01-20)
+
+
+### Bug Fixes
+
+* **api:** type check for md file argument ([4944e8e](https://github.com/simonhaenisch/md-to-pdf/commit/4944e8e))
+
+
+### Features
+
+* expose programmatic api ([8c86807](https://github.com/simonhaenisch/md-to-pdf/commit/8c86807)), closes [#25](https://github.com/simonhaenisch/md-to-pdf/issues/25)
+
+
+
 <a name="2.4.2"></a>
 ## [2.4.2](https://github.com/simonhaenisch/md-to-pdf/compare/v2.4.1...v2.4.2) (2018-11-27)
 
