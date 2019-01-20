@@ -18,6 +18,7 @@
 * Page Breaks
 * Syntax highlighting in code blocks
 * Extend the options of the underlying tools
+* Programmatic API
 
 ## Installation
 
@@ -66,6 +67,22 @@ Options:
 If no arguments are given, all markdown files in the current directory will be converted. Otherwise, the first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file. Run `md2pdf --help` for examples on how to use the cli options.
 
 Paths to local images have to be relative to the markdown file location and the files have to be within the same directory the markdown file lives in, or subdirectories of it.
+
+#### Programmatic API
+
+Currently the programmatic API is very simple: it only exposes one function that accepts the path to a markdown file, and an optional config object.
+
+```js
+const mdToPdf = require('md-to-pdf');
+
+(async () => {
+	const pdf = await mdToPdf('readme.md', { dest: 'readme.pdf' });
+
+	if (pdf.filename) {
+		console.log(pdf.filename);
+	}
+})();
+```
 
 #### Page Break
 
@@ -136,12 +153,13 @@ For advanced options see the following links:
 
 **`margin`:** instead of an object (as stated in the Puppeteer docs), it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
 
-The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). In that case, remove the leading dashes (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
+The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). It's possible to set the output path for the PDF as `dest` in the config. In that case, remove the leading dashes (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
 
 Example front-matter:
 
 ```markdown
 ---
+dest: ./path/to/output.pdf
 stylesheet:
   - path/to/style.css
 body_class: markdown-body
