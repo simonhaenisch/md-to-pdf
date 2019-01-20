@@ -76,13 +76,15 @@ Currently the programmatic API is very simple: it only exposes one function that
 const mdToPdf = require('md-to-pdf');
 
 (async () => {
-	const pdf = await mdToPdf('readme.md', { dest: 'readme.pdf' });
+	const pdf = await mdToPdf('readme.md', { dest: 'readme.pdf' }).catch(console.error);
 
-	if (pdf.filename) {
+	if (pdf) {
 		console.log(pdf.filename);
 	}
 })();
 ```
+
+The function throws an error if anything goes wrong, which can be handled by catching the rejected promise.
 
 #### Page Break
 
