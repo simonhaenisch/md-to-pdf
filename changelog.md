@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.6.1"></a>
+## [2.6.1](https://github.com/simonhaenisch/md-to-pdf/compare/v2.5.0...v2.6.1) (2019-01-21)
+
+
+### Bug Fixes
+
+* merge pdf options into defaults properly ([d13f5e2](https://github.com/simonhaenisch/md-to-pdf/commit/d13f5e2))
+
+
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/simonhaenisch/md-to-pdf/compare/v2.4.2...v2.5.0) (2019-01-20)
 
