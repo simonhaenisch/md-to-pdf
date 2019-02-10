@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.6.2"></a>
+## [2.6.2](https://github.com/simonhaenisch/md-to-pdf/compare/v2.6.1...v2.6.2) (2019-02-10)
+
+
+
 <a name="2.6.1"></a>
 ## [2.6.1](https://github.com/simonhaenisch/md-to-pdf/compare/v2.5.0...v2.6.1) (2019-01-21)
 
