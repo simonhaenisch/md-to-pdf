@@ -1,14 +1,15 @@
 const path = require('path');
 const test = require('ava');
-const config = require('./util/config');
-const getHtml = require('./util/get-html');
-const getMarkedWithHighlighter = require('./util/get-marked-with-highlighter');
-const getPdfFilePath = require('./util/get-pdf-file-path');
-const { getDir, getMarginObject } = require('./util/helpers');
-const readFile = require('./util/read-file');
-const isMdFile = require('./util/is-md-file');
-const isUrl = require('./util/is-url');
-const getMdFilesInDir = require('./util/get-md-files-in-dir');
+
+const config = require('./lib/config');
+const getHtml = require('./lib/get-html');
+const getMarkedWithHighlighter = require('./lib/get-marked-with-highlighter');
+const getPdfFilePath = require('./lib/get-pdf-file-path');
+const { getDir, getMarginObject } = require('./lib/helpers');
+const readFile = require('./lib/read-file');
+const isMdFile = require('./lib/is-md-file');
+const isUrl = require('./lib/is-url');
+const getMdFilesInDir = require('./lib/get-md-files-in-dir');
 
 // --
 // get-html
@@ -124,6 +125,6 @@ test('isUrl should return true for strings that are valid urls', t => {
 // get-md-files-in-dir
 
 test('getMdFilesInDir should return the list of markdown files in a directory', async t => {
-	t.deepEqual(await getMdFilesInDir('./util'), []);
+	t.deepEqual(await getMdFilesInDir('./lib'), []);
 	t.deepEqual(await getMdFilesInDir('.'), ['changelog.md', 'readme.md']);
 });

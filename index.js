@@ -1,9 +1,9 @@
 const getPort = require('get-port');
 
-const defaultConfig = require('./util/config');
-const serveDirectory = require('./util/serve-dir');
-const { getDir } = require('./util/helpers');
-const mdToPdf = require('./util/md-to-pdf');
+const defaultConfig = require('./lib/config');
+const serveDirectory = require('./lib/serve-dir');
+const { getDir } = require('./lib/helpers');
+const mdToPdf = require('./lib/md-to-pdf');
 
 /**
  * Convert a markdown file to PDF.

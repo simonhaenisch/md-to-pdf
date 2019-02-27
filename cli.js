@@ -10,15 +10,12 @@ const Listr = require('listr');
 const getPort = require('get-port');
 const { watch } = require('chokidar');
 
-// --
-// Utils
-
-const help = require('./util/help');
-const getMdFilesInDir = require('./util/get-md-files-in-dir');
-const serveDirectory = require('./util/serve-dir');
-const config = require('./util/config');
-const { getDir } = require('./util/helpers');
-const mdToPdf = require('./util/md-to-pdf');
+const help = require('./lib/help');
+const getMdFilesInDir = require('./lib/get-md-files-in-dir');
+const serveDirectory = require('./lib/serve-dir');
+const config = require('./lib/config');
+const { getDir } = require('./lib/helpers');
+const mdToPdf = require('./lib/md-to-pdf');
 
 // --
 // Configure CLI Arguments
