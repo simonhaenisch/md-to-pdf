@@ -25,26 +25,30 @@ module.exports = async (mdFilePath, html, config) => {
 
 	const page = await browser.newPage();
 
-	// track requests using array
-	const requests = [];
-	page.on('request', () => requests.push(null));
-	page.on('requestfinished', () => requests.pop());
-	page.on('requestfailed', () => requests.pop());
+	// this makes sure that relative paths are resolved properly
+	await page.goto(`http://localhost:${config.port}`);
 
-	await page.goto(`http://localhost:${config.port}`, { waitUntil: 'networkidle0' });
+	// overwrite the content with what was generated from the markdown
 	await page.setContent(html);
 
-	await config.stylesheet.map(async stylesheet => {
-		await page.addStyleTag(stylesheet.startsWith('http') ? { url: stylesheet } : { path: stylesheet });
-	});
+	// add all the stylesheets and custom css
+	await Promise.all([
+		...config.stylesheet.map(async stylesheet =>
+			page.addStyleTag(stylesheet.startsWith('http') ? { url: stylesheet } : { path: stylesheet }),
+		),
+		page.addStyleTag({ content: config.css }),
+	]);
 
-	await page.addStyleTag({ content: config.css });
-
-	// wait until requests array is empty (wish puppeteer could handle that)
-	await new Promise(resolve => {
-		const waitUntilEmpty = array => (array.length > 0 ? setTimeout(() => waitUntilEmpty(array), 100) : resolve());
-		waitUntilEmpty(requests);
-	});
+	/**
+	 * Wait for network to be idle.
+	 *
+	 * @todo replace with page.waitForNetworkIdle once exposed
+	 * @see https://github.com/GoogleChrome/puppeteer/issues/3083
+	 */
+	await Promise.all([
+		page.waitForNavigation({ waitUntil: 'networkidle0' }),
+		page.evaluate(() => history.pushState(null, null, '#')), // eslint-disable-line no-undef
+	]);
 
 	if (config.devtools) {
 		await new Promise(resolve => page.on('close', resolve));
