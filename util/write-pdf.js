@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const getPdfFilePath = require('./get-pdf-file-path');
+const isUrl = require('./is-url');
 
 /**
  * Create a PDF and write it to disk.
@@ -34,7 +35,7 @@ module.exports = async (mdFilePath, html, config) => {
 	// add all the stylesheets and custom css
 	await Promise.all([
 		...config.stylesheet.map(async stylesheet =>
-			page.addStyleTag(stylesheet.startsWith('http') ? { url: stylesheet } : { path: stylesheet }),
+			page.addStyleTag(isUrl(stylesheet) ? { url: stylesheet } : { path: stylesheet }),
 		),
 		page.addStyleTag({ content: config.css }),
 	]);

@@ -7,6 +7,7 @@ const getPdfFilePath = require('./util/get-pdf-file-path');
 const { getDir, getMarginObject } = require('./util/helpers');
 const readFile = require('./util/read-file');
 const isMdFile = require('./util/is-md-file');
+const isUrl = require('./util/is-url');
 const getMdFilesInDir = require('./util/get-md-files-in-dir');
 
 // --
@@ -105,6 +106,18 @@ test('isMdFile should return true if the file extension indicates a markdown fil
 	t.is(isMdFile('test.mdown.txt'), true);
 	t.is(isMdFile('test.markdown'), true);
 	t.is(isMdFile('test.markdown.txt'), true);
+});
+
+// --
+// is-url
+
+test('isUrl should return true for strings that are valid urls', t => {
+	t.is(isUrl('foo'), false);
+	t.is(isUrl('foo/bar'), false);
+	t.is(isUrl('http/foo/bar'), false);
+	t.is(isUrl('http://foo/bar'), true);
+	t.is(isUrl('foo://bar'), true);
+	t.is(isUrl('file:///foobar'), true);
 });
 
 // --
