@@ -21,7 +21,7 @@
   "scripts": {
     "start": "node . --help",
     "test": "xo && nyc ava",
-    "release": "np --standard-version --changelog-file=changelog.md"
+    "release": "npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish"
   },
   "bin": {
     "md-to-pdf": "./cli.js",
