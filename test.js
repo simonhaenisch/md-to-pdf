@@ -112,14 +112,14 @@ test('isMdFile should return true if the file extension indicates a markdown fil
 // --
 // is-url
 
-test('isUrl should return true for strings that are valid urls', t => {
+test('isUrl should return true for strings that are valid http(s) urls', t => {
 	t.is(isHttpUrl('foo'), false);
 	t.is(isHttpUrl('foo/bar'), false);
 	t.is(isHttpUrl('/foo/bar'), false);
 	t.is(isHttpUrl('http/foo/bar'), false);
 	t.is(isHttpUrl('http://foo/bar'), true);
-	t.is(isHttpUrl('foo://bar'), true);
-	t.is(isHttpUrl('file:///foobar'), true);
+	t.is(isHttpUrl('foo://bar'), false);
+	t.is(isHttpUrl('file:///foobar'), false);
 	t.is(isHttpUrl('C:\\foo\\bar'), false);
 });
 
