@@ -51,7 +51,7 @@ Options:
   -v, --version ............ Output version
   -w, --watch .............. Watch the current file(s) for changes
   --stylesheet ............. Path to a local or remote stylesheet (can be passed multiple times)
-  --css .................... String of styles (can be used to overwrite stylesheets)
+  --css .................... String of styles
   --body-class ............. Classes to be added to the body tag (can be passed multiple times)
   --highlight-style ........ Style to be used by highlight.js (default: github)
   --marked-options ......... Set custom options for marked (as a JSON string)
