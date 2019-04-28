@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [2.7.0](https://github.com/simonhaenisch/md-to-pdf/compare/v2.6.4...v2.7.0) (2019-04-28)
+
+
+### Features
+
+* add option to generate html output instead of pdf ([c784a8a](https://github.com/simonhaenisch/md-to-pdf/commit/c784a8a))
+
+
+
 ## [2.6.4](https://github.com/simonhaenisch/md-to-pdf/compare/v2.6.3...v2.6.4) (2019-02-27)
 
 
