@@ -4,7 +4,7 @@ const test = require('ava');
 const config = require('./lib/config');
 const getHtml = require('./lib/get-html');
 const getMarkedWithHighlighter = require('./lib/get-marked-with-highlighter');
-const getPdfFilePath = require('./lib/get-pdf-file-path');
+const getOutputFilePath = require('./lib/get-output-file-path');
 const { getDir, getMarginObject } = require('./lib/helpers');
 const readFile = require('./lib/read-file');
 const isMdFile = require('./lib/is-md-file');
@@ -52,10 +52,11 @@ test('getMarkedWithHighlighter should highlight unknown code as plaintext', t =>
 // --
 // get-pdf-file-path
 
-test('getPdfFilePath should return the same path but with .pdf extension', t => {
+test('getOutputFilePath should return the same path but with different extension', t => {
 	const mdFilePath = path.posix.join('/', 'var', 'foo', 'bar.md');
 
-	t.is(getPdfFilePath(mdFilePath), '/var/foo/bar.pdf');
+	t.is(getOutputFilePath(mdFilePath, {}), '/var/foo/bar.pdf');
+	t.is(getOutputFilePath(mdFilePath, { as_html: true }), '/var/foo/bar.html');
 });
 
 // --
@@ -85,7 +86,7 @@ test('getMarginObject should be able to handle all valid CSS margin inputs', t =
 // read-file
 
 test('readFile should return the content of a file', async t => {
-	const gitignoreContent = '.vscode\n.nyc_output\ncoverage\n';
+	const gitignoreContent = '.vscode\n.nyc_output\ncoverage\nnode_modules\n';
 
 	t.is(await readFile('.gitignore'), gitignoreContent);
 	t.is(await readFile('.gitignore', 'windows1252'), gitignoreContent);

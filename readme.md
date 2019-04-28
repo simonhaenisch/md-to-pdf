@@ -59,6 +59,7 @@ Options:
   --launch-options ......... Set custom launch options for Puppeteer
   --md-file-encoding ....... Set the file encoding for the markdown file
   --stylesheet-encoding .... Set the file encoding for the stylesheet
+  --as-html ................ Output as HTML instead
   --config-file ............ Path to a JSON or JS configuration file
   --devtools ............... Open the browser with devtools instead of creating PDF
   --debug .................. Show more output on errors

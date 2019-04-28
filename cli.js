@@ -15,7 +15,7 @@ const getMdFilesInDir = require('./lib/get-md-files-in-dir');
 const serveDirectory = require('./lib/serve-dir');
 const config = require('./lib/config');
 const { getDir } = require('./lib/helpers');
-const mdToOutput = require('./lib/md-to-output');
+const mdToPdf = require('./lib/md-to-pdf');
 
 // --
 // Configure CLI Arguments
@@ -34,10 +34,10 @@ const args = arg({
 	'--launch-options': String,
 	'--md-file-encoding': String,
 	'--stylesheet-encoding': String,
+	'--as-html': Boolean,
 	'--config-file': String,
 	'--devtools': Boolean,
 	'--debug': Boolean,
-	'--as-html': Boolean,
 
 	// aliases
 	'-h': '--help',
@@ -102,7 +102,7 @@ async function main(args, config) {
 
 	const getListrTask = mdFile => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(mdFile)}`,
-		task: () => mdToOutput(mdFile, config, port, args),
+		task: () => mdToPdf(mdFile, config, port, args),
 	});
 
 	// create list of tasks and run concurrently
