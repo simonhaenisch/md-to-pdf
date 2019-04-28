@@ -34,6 +34,7 @@ const args = arg({
 	'--launch-options': String,
 	'--md-file-encoding': String,
 	'--stylesheet-encoding': String,
+	'--as-html': Boolean,
 	'--config-file': String,
 	'--devtools': Boolean,
 	'--debug': Boolean,
@@ -100,7 +101,7 @@ async function main(args, config) {
 	const server = await serveDirectory(getDir(mdFiles[0]), port);
 
 	const getListrTask = mdFile => ({
-		title: `generating PDF from ${chalk.underline(mdFile)}`,
+		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(mdFile)}`,
 		task: () => mdToPdf(mdFile, config, port, args),
 	});
 
