@@ -34,7 +34,7 @@
   "dependencies": {
     "arg": "4.1.0",
     "chalk": "2.4.2",
-    "chokidar": "2.1.5",
+    "chokidar": "3.0.0",
     "get-port": "5.0.0",
     "gray-matter": "4.0.2",
     "highlight.js": "9.15.6",
@@ -46,8 +46,8 @@
   },
   "devDependencies": {
     "ava": "1.4.1",
-    "husky": "2.1.0",
-    "nyc": "14.0.0",
+    "husky": "2.2.0",
+    "nyc": "14.1.1",
     "prettier": "1.17.0",
     "tap-xunit": "2.3.0",
     "xo": "0.24.0"
