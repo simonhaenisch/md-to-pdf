@@ -20,7 +20,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node . --help",
-    "test": "xo && nyc ava",
+    "test": "xo && nyc ava test/lib.spec.js && ava test/api.spec.js && ava test/cli.spec.js",
     "release": "npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish"
   },
   "bin": {
