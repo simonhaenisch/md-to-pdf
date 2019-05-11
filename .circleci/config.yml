@@ -4,7 +4,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.12
+      - image: circleci/node:8-browsers
 
     working_directory: ~/md-to-pdf
 
