@@ -4,7 +4,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.12
+      - image: circleci/node:8-browsers
 
     working_directory: ~/md-to-pdf
 
@@ -32,8 +32,16 @@ jobs:
           command: npx xo --reporter junit > ~/test-results/xo/results.xml
 
       - run:
-          name: test
-          command: npx nyc --reporter=lcov ava --tap | npx tap-xunit > ~/test-results/ava/results.xml
+          name: test lib
+          command: npx nyc --reporter=lcov ava test/lib.spec.js --tap | npx tap-xunit > ~/test-results/ava/results.xml
+
+      - run:
+          name: test api
+          command: npx ava test/api.spec.js
+
+      - run:
+          name: test cli
+          command: npx ava test/cli.spec.js
 
       - store_test_results:
           path: ~/test-results

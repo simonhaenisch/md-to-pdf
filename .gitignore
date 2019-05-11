@@ -1,4 +1,9 @@
+# source
 .vscode
+node_modules
+
+# tests
 .nyc_output
 coverage
-node_modules
+test/**/*.pdf
+test/**/*.html

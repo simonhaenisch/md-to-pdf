@@ -1,15 +1,15 @@
 const path = require('path');
 const test = require('ava');
 
-const config = require('./lib/config');
-const getHtml = require('./lib/get-html');
-const getMarkedWithHighlighter = require('./lib/get-marked-with-highlighter');
-const getOutputFilePath = require('./lib/get-output-file-path');
-const { getDir, getMarginObject } = require('./lib/helpers');
-const readFile = require('./lib/read-file');
-const isMdFile = require('./lib/is-md-file');
-const isHttpUrl = require('./lib/is-http-url');
-const getMdFilesInDir = require('./lib/get-md-files-in-dir');
+const config = require('../lib/config');
+const getHtml = require('../lib/get-html');
+const getMarkedWithHighlighter = require('../lib/get-marked-with-highlighter');
+const getOutputFilePath = require('../lib/get-output-file-path');
+const { getDir, getMarginObject } = require('../lib/helpers');
+const readFile = require('../lib/read-file');
+const isMdFile = require('../lib/is-md-file');
+const isHttpUrl = require('../lib/is-http-url');
+const getMdFilesInDir = require('../lib/get-md-files-in-dir');
 
 // --
 // get-html
@@ -86,10 +86,12 @@ test('getMarginObject should be able to handle all valid CSS margin inputs', t =
 // read-file
 
 test('readFile should return the content of a file', async t => {
-	const gitignoreContent = '.vscode\n.nyc_output\ncoverage\nnode_modules\n';
+	const gitignore = path.resolve(__dirname, 'basic', 'markdown-mark.svg');
+	const gitignoreContent =
+		'<svg xmlns="http://www.w3.org/2000/svg" width="208" height="128" viewBox="0 0 208 128"><rect width="198" height="118" x="5" y="5" ry="10" stroke="#000" stroke-width="10" fill="none"/><path d="M30 98V30h20l20 25 20-25h20v68H90V59L70 84 50 59v39zm125 0l-30-33h20V30h20v35h20z"/></svg>\n';
 
-	t.is(await readFile('.gitignore'), gitignoreContent);
-	t.is(await readFile('.gitignore', 'windows1252'), gitignoreContent);
+	t.is(await readFile(gitignore), gitignoreContent);
+	t.is(await readFile(gitignore, 'windows1252'), gitignoreContent);
 });
 
 // --

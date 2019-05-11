@@ -13,7 +13,7 @@ const mdToPdf = require('./lib/md-to-pdf');
  *
  * @returns the path that the PDF was written to
  */
-module.exports = async (mdFile, config) => {
+module.exports = async (mdFile, config = {}) => {
 	if (typeof mdFile !== 'string') {
 		throw new TypeError(`mdFile has to be a string, received ${typeof mdFile}`);
 	}
