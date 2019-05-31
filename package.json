@@ -37,18 +37,18 @@
     "chokidar": "3.0.0",
     "get-port": "5.0.0",
     "gray-matter": "4.0.2",
-    "highlight.js": "9.15.6",
+    "highlight.js": "9.15.8",
     "iconv-lite": "0.4.24",
     "listr": "0.14.3",
     "marked": "0.6.2",
-    "puppeteer": "1.15.0",
-    "serve-handler": "6.0.0"
+    "puppeteer": "1.17.0",
+    "serve-handler": "6.0.1"
   },
   "devDependencies": {
     "ava": "1.4.1",
-    "husky": "2.2.0",
+    "husky": "2.3.0",
     "nyc": "14.1.1",
-    "prettier": "1.17.0",
+    "prettier": "1.17.1",
     "tap-xunit": "2.3.0",
     "xo": "0.24.0"
   },
