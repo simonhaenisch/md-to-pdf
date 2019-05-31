@@ -1,6 +1,17 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [2.7.1](https://github.com/simonhaenisch/md-to-pdf/compare/v2.7.0...v2.7.1) (2019-05-31)
+
+
+### Tests
+
+* **circleci:** use `node:8-browser` docker image ([fff5f0f](https://github.com/simonhaenisch/md-to-pdf/commit/fff5f0f))
+* don't reuse filenames ([b0ce9b6](https://github.com/simonhaenisch/md-to-pdf/commit/b0ce9b6))
+* split execution of lib, api and cli specs ([e6b0ca1](https://github.com/simonhaenisch/md-to-pdf/commit/e6b0ca1))
+
+
 
 # [2.7.0](https://github.com/simonhaenisch/md-to-pdf/compare/v2.6.4...v2.7.0) (2019-04-28)
 
