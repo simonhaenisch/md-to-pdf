@@ -34,22 +34,22 @@
   "dependencies": {
     "arg": "4.1.0",
     "chalk": "2.4.2",
-    "chokidar": "3.0.0",
+    "chokidar": "3.0.1",
     "get-port": "5.0.0",
     "gray-matter": "4.0.2",
     "highlight.js": "9.15.8",
-    "iconv-lite": "0.4.24",
+    "iconv-lite": "0.5.0",
     "listr": "0.14.3",
-    "marked": "0.6.2",
-    "puppeteer": "1.17.0",
-    "serve-handler": "6.0.1"
+    "marked": "0.6.3",
+    "puppeteer": "1.18.1",
+    "serve-handler": "6.0.2"
   },
   "devDependencies": {
-    "ava": "1.4.1",
-    "husky": "2.3.0",
+    "ava": "2.1.0",
+    "husky": "2.7.0",
     "nyc": "14.1.1",
-    "prettier": "1.17.1",
-    "tap-xunit": "2.3.0",
+    "prettier": "1.18.2",
+    "tap-xunit": "2.4.1",
     "xo": "0.24.0"
   },
   "husky": {
