@@ -1,6 +1,6 @@
-const chalk = require('chalk').default;
+import chalk from 'chalk';
 
-const help = `
+const helpText = `
   ${chalk.bold('$ md-to-pdf')} [options] [path/to/file.md] [path/to/output.pdf]
 
   ${chalk.dim.underline.bold('Options:')}
@@ -57,4 +57,4 @@ const help = `
     ${chalk.cyan('$ md2pdf file.md --as-html')}
 `;
 
-module.exports = () => console.log(help);
+export const help = () => console.log(helpText);

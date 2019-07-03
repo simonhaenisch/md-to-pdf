@@ -3,24 +3,24 @@
 // --
 // Packages
 
-const path = require('path');
-const arg = require('arg');
-const chalk = require('chalk').default;
-const Listr = require('listr');
-const getPort = require('get-port');
-const { watch } = require('chokidar');
+import path from 'path';
+import arg from 'arg';
+import chalk from 'chalk';
+import Listr from 'listr';
+import getPort from 'get-port';
+import { watch } from 'chokidar';
 
-const help = require('./lib/help');
-const getMdFilesInDir = require('./lib/get-md-files-in-dir');
-const serveDirectory = require('./lib/serve-dir');
-const config = require('./lib/config');
-const { getDir } = require('./lib/helpers');
-const mdToPdf = require('./lib/md-to-pdf');
+import { help } from './lib/help';
+import { getMdFilesInDir } from './lib/get-md-files-in-dir';
+import { serveDirectory } from './lib/serve-dir';
+import { defaultConfig, Config } from './lib/config';
+import { getDir } from './lib/helpers';
+import { convertMdToPdf } from './lib/md-to-pdf';
 
 // --
 // Configure CLI Arguments
 
-const args = arg({
+const cliFlags = arg({
 	'--help': Boolean,
 	'--version': Boolean,
 	'--watch': Boolean,
@@ -48,10 +48,7 @@ const args = arg({
 // --
 // Main
 
-async function main(args, config) {
-	const input = args._[0];
-	const dest = args._[1];
-
+async function main(args: typeof cliFlags, config: Config) {
 	if (args['--version']) {
 		return console.log(require('./package').version);
 	}
@@ -72,6 +69,8 @@ async function main(args, config) {
 			].join('\n'),
 		);
 	}
+
+	const [input, dest] = args._;
 
 	const mdFiles = input ? [input] : await getMdFilesInDir('.');
 
@@ -100,9 +99,9 @@ async function main(args, config) {
 	const port = await getPort();
 	const server = await serveDirectory(getDir(mdFiles[0]), port);
 
-	const getListrTask = mdFile => ({
+	const getListrTask = (mdFile: string) => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(mdFile)}`,
-		task: () => mdToPdf(mdFile, config, port, args),
+		task: () => convertMdToPdf(mdFile, config, port, args),
 	});
 
 	// create list of tasks and run concurrently
@@ -113,16 +112,21 @@ async function main(args, config) {
 				console.log(chalk.bgBlue('\n watching for changes \n'));
 
 				watch(mdFiles).on('change', async mdFile => {
-					await new Listr([getListrTask(mdFile)]).run().catch(error => args['--debug'] && console.error(error));
+					await new Listr([getListrTask(mdFile)])
+						.run()
+						.catch((error: Error) => args['--debug'] && console.error(error));
 				});
 			} else {
 				server.close();
 			}
 		})
-		.catch(error => (args['--debug'] && console.error(error)) || process.exit(1));
+		.catch((error: Error) => (args['--debug'] && console.error(error)) || process.exit(1));
 }
 
 // --
 // Run
 
-main(args, config).catch(error => console.error(error) || process.exit(1));
+main(cliFlags, defaultConfig).catch(error => {
+	console.error(error);
+	process.exit(1);
+});

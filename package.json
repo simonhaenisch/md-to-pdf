@@ -19,9 +19,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node . --help",
-    "test": "xo && nyc ava test/lib.spec.js && ava test/api.spec.js && ava test/cli.spec.js",
-    "release": "npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish"
+		"start": "node . --help",
+		"build": "tsc",
+    "test": "tsc && xo && nyc ava test/lib.spec.js && ava test/api.spec.js && ava test/cli.spec.js",
+    "release": "tsc && npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish"
   },
   "bin": {
     "md-to-pdf": "./cli.js",
@@ -45,6 +46,8 @@
     "serve-handler": "6.0.2"
   },
   "devDependencies": {
+    "@types/marked": "0.6.5",
+    "@types/puppeteer": "1.12.4",
     "ava": "2.1.0",
     "husky": "2.7.0",
     "nyc": "14.1.1",

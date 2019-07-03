@@ -1,33 +1,23 @@
-const { promisify } = require('util');
-const writeFile = promisify(require('fs').writeFile);
-const puppeteer = require('puppeteer');
+import { writeFile as fsWriteFile } from 'fs';
+import { promisify } from 'util';
+import puppeteer from 'puppeteer';
+import { getOutputFilePath } from './get-output-file-path';
+import { isHttpUrl } from './is-http-url';
+import { Config } from './config';
 
-const getOutputFilePath = require('./get-output-file-path');
-const isHttpUrl = require('./is-http-url');
+const writeFile = promisify(fsWriteFile);
 
 /**
  * Create a PDF and write it to disk.
  *
- * @param {string} mdFilePath path to the source markdown file
- * @param {string} html HTML document as a string
- * @param {Object} config configuration object
- * @param {string} [config.dest] path to write the output to
- * @param {number} config.port port that the server runs on
- * @param {string[]} config.stylesheet list of stylesheets (urls or paths)
- * @param {string} config.css string with CSS rules
- * @param {Object} config.pdf_options PDF options for Puppeteer
- * @param {boolean} config.as_html whether to save the output as HTML instead
- * @param {boolean} config.devtools show the Devtools instead of saving the PDF
- * @param {puppeteer.LaunchOptions} config.launch_options browser launch options
- *
  * @returns a promise that resolves once the file is written
  */
-module.exports = async (mdFilePath, html, config) => {
+export const writeOutput = async (mdFilePath: string, html: string, config: Config): Promise<{ filename?: string }> => {
 	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 	const page = await browser.newPage();
 
-	// this makes sure that relative paths are resolved properly
+	// make sure that relative paths are resolved properly
 	await page.goto(`http://localhost:${config.port}`);
 
 	// overwrite the content with what was generated from the markdown
@@ -38,7 +28,7 @@ module.exports = async (mdFilePath, html, config) => {
 		...config.stylesheet.map(async stylesheet =>
 			page.addStyleTag(isHttpUrl(stylesheet) ? { url: stylesheet } : { path: stylesheet }),
 		),
-		page.addStyleTag({ content: config.css }),
+		config.css ? page.addStyleTag({ content: config.css }) : undefined,
 	]);
 
 	/**
@@ -49,7 +39,7 @@ module.exports = async (mdFilePath, html, config) => {
 	 */
 	await Promise.all([
 		page.waitForNavigation({ waitUntil: 'networkidle0' }),
-		page.evaluate(() => history.pushState(null, null, '#')), // eslint-disable-line no-undef
+		page.evaluate(() => history.pushState(undefined, '', '#')),
 	]);
 
 	/**
@@ -67,7 +57,7 @@ module.exports = async (mdFilePath, html, config) => {
 		await page.pdf({ path: outputFilePath, ...config.pdf_options });
 	}
 
-	browser.close();
+	await browser.close();
 
 	return config.devtools ? {} : { filename: outputFilePath };
 };

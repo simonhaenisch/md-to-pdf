@@ -1,5 +1,5 @@
-const marked = require('marked');
-const { getLanguage, highlight } = require('highlight.js');
+import marked, { MarkedOptions } from 'marked';
+import { getLanguage, highlight } from 'highlight.js';
 
 const renderer = new marked.Renderer();
 
@@ -10,14 +10,7 @@ renderer.code = (code, language) => {
 	return `<pre><code class="hljs ${language}">${highlight(language, code).value}</code></pre>`;
 };
 
-/**
- * Get a marked renderer with an attached highlighter.
- *
- * @param {Object} options Marked cnfiguration object
- *
- * @returns a marked renderer with highlight.js parser attached
- */
-module.exports = options => {
+export const getMarked = (options: MarkedOptions) => {
 	marked.setOptions({ ...options, renderer });
 
 	return marked;

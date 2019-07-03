@@ -1,33 +1,33 @@
 const path = require('path');
 const test = require('ava');
 
-const config = require('../lib/config');
-const getHtml = require('../lib/get-html');
-const getMarkedWithHighlighter = require('../lib/get-marked-with-highlighter');
-const getOutputFilePath = require('../lib/get-output-file-path');
-const { getDir, getMarginObject } = require('../lib/helpers');
-const readFile = require('../lib/read-file');
-const isMdFile = require('../lib/is-md-file');
-const isHttpUrl = require('../lib/is-http-url');
-const getMdFilesInDir = require('../lib/get-md-files-in-dir');
+const { defaultConfig } = require('../dist/lib/config');
+const { getHtml } = require('../dist/lib/get-html');
+const { getMarked } = require('../dist/lib/get-marked-with-highlighter');
+const { getOutputFilePath } = require('../dist/lib/get-output-file-path');
+const { getDir, getMarginObject } = require('../dist/lib/helpers');
+const { readFile } = require('../dist/lib/read-file');
+const { isMdFile } = require('../dist/lib/is-md-file');
+const { isHttpUrl } = require('../dist/lib/is-http-url');
+const { getMdFilesInDir } = require('../dist/lib/get-md-files-in-dir');
 
 // --
 // get-html
 
 test('getHtml should return a valid html document', t => {
-	const html = getHtml('', config).replace(/\n/g, '');
+	const html = getHtml('', defaultConfig).replace(/\n/g, '');
 
 	t.regex(html, /<!DOCTYPE html>.*<html>.*<head>.*<body class="">.*<\/body>.*<\/html>/);
 });
 
 test('getHtml should inject rendered markdown', t => {
-	const html = getHtml('# Foo', config).replace(/\n/g, '');
+	const html = getHtml('# Foo', defaultConfig).replace(/\n/g, '');
 
 	t.regex(html, /<body class=""><h1 id="foo">Foo<\/h1>.*<\/body>/);
 });
 
 test('getHtml should inject body classes', t => {
-	const html = getHtml('', { ...config, body_class: ['foo', 'bar'] }).replace(/\n/g, '');
+	const html = getHtml('', { ...defaultConfig, body_class: ['foo', 'bar'] }).replace(/\n/g, '');
 
 	t.regex(html, /<body class="foo bar">/);
 });
@@ -35,15 +35,15 @@ test('getHtml should inject body classes', t => {
 // --
 // get-marked-with-highlighter
 
-test('getMarkedWithHighlighter should highlight js code', t => {
-	const marked = getMarkedWithHighlighter({});
+test('getMarked should highlight js code', t => {
+	const marked = getMarked({});
 	const html = marked('```js\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code class="hljs js">'));
 });
 
-test('getMarkedWithHighlighter should highlight unknown code as plaintext', t => {
-	const marked = getMarkedWithHighlighter({});
+test('getMarked should highlight unknown code as plaintext', t => {
+	const marked = getMarked({});
 	const html = marked('```\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code class="hljs plaintext">'));
@@ -74,9 +74,9 @@ test('getMarginObject should be able to handle all valid CSS margin inputs', t =
 	t.deepEqual(getMarginObject('1mm 2mm 3mm'), { top: '1mm', right: '2mm', bottom: '3mm', left: '2mm' });
 	t.deepEqual(getMarginObject('1in 2in 3in 4in'), { top: '1in', right: '2in', bottom: '3in', left: '4in' });
 
-	t.is(getMarginObject(''), null);
+	t.is(getMarginObject(''), undefined);
 
-	t.throws(() => getMarginObject(null));
+	t.throws(() => getMarginObject(undefined));
 	t.throws(() => getMarginObject({}));
 	t.throws(() => getMarginObject(0));
 	t.throws(() => getMarginObject('1em 2em 3em 4em 5em'));

@@ -1,7 +1,7 @@
 const { resolve, basename } = require('path');
 const test = require('ava');
 
-const mdToPdf = require('..');
+const { mdToPdf } = require('../dist');
 
 test('should compile the basic example to pdf', async t => {
 	const pdf = await mdToPdf(resolve(__dirname, 'basic', 'test.md'), {
