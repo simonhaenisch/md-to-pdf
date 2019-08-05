@@ -213,9 +213,13 @@ css: |-
 ---
 ```
 
+## Security Consideration
+
+This tool serves the directory that contains the given markdown file(s) via a http server on `localhost` on a relatively random port (or the port you specify), and that server gets shut down before the process exits (or as soon as it is killed). Please be aware that for the duration of the process this server will be accessible on your local network, and therefore all files within the served folder that the process has permission to read. So, as a suggestion, maybe don't run this in watch mode on your system root 🤓.
+
 ## Customization/Development
 
-You can just start making changes to the files in this repository. NPM 5+ uses symlinks for local global packages, so all changes are reflected immediately without re-installing the package globally (except when there are changes to required packages, then reinstall using `npm i`). This also means that you can just do a `git pull` to get the latest version onto your machine.
+You can just start making changes to the files in your clone of this repository. NPM 5+ uses symlinks for locally installed global packages, so all changes are reflected immediately without needing to re-install the package (except when there have been changes to required packages, then re-install using `npm i`). This also means that you can just do a `git pull` to get the latest version onto your machine.
 
 Ideas, feature requests and PRs are welcome. Just keep it simple! 🤓
 
