@@ -35,11 +35,6 @@ export const convertMdToPdf = async (mdFile: string, config: Config, args: any =
 		const [argKey, argValue] = arg as [string, string];
 		const key = argKey.substring(2).replace(/-/g, '_');
 
-		if (key === 'dest' && config.dest) {
-			// we already have a destination from the CLI args
-			continue;
-		}
-
 		(config as any)[key] = jsonArgs.includes(argKey) ? JSON.parse(argValue) : argValue;
 	}
 
