@@ -10,7 +10,7 @@ import { getMarginObject } from './helpers';
 /**
  * Convert a markdown file to pdf.
  */
-export const convertMdToPdf = async (mdFile: string, config: Config, port: number, args: any = {}) => {
+export const convertMdToPdf = async (mdFile: string, config: Config, args: any = {}) => {
 	const mdFileContent = await readFile(resolve(mdFile), args['--md-file-encoding'] || config.md_file_encoding);
 
 	const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
@@ -59,7 +59,7 @@ export const convertMdToPdf = async (mdFile: string, config: Config, port: numbe
 
 	const html = getHtml(md, config);
 
-	const output = await writeOutput(mdFile, html, { ...config, port });
+	const output = await writeOutput(mdFile, html, config);
 
 	if (!output.filename) {
 		throw new Error(`Failed to create ${config.as_html ? 'HTML' : 'PDF'}.`);

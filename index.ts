@@ -17,8 +17,8 @@ export const mdToPdf = async (mdFile: string, config: Partial<Config> = {}) => {
 		throw new TypeError(`mdFile has to be a string, received ${typeof mdFile}`);
 	}
 
-	const port = await getPort();
-	const server = await serveDirectory(getDir(mdFile), port);
+	config.port = config.port || (await getPort());
+	const server = await serveDirectory(getDir(mdFile), config.port);
 
 	const mergedConfig: Config = {
 		...defaultConfig,
@@ -26,7 +26,7 @@ export const mdToPdf = async (mdFile: string, config: Partial<Config> = {}) => {
 		pdf_options: { ...defaultConfig.pdf_options, ...config.pdf_options },
 	};
 
-	const pdf = await convertMdToPdf(mdFile, mergedConfig, port);
+	const pdf = await convertMdToPdf(mdFile, mergedConfig);
 
 	server.close();
 

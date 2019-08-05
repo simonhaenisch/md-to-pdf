@@ -32,6 +32,7 @@ const cliFlags = arg({
 	'--html-pdf-options': String,
 	'--pdf-options': String,
 	'--launch-options': String,
+	'--port': Number,
 	'--md-file-encoding': String,
 	'--stylesheet-encoding': String,
 	'--as-html': Boolean,
@@ -96,12 +97,12 @@ async function main(args: typeof cliFlags, config: Config) {
 	}
 
 	// serve directory of first file because all files will be in the same dir
-	const port = await getPort();
-	const server = await serveDirectory(getDir(mdFiles[0]), port);
+	config.port = args['--port'] || (await getPort());
+	const server = await serveDirectory(getDir(mdFiles[0]), config.port);
 
 	const getListrTask = (mdFile: string) => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(mdFile)}`,
-		task: () => convertMdToPdf(mdFile, config, port, args),
+		task: () => convertMdToPdf(mdFile, config, args),
 	});
 
 	// create list of tasks and run concurrently

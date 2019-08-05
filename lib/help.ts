@@ -15,6 +15,7 @@ const helpText = `
     --marked-options ${chalk.dim('.........')} Set custom options for marked (as a JSON string)
     --pdf-options ${chalk.dim('............')} Set custom options for the generated PDF (as a JSON string)
     --launch-options ${chalk.dim('.........')} Set custom launch options for Puppeteer
+    --port ${chalk.dim('...................')} Set the port to run the http server on
     --md-file-encoding ${chalk.dim('.......')} Set the file encoding for the markdown file
     --stylesheet-encoding ${chalk.dim('....')} Set the file encoding for the stylesheet
     --as-html ${chalk.dim('................')} Output as HTML instead
