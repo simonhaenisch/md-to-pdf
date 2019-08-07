@@ -27,8 +27,8 @@
     "release": "npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish"
   },
   "bin": {
-    "md-to-pdf": "./cli.js",
-    "md2pdf": "./cli.js"
+    "md-to-pdf": "dist/cli.js",
+    "md2pdf": "dist/cli.js"
   },
   "author": "Simon Haenisch (https://github.com/simonhaenisch)",
   "license": "Unlicense",
