@@ -3,8 +3,14 @@ pdf_options:
   format: A4
   margin: 30mm 25mm
   displayHeaderFooter: true
-  headerTemplate: <div></div>
-  footerTemplate: <div></div>
+  headerTemplate: >-
+    <style>div { font-size: 11px; width: 100%; text-align: center; }</style>
+    <div>Header</div>
+  footerTemplate: >-
+    <div>
+      Page <span class="pageNumber"></span>
+      of <span class="totalPages"></span>
+    </div>
 ---
 
 # Markdown To Pdf

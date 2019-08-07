@@ -97,7 +97,9 @@ Place an element with class `page-break` to force a page break at a certain poin
 
 #### Header/Footer
 
-Set the PDF option `displayHeaderFooter` to `true`, then use `headerTemplate` and `footerTemplate` with the provided classes to inject printing values, e. g. with front-matter (the styles in the `<style/>` tag of the header template will be applied to both header and footer):
+Set the [Puppeteer PDF option](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions) `displayHeaderFooter` to `true`, then use `headerTemplate` and `footerTemplate`. You can inject a few dynamic values using certain class names, as stated in the Puppeteer docs. Please note that for some reason the font-size defaults to 1pt, and you need to make sure to have enough page margin, otherwise your header/footer might be overlayed by your content. If you add a `<style/>` tag in either of the templates, it will be applied to both header and footer.
+
+Example markdown frontmatter config that prints the date in the header and the page number in the footer:
 
 ```markdown
 ---
