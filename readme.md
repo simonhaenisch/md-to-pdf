@@ -132,9 +132,7 @@ Refer to the [Puppeteer docs](https://github.com/GoogleChrome/puppeteer/blob/mas
 
 #### Default and Advanced Options
 
-For markdown, GFM and tables are enabled by default (see `util/config.js` for default options). The default highlight.js styling for code blocks is `github`.
-
-For advanced options see the following links:
+For default and advanced options see the following links. The default highlight.js styling for code blocks is `github`. The default PDF options are the A4 format and some margin (see `lib/config.ts` for the full default config).
 
 * [Marked Advanced Options](https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md)
 * [Puppeteer PDF Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions)
