@@ -39,8 +39,8 @@ export const convertMdToPdf = async (mdFile: string, config: Config, args: any =
 	}
 
 	// sanitize the margin in pdf_options
-	if (typeof config.pdf_options!.margin === 'string') {
-		config.pdf_options!.margin = getMarginObject(config.pdf_options!.margin);
+	if (typeof config.pdf_options.margin === 'string') {
+		config.pdf_options.margin = getMarginObject(config.pdf_options.margin);
 	}
 
 	const highlightStylesheet = resolve(
