@@ -1,0 +1,35 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        node: [ '8', '10' ]
+        os: ['ubuntu-latest', 'windows-latest', 'macOS-latest']
+
+    name: Node.js v{{ matrix.node }}.x on {{ matrix.os }}
+    runs-on: {{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Use Node.js {{ matrix.os }}.x
+      uses: actions/setup-node@v1
+      with:
+        version: {{ matrix.node }}.x
+
+    - name: install and lint
+      run: |
+        npm install
+        npx xo
+
+    - name: test lib
+      run: npx nyc --reporter=lcov ava test/lib.spec.js
+
+    - name: test api
+      run: npx ava test/api.spec.js
+      
+    - name: test cli
+      run: npx ava test/cli.spec.js
