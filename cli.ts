@@ -58,19 +58,6 @@ async function main(args: typeof cliFlags, config: Config) {
 		return help();
 	}
 
-	/**
-	 * throw warning when using --html-pdf-options flag
-	 * @todo remove in a future version
-	 */
-	if (args['--html-pdf-options']) {
-		console.warn(
-			[
-				chalk.red(`--html-pdf-options is not a valid argument anymore. Use --pdf-options instead.`),
-				chalk.gray(`valid options: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions`),
-			].join('\n'),
-		);
-	}
-
 	const [input, dest] = args._;
 
 	const mdFiles = input ? [input] : await getMdFilesInDir('.');
