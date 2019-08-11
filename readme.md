@@ -233,4 +233,4 @@ Huge thanks to:
 
 ## License
 
-[The Unlicense](/license).
+[MIT](/license).

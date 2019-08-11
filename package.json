@@ -31,7 +31,7 @@
     "md2pdf": "dist/cli.js"
   },
   "author": "Simon Haenisch (https://github.com/simonhaenisch)",
-  "license": "Unlicense",
+  "license": "MIT",
   "repository": "simonhaenisch/md-to-pdf",
   "homepage": "https://github.com/simonhaenisch/md-to-pdf#readme",
   "dependencies": {
