@@ -175,26 +175,36 @@ pdf_options:
 # Content
 ```
 
-Example `config.json` (can also be a `.js` that default exports an object):
+The config file can be a Javascript file that default exports a config object, which gives you the full power of the eco-system (e. g. for advanced header/footer templates); or it can also be a `.json` if you like it simple.
+
+Example `config.js`:
+
+```js
+module.exports = {
+  stylesheet: [
+    "path/to/style.css",
+    "https://example.org/stylesheet.css",
+  ],
+  css: `body { color: tomato; }`,
+  body_class: "markdown-body",
+  marked_options: {
+    headerIds: false,
+    smartypants: true,
+  },
+  pdf_options: {
+    format: "A5",
+    margin: "20mm",
+  },
+  stylesheet_encoding: "utf-8",
+};
+```
+
+Example `config.json`:
 
 ```json
 {
-  "stylesheet": [
-    "path/to/style.css",
-    "https://example.org/stylesheet.css"
-  ],
-  "css": "body { color: tomato; }",
-  "body_class": "markdown-body",
   "highlight_style": "monokai",
-  "marked_options": {
-    "headerIds": false,
-    "smartypants": true,
-  },
-  "pdf_options": {
-    "format": "A5",
-    "margin": "20mm"
-  },
-  "stylesheet_encoding": "utf-8"
+  "body_class": ["dark", "content"]
 }
 ```
 
