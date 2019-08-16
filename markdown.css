@@ -64,6 +64,7 @@ blockquote {
 ul,
 ol {
 	margin: 0;
+	margin-left: 1em;
 	padding: 0 1.5em 0.5em;
 }
 
