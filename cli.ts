@@ -50,6 +50,8 @@ const cliFlags = arg({
 // Main
 
 async function main(args: typeof cliFlags, config: Config) {
+	setProcessAndTermTitle('md-to-pdf');
+
 	if (args['--version']) {
 		return console.log(require('./package').version);
 	}
@@ -109,6 +111,11 @@ async function main(args: typeof cliFlags, config: Config) {
 			}
 		})
 		.catch((error: Error) => (args['--debug'] && console.error(error)) || process.exit(1));
+}
+
+function setProcessAndTermTitle(title: string) {
+	process.title = title;
+	process.stdout.write(`${String.fromCharCode(27)}]0;${title}${String.fromCharCode(7)}`);
 }
 
 // --
