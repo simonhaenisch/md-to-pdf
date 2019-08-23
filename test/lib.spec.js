@@ -70,7 +70,7 @@ test('getOutputFilePath should return the same path but with different extension
 test('getDir should get the directory the given file is in', t => {
 	const filePath = join('/', 'var', 'foo', 'bar.txt');
 
-	t.regex(getDir(filePath), new RegExp(`${sep}var${sep}foo`));
+	t.regex(getDir(filePath), new RegExp(`\\${sep}var\\${sep}foo`));
 });
 
 test('getMarginObject should be able to handle all valid CSS margin inputs', t => {
