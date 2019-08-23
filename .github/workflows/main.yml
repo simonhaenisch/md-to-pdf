@@ -6,13 +6,8 @@ jobs:
   build:
     strategy:
       matrix:
-        node:
-          - '8'
-          - '10'
-        os:
-          - 'ubuntu-latest'
-          - 'windows-latest'
-          - 'macOS-latest'
+        node: [8, 10, 12]
+        os: ['ubuntu-latest', 'windows-latest', 'macOS-latest']
 
     name: Node.js v${{ matrix.node }}.x on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -20,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Use Node.js ${{ matrix.os }}.x
+      - name: Use Node.js ${{ matrix.node }}.x
         uses: actions/setup-node@v1
         with:
           version: ${{ matrix.node }}.x
