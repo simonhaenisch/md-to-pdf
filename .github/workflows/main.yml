@@ -28,7 +28,7 @@ jobs:
         node: [8, 10, 12]
         os: ['ubuntu-latest', 'windows-latest', 'macOS-latest']
 
-    name: Node ${{ matrix.node }}.x on ${{ matrix.os }}
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
     steps:
