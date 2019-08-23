@@ -1,20 +1,21 @@
 name: Node CI
 
-paths: &default_paths
-  - '.github/workflows/*'
-  - 'lib/*'
-  - 'test'
-  - 'cli.js'
-  - 'index.js'
-  - 'markdown.css'
-  - 'package*.json'
+custom: &custom
+  paths:
+    - '.github/workflows/*'
+    - 'lib/*'
+    - 'test'
+    - 'cli.js'
+    - 'index.js'
+    - 'markdown.css'
+    - 'package*.json'
 
 on:
   push:
-    <<: *default_paths
+    <<: *custom
 
   pull_request:
-    <<: *default_paths
+    <<: *custom
 
 jobs:
   build:
