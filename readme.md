@@ -1,5 +1,6 @@
 # Markdown to PDF
 
+[![Github Actions Badge](https://github.com/simonhaenisch/md-to-pdf/workflows/Node%20CI/badge.svg)](https://github.com/simonhaenisch/md-to-pdf/actions)
 [![CircleCI](https://circleci.com/gh/simonhaenisch/md-to-pdf/tree/master.svg?style=shield)](https://circleci.com/gh/simonhaenisch/md-to-pdf)
 [![NPM version](https://img.shields.io/npm/v/md-to-pdf.svg)](https://www.npmjs.com/md-to-pdf)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
