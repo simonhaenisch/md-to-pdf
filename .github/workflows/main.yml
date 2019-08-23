@@ -1,7 +1,7 @@
 name: Node CI
 
 on:
-  push: &push_config
+  push:
     paths:
       - '.github/workflows/*'
       - 'lib/*'
@@ -12,7 +12,14 @@ on:
       - 'package*.json'
 
   pull_request:
-    <<: *push_config
+    paths:
+      - '.github/workflows/*'
+      - 'lib/*'
+      - 'test'
+      - 'cli.js'
+      - 'index.js'
+      - 'markdown.css'
+      - 'package*.json'
 
 jobs:
   build:
