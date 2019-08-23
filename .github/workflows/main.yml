@@ -1,16 +1,25 @@
 name: Node CI
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - '.github/workflows/*'
+      - 'lib/*'
+      - 'test'
+      - 'cli.js'
+      - 'index.js'
+      - 'markdown.css'
+      - 'package*.json'
 
-push:
-  paths:
-    - '.github/workflows/*'
-    - 'lib/*'
-    - 'test'
-    - 'cli.js'
-    - 'index.js'
-    - 'markdown.css'
-    - 'package*.json'
+  pull_request:
+    paths:
+      - '.github/workflows/*'
+      - 'lib/*'
+      - 'test'
+      - 'cli.js'
+      - 'index.js'
+      - 'markdown.css'
+      - 'package*.json'
 
 jobs:
   build:
