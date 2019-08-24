@@ -35,7 +35,7 @@ jobs:
           npx xo
 
       - name: test lib
-        run: npx nyc --reporter=lcov ava test/lib.spec.js
+        run: npx nyc ava test/lib.spec.js
 
       - name: test api
         run: npx ava test/api.spec.js
