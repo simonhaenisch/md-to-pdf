@@ -11,16 +11,6 @@ on:
       - 'markdown.css'
       - 'package*.json'
 
-  pull_request:
-    paths:
-      - '.github/workflows/*'
-      - 'lib/*'
-      - 'test'
-      - 'cli.js'
-      - 'index.js'
-      - 'markdown.css'
-      - 'package*.json'
-
 jobs:
   build:
     strategy:
