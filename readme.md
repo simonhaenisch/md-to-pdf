@@ -149,7 +149,7 @@ For advanced options see the following links:
 | `--body_class` | `markdown-body` |
 | `--highlight-style` | `monokai`, `solarized-light` |
 | `--marked-options` | `'{ "gfm": false }'` |
-| `--pdf-options` | `'{ "format": "Letter", margin: "20mm" }'` |
+| `--pdf-options` | `'{ "format": "Letter", "margin": "20mm" }'` |
 | `--launch-options` | `'{ "args": ["--no-sandbox"] }'` |
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
