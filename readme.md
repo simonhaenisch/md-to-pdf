@@ -23,9 +23,13 @@
 
 ## Installation
 
+**Option 1: NPM**
+
 ```sh
 npm i -g md-to-pdf
 ```
+
+**Option 2: Git**
 
 If you want to have your own copy to hack around with, clone the repository instead:
 
