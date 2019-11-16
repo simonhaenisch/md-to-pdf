@@ -1,17 +1,22 @@
-import marked, { MarkedOptions } from 'marked';
-import { getLanguage, highlight } from 'highlight.js';
-
-const renderer = new marked.Renderer();
-
-renderer.code = (code, language) => {
-	// if the given language is not available in highlight.js, fall back to plaintext
-	language = (getLanguage(language) && language) || 'plaintext';
-
-	return `<pre><code class="hljs ${language}">${highlight(language, code).value}</code></pre>`;
-};
+import marked, { MarkedOptions } from "marked";
+import { getLanguage, highlight } from "highlight.js";
 
 export const getMarked = (options: MarkedOptions) => {
-	marked.setOptions({ ...options, renderer });
+  const renderer = options.renderer || new marked.Renderer();
 
-	return marked;
+  // only add if the renderer has no custom `code` property yet
+  if (!Object.prototype.hasOwnProperty.call(renderer, "code")) {
+    renderer.code = (code, language) => {
+      // if the given language is not available in highlight.js, fall back to plaintext
+      language = (getLanguage(language) && language) || "plaintext";
+
+      return `<pre><code class="hljs ${language}">${
+        highlight(language, code).value
+      }</code></pre>`;
+    };
+  }
+
+  marked.setOptions({ ...options, renderer });
+
+  return marked;
 };

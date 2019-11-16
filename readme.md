@@ -1,5 +1,6 @@
 # Markdown to PDF
 
+[![Github Actions Badge](https://github.com/simonhaenisch/md-to-pdf/workflows/Node%20CI/badge.svg)](https://github.com/simonhaenisch/md-to-pdf/actions)
 [![CircleCI](https://circleci.com/gh/simonhaenisch/md-to-pdf/tree/master.svg?style=shield)](https://circleci.com/gh/simonhaenisch/md-to-pdf)
 [![NPM version](https://img.shields.io/npm/v/md-to-pdf.svg)](https://www.npmjs.com/md-to-pdf)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
@@ -22,9 +23,13 @@
 
 ## Installation
 
+**Option 1: NPM**
+
 ```sh
 npm i -g md-to-pdf
 ```
+
+**Option 2: Git**
 
 If you want to have your own copy to hack around with, clone the repository instead:
 
@@ -106,6 +111,7 @@ Example markdown frontmatter config that prints the date in the header and the p
 pdf_options:
   format: A4
   margin: 30mm 20mm
+  printBackground: true
   displayHeaderFooter: true
   headerTemplate: |-
     <style>
@@ -148,7 +154,7 @@ For default and advanced options see the following links. The default highlight.
 | `--body-class` | `markdown-body` |
 | `--highlight-style` | `monokai`, `solarized-light` |
 | `--marked-options` | `'{ "gfm": false }'` |
-| `--pdf-options` | `'{ "format": "Letter", margin: "20mm" }'` |
+| `--pdf-options` | `'{ "format": "Letter", "margin": "20mm", "printBackground": true }'` |
 | `--launch-options` | `'{ "args": ["--no-sandbox"] }'` |
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
@@ -156,7 +162,9 @@ For default and advanced options see the following links. The default highlight.
 
 **`margin`:** instead of an object (as stated in the Puppeteer docs), it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
 
-The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). In that case, remove the leading two hyphens (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. as an array). It's possible to set the output path for the PDF as `dest` in the config. If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
+**`highlight-style`:** if you set a highlight style with a background color, make sure that `"printBackground": true` is set in the pdf options.
+
+The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). In that case, remove the leading two hyphens (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. to create an array). It's possible to set the output path for the PDF as `dest` in the config. If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
 
 Example front-matter:
 
@@ -170,6 +178,7 @@ highlight_style: monokai
 pdf_options:
   format: A5
   margin: 10mm
+  printBackground: true
 ---
 
 # Content
@@ -194,6 +203,7 @@ module.exports = {
   pdf_options: {
     format: "A5",
     margin: "20mm",
+    printBackground: true
   },
   stylesheet_encoding: "utf-8",
 };
