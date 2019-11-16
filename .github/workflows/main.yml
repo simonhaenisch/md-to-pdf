@@ -29,10 +29,15 @@ jobs:
         with:
           version: ${{ matrix.node }}.x
 
-      - name: install and lint
-        run: |
-          npm install
-          npx xo
+      - name: install
+        run: npm install
+
+      - name: prettier (windows-only)
+        run: npx prettier --write **/*.ts
+        if: matrix.os == 'windows-latest'
+
+      - name: lint
+        run: npx xo
 
       - name: test lib
         run: npx nyc ava test/lib.spec.js
