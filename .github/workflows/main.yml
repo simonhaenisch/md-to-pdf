@@ -32,13 +32,9 @@ jobs:
       - name: install
         run: npm install
 
-      - name: prettier (windows-only)
-        run: |
-          npx prettier --write "@(lib|test)/**/*.@(ts|js)" "cli.ts" "index.ts"
-        if: matrix.os == 'windows-latest'
-
       - name: lint
         run: npx xo
+        if: matrix.os != 'windows-latest' # because "Delete ␍  prettier/prettier" o.O
 
       - name: test lib
         run: npx nyc ava test/lib.spec.js
