@@ -153,13 +153,15 @@ For advanced options see the following links:
 | `--body_class` | `markdown-body` |
 | `--highlight-style` | `monokai`, `solarized-light` |
 | `--marked-options` | `'{ "gfm": false }'` |
-| `--pdf-options` | `'{ "format": "Letter", "margin": "20mm" }'` |
+| `--pdf-options` | `'{ "format": "Letter", "margin": "20mm", "printBackground": true }'` |
 | `--launch-options` | `'{ "args": ["--no-sandbox"] }'` |
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
 
 **`margin`:** instead of an object (as stated in the Puppeteer docs), it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
+
+**`highlight-style`:** if you set a highlight style with a background color, make sure that `"printBackground": true` is set in the pdf options.
 
 The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). It's possible to set the output path for the PDF as `dest` in the config. In that case, remove the leading dashes (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
 
