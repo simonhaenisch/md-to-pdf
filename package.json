@@ -36,27 +36,27 @@
   "homepage": "https://github.com/simonhaenisch/md-to-pdf#readme",
   "dependencies": {
     "arg": "4.1.1",
-    "chalk": "2.4.2",
-    "chokidar": "3.1.0",
+    "chalk": "3.0.0",
+    "chokidar": "3.3.0",
     "get-port": "5.0.0",
     "gray-matter": "4.0.2",
-    "highlight.js": "9.15.10",
+    "highlight.js": "9.16.2",
     "iconv-lite": "0.5.0",
     "listr": "0.14.3",
     "marked": "0.7.0",
-    "puppeteer": "1.20.0",
-    "serve-handler": "6.1.1"
+    "puppeteer": "2.0.0",
+    "serve-handler": "6.1.2"
   },
   "devDependencies": {
-    "@types/marked": "0.6.5",
-    "@types/puppeteer": "1.19.0",
-    "ava": "2.2.0",
-    "husky": "3.0.2",
+    "@types/marked": "0.7.1",
+    "@types/puppeteer": "1.20.2",
+    "ava": "2.4.0",
+    "husky": "3.0.9",
     "nyc": "14.1.1",
-    "prettier": "1.18.2",
+    "prettier": "1.19.1",
     "tap-xunit": "2.4.1",
-    "typescript": "3.5.3",
-    "xo": "0.24.0"
+    "typescript": "3.7.2",
+    "xo": "0.25.3"
   },
   "husky": {
     "hooks": {
