@@ -53,6 +53,9 @@ export const writeOutput = async (mdFilePath: string, html: string, config: Conf
 		const content = await page.content();
 		await writeFile(outputFilePath, content);
 	} else {
+		/**
+		 * @todo replace with `await page.emulateMediaType('screen');` once @types/puppeteer is
+		 */
 		await page.emulateMedia('screen');
 		await page.pdf({ path: outputFilePath, ...config.pdf_options });
 	}

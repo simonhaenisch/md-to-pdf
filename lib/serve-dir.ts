@@ -6,7 +6,7 @@ import serveHandler from 'serve-handler';
  *
  * @returns a promise that resolves with the server instance once the server is ready and listening.
  */
-export const serveDirectory = (path: string, port: number) =>
+export const serveDirectory = async (path: string, port: number) =>
 	new Promise<Server>(resolve => {
 		const server = createServer((req, res) => serveHandler(req, res, { public: path }));
 

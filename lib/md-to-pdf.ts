@@ -8,7 +8,7 @@ import { writeOutput } from './write-output';
 import { getMarginObject } from './helpers';
 
 /**
- * Convert a markdown file to pdf.
+ * Convert markdown to pdf.
  */
 export const convertMdToPdf = async (mdFile: string, config: Config, args: any = {}) => {
 	const mdFileContent = await readFile(resolve(mdFile), args['--md-file-encoding'] || config.md_file_encoding);

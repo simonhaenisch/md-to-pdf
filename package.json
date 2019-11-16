@@ -48,8 +48,11 @@
     "serve-handler": "6.1.2"
   },
   "devDependencies": {
+    "@types/highlight.js": "9.12.3",
+    "@types/listr": "0.14.2",
     "@types/marked": "0.7.1",
     "@types/puppeteer": "1.20.2",
+    "@types/serve-handler": "6.1.0",
     "ava": "2.4.0",
     "husky": "3.0.9",
     "nyc": "14.1.1",
