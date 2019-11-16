@@ -109,6 +109,7 @@ Set the PDF option `displayHeaderFooter` to `true`, then use `headerTemplate` an
 pdf_options:
   format: A4
   margin: 30mm 20mm
+  printBackground: true
   displayHeaderFooter: true
   headerTemplate: |-
     <style>
@@ -177,6 +178,7 @@ highlight_style: monokai
 pdf_options:
   format: A5
   margin: 10mm
+  printBackground: true
 ---
 
 # Content
@@ -199,7 +201,8 @@ Example `config.json` (can also be a `.js` that default exports an object):
   },
   "pdf_options": {
     "format": "A5",
-    "margin": "20mm"
+    "margin": "20mm",
+    "printBackground": true
   },
   "stylesheet_encoding": "utf-8"
 }
