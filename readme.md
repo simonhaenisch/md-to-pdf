@@ -184,7 +184,7 @@ pdf_options:
 # Content
 ```
 
-The config file can be a Javascript file that default exports a config object, which gives you the full power of the eco-system (e. g. for advanced header/footer templates); or it can also be a `.json` if you like it simple.
+The config file can be a Javascript file that exports a config object, which gives you the full power of the eco-system (e. g. for advanced header/footer templates); or it can also be a `.json` if you like it simple.
 
 Example `config.js`:
 
