@@ -16,6 +16,7 @@ import { serveDirectory } from './lib/serve-dir';
 import { defaultConfig, Config } from './lib/config';
 import { getDir } from './lib/helpers';
 import { convertMdToPdf } from './lib/md-to-pdf';
+import { setProcessAndTermTitle } from './lib/helpers';
 
 // --
 // Configure CLI Arguments
@@ -117,11 +118,6 @@ async function main(args: typeof cliFlags, config: Config) {
 			}
 		})
 		.catch((error: Error) => (args['--debug'] && console.error(error)) || process.exit(1));
-}
-
-function setProcessAndTermTitle(title: string) {
-	process.title = title;
-	process.stdout.write(`${String.fromCharCode(27)}]0;${title}${String.fromCharCode(7)}`);
 }
 
 // --
