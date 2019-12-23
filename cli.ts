@@ -53,7 +53,7 @@ async function main(args: typeof cliFlags, config: Config) {
 	setProcessAndTermTitle('md-to-pdf');
 
 	if (args['--version']) {
-		return console.log(require('./package').version);
+		return console.log(require('../package').version);
 	}
 
 	if (args['--help']) {
