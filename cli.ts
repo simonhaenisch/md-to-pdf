@@ -75,7 +75,13 @@ async function main(args: typeof cliFlags, config: Config) {
 	// merge config from config file
 	if (args['--config-file']) {
 		try {
-			config = { ...config, ...require(path.resolve(args['--config-file'])) };
+			const configFile: Partial<Config> = require(path.resolve(args['--config-file']));
+
+			config = {
+				...config,
+				...configFile,
+				pdf_options: { ...config.pdf_options, ...configFile.pdf_options },
+			};
 		} catch (error) {
 			console.warn(chalk.red(`Warning: couldn't read config file: ${args['--config-file']}`));
 
