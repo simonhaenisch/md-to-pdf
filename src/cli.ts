@@ -39,7 +39,6 @@ const cliFlags = arg({
 	'--as-html': Boolean,
 	'--config-file': String,
 	'--devtools': Boolean,
-	'--debug': Boolean,
 
 	// aliases
 	'-h': '--help',
@@ -96,12 +95,7 @@ async function main(args: typeof cliFlags, config: Config) {
 			};
 		} catch (error) {
 			console.warn(chalk.red(`Warning: couldn't read config file: ${path.resolve(args['--config-file'])}`));
-
-			if (args['--debug']) {
-				console.error(error);
-			} else if (error instanceof SyntaxError) {
-				console.error(error.message);
-			}
+			console.warn(error instanceof SyntaxError ? error.message : error);
 		}
 	}
 
@@ -122,14 +116,13 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	if (stdin) {
-		await convertMdToPdf({ content: stdin }, config, args).catch(async (error: Error) => {
-			await closeServer(server);
+		await convertMdToPdf({ content: stdin }, config, args)
+			.then(async () => closeServer(server))
+			.catch(async (error: Error) => {
+				await closeServer(server);
 
-			console.error(error);
-			process.exit(1);
-		});
-
-		await closeServer(server);
+				throw error;
+			});
 
 		return;
 	}
@@ -145,12 +138,23 @@ async function main(args: typeof cliFlags, config: Config) {
 			if (args['--watch']) {
 				console.log(chalk.bgBlue('\n watching for changes \n'));
 
-				watch(files).on('change', async file => {
-					await new Listr([getListrTask(file)]).run().catch((error: Error) => args['--debug'] && console.error(error));
-				});
+				watch(files).on('change', async file =>
+					new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error),
+				);
 			} else {
 				server.close();
 			}
 		})
-		.catch((error: Error) => (args['--debug'] && console.error(error)) || process.exit(1));
+		.catch((error: Error) => {
+			/**
+			 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
+			 *
+			 * @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
+			 */
+			if (args['--watch']) {
+				return console.error(error);
+			}
+
+			throw error;
+		});
 }

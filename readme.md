@@ -71,7 +71,6 @@ Options:
   --as-html ................ Output as HTML instead
   --config-file ............ Path to a JSON or JS configuration file
   --devtools ............... Open the browser with devtools instead of creating PDF
-  --debug .................. Show more output on errors
 ```
 
 The pdf is generated into the same directory as the source file and uses the same filename (with `.pdf` extension) by default. Multiple files can be specified by using shell globbing, e. g.:
