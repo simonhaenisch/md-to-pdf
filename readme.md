@@ -26,8 +26,10 @@
 **Option 1: NPM**
 
 ```sh
-npm i -g md-to-pdf
+npm i -g md-to-pdf@next
 ```
+
+This installs the prerelease of version 3 which this documentation is for. If you need the docs for `v2.8.2`, you can find them [here](https://github.com/simonhaenisch/md-to-pdf/tree/v2.8.2#readme).
 
 **Option 2: Git**
 
@@ -78,13 +80,15 @@ The pdf is generated into the same directory as the source file and uses the sam
 md-to-pdf ./**/*.md
 ```
 
-_(You might need to enable the `globstar` option in bash for recursive globbing)_
+_(You might need to enable the `globstar` option in bash for recursive globbing.)_
 
 Alternatively, you can pass the markdown in from `stdin`:
 
 ```sh
-cat file.md | md-to-pdf > output.pdf
+cat file.md | md-to-pdf
 ```
+
+_(It's not currently possible to pipe the output into a file, it will just be written to `output.pdf` in the current working directory. However this will be implemented before the release of v3.)_
 
 The current working directory (`process.cwd()`) serves as the base directory of the file server by default. This can be adjusted with the `--basedir` flag (or equivalent config option).
 
