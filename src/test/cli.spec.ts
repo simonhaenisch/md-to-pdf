@@ -23,6 +23,8 @@ before(() => {
 });
 
 test('should compile the basic example to pdf using --basedir', async t => {
+	t.timeout(15000); // increase the timeout for the CI
+
 	const cmd = [
 		resolve(__dirname, '..', '..', 'node_modules', '.bin', 'ts-node'), // ts-node binary
 		resolve(__dirname, '..', 'cli'), // md-to-pdf cli script (typescript)
