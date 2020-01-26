@@ -36,6 +36,9 @@ jobs:
         run: npx xo
         if: matrix.os != 'windows-latest' # because "Delete ␍  prettier/prettier" o.O
 
+      - name: build
+        run: npm run build
+
       - name: test lib
         run: npx nyc ava src/test/lib.spec.ts
 
