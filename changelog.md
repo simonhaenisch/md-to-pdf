@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-pre.0](https://github.com/simonhaenisch/md-to-pdf/compare/v2.8.2...v3.0.0-pre.0) (2020-01-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* the CLI can't be invoked without specifying any input files anymore. To convert all files in a directory, use a shell glob instead (e. g. `md-to-pdf *.md`). It's now possible to read markdown from stdin.
+
+The whole source code has been converted to Typescript. The minimum required node version has been increased to v10.0.0 (current LTS). It should still work with v8.3.0+ but the tests won't be able to run.
+
+The license has been changed to MIT.
+
+### Features
+
+* allow input from std in or shell globbing for multiple files ([8051c42](https://github.com/simonhaenisch/md-to-pdf/commit/8051c4286f629154eb932f60926392ba5fd8b97d))
+* auto-enable displayHeaderFooter if template is set ([b3ac8d9](https://github.com/simonhaenisch/md-to-pdf/commit/b3ac8d99de643921d563914ffa97417a3abe10b2)), closes [#59](https://github.com/simonhaenisch/md-to-pdf/issues/59)
+* expose `--port` cli flag ([1f22656](https://github.com/simonhaenisch/md-to-pdf/commit/1f2265696840c032905a85cc2ff9435e8a73ba21))
+* merge v3 ([#39](https://github.com/simonhaenisch/md-to-pdf/issues/39)) ([20ca196](https://github.com/simonhaenisch/md-to-pdf/commit/20ca1964a93d9aae3e7f9551f3a1e92cefaca12b))
+* set process and  xterm title ([04b985e](https://github.com/simonhaenisch/md-to-pdf/commit/04b985e6aee64e1de2ce22aa8322b5033615eb8e))
+
+
+### Bug Fixes
+
+* **cli:** merge pdf_options of config file properly ([d85558d](https://github.com/simonhaenisch/md-to-pdf/commit/d85558d9304ff61a15335cc764066616129c3fd3))
+* **cli:** package.json path for version info ([a7a5817](https://github.com/simonhaenisch/md-to-pdf/commit/a7a5817fa7b03161ab31b056036223c0b90c5674))
+* relative paths ([bb46626](https://github.com/simonhaenisch/md-to-pdf/commit/bb466261ba28f283e01e01260a4de04c2c398c6d))
+* ul/ol margin ([80d36d5](https://github.com/simonhaenisch/md-to-pdf/commit/80d36d507594962b94e3530738b521d952f4b68b)), closes [#36](https://github.com/simonhaenisch/md-to-pdf/issues/36)
+
 ### [2.8.2](https://github.com/simonhaenisch/md-to-pdf/compare/v2.8.1...v2.8.2) (2019-11-26)
 
 ### [2.8.1](https://github.com/simonhaenisch/md-to-pdf/compare/v2.8.0...v2.8.1) (2019-09-18)
