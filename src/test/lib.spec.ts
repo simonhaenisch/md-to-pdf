@@ -3,14 +3,14 @@ import { posix, sep, resolve } from 'path';
 import test from 'ava';
 import { Renderer } from 'marked';
 
-import { setProcessAndTermTitle, getDir, getMarginObject } from '../src/lib/helpers';
-import { defaultConfig } from '../src/lib/config';
-import { getHtml } from '../src/lib/get-html';
-import { getMarked } from '../src/lib/get-marked-with-highlighter';
-import { getOutputFilePath } from '../src/lib/get-output-file-path';
-import { readFile } from '../src/lib/read-file';
-import { isMdFile } from '../src/lib/is-md-file';
-import { isHttpUrl } from '../src/lib/is-http-url';
+import { setProcessAndTermTitle, getDir, getMarginObject } from '../lib/helpers';
+import { defaultConfig } from '../lib/config';
+import { getHtml } from '../lib/get-html';
+import { getMarked } from '../lib/get-marked-with-highlighter';
+import { getOutputFilePath } from '../lib/get-output-file-path';
+import { readFile } from '../lib/read-file';
+import { isMdFile } from '../lib/is-md-file';
+import { isHttpUrl } from '../lib/is-http-url';
 
 // --
 // helpers
@@ -80,8 +80,7 @@ test('getMarked should highlight unknown code as plaintext', t => {
 test('getMarked should accept a custom renderer', t => {
 	const renderer = new Renderer();
 
-	renderer.link = (href, title, text) =>
-		`<a class="custom" href="${href}"${title ? ` title="${title}"` : ''}>${text}</a>`;
+	renderer.link = (href, _, text) => `<a class="custom" href="${href}">${text}</a>`;
 
 	const marked = getMarked({ renderer });
 	const html = marked('[Foo](/bar)');

@@ -23,7 +23,7 @@
     "start": "tsc --watch",
     "build": "tsc",
     "prepare": "npm run build",
-    "test": "xo && nyc ava test/lib.spec.ts && ava test/api.spec.ts && ava test/cli.spec.ts",
+    "test": "xo && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts",
     "release": "npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish"
   },
   "bin": {

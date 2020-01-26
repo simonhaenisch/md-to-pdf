@@ -1,7 +1,7 @@
 import { resolve, basename } from 'path';
 import test from 'ava';
 
-import { mdToPdf } from '../src';
+import { mdToPdf } from '..';
 
 test('should compile the basic example to pdf', async t => {
 	const pdf = await mdToPdf(
