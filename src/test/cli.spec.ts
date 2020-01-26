@@ -23,8 +23,6 @@ before(() => {
 });
 
 test('should compile the basic example to pdf using --basedir', async t => {
-	t.timeout(15000);
-
 	const cmd = [
 		resolve(__dirname, '..', '..', 'node_modules', '.bin', 'ts-node'), // ts-node binary
 		resolve(__dirname, '..', 'cli'), // md-to-pdf cli script (typescript)
@@ -33,14 +31,13 @@ test('should compile the basic example to pdf using --basedir', async t => {
 		resolve(__dirname, 'basic'),
 	].join(' ');
 
+	t.timeout(60000);
 	t.notThrows(() => execSync(cmd));
 
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'test.pdf'), 'utf-8'));
 });
 
 test('should compile the nested example to pdfs', t => {
-	t.timeout(15000);
-
 	const cmd = [
 		resolve(__dirname, '..', '..', 'node_modules', '.bin', 'ts-node'), // ts-node binary
 		resolve(__dirname, '..', 'cli'), // md-to-pdf cli script (typescript)
@@ -49,6 +46,7 @@ test('should compile the nested example to pdfs', t => {
 		join('level-one', 'level-two', 'two.md'),
 	].join(' ');
 
+	t.timeout(60000);
 	t.notThrows(() => execSync(cmd, { cwd: resolve(__dirname, 'nested') }));
 
 	t.notThrows(() => readFileSync(resolve(__dirname, 'nested', 'root.pdf'), 'utf-8'));
