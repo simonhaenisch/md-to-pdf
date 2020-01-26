@@ -41,7 +41,7 @@ jobs:
         run: npx nyc ava src/test/lib.spec.ts
 
       - name: test api
-        run: npx ava src/test/api.spec.ts
+        run: npx ava src/test/api.spec.ts --timeout=30s
 
       - name: test cli
         run: npx ava src/test/cli.spec.ts --timeout=1m
