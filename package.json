@@ -20,7 +20,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "node . --help",
+    "start": "tsc --watch",
     "build": "tsc",
     "prepare": "npm run build",
     "test": "xo && nyc ava test/lib.spec.ts && ava test/api.spec.ts && ava test/cli.spec.ts",

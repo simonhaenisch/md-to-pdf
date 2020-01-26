@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 
 const helpText = `
-  ${chalk.bold('$ md-to-pdf')} [options] [path/to/file.md] [path/to/output.pdf]
+  ${chalk.bold('$ md-to-pdf')} [options] path/to/file.md
 
   ${chalk.dim.underline.bold('Options:')}
 
@@ -26,21 +26,21 @@ const helpText = `
 
   ${chalk.dim.underline.bold('Examples:')}
 
-  ${chalk.gray('–')} Convert all markdown files in current directory
-
-    ${chalk.cyan('$ md2pdf')}
-
   ${chalk.gray('–')} Convert ./file.md and save to ./file.pdf
 
     ${chalk.cyan('$ md2pdf file.md')}
 
-  ${chalk.gray('–')} Convert file.md and save to ~/Documents/file.pdf
+  ${chalk.gray('–')} Convert all markdown files in current directory
 
-    ${chalk.cyan('$ md2pdf file.md ~/Documents/file.pdf')}
+    ${chalk.cyan('$ md2pdf ./*.md')}
 
-  ${chalk.gray('–')} Convert path/to/file.md and save to path/to/file.pdf
+  ${chalk.gray('–')} Convert all markdown files in current directory recursively
 
-    ${chalk.cyan('$ md2pdf path/to/file.md')}
+    ${chalk.cyan('$ md2pdf ./**/*.md')}
+
+  ${chalk.gray('–')} Convert path/to/file.md with a different base directory
+
+    ${chalk.cyan('$ md2pdf path/to/file.md --basedir path')}
 
   ${chalk.gray('–')} Convert file.md using custom-markdown.css
 
