@@ -44,4 +44,4 @@ jobs:
         run: npx ava src/test/api.spec.ts
 
       - name: test cli
-        run: npx ava src/test/cli.spec.ts
+        run: npx ava src/test/cli.spec.ts --timeout=1m

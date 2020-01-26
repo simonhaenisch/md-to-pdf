@@ -4,10 +4,6 @@ import { join, resolve } from 'path';
 import test, { before } from 'ava';
 
 before(() => {
-	if (process.env.CI) {
-		return;
-	}
-
 	const filesToDelete = [
 		resolve(__dirname, 'basic', 'test.pdf'),
 		resolve(__dirname, 'nested', 'root.pdf'),
@@ -24,8 +20,6 @@ before(() => {
 			}
 		}
 	}
-
-	console.log('all compiled test pdfs have been deleted');
 });
 
 test('should compile the basic example to pdf using --basedir', async t => {
@@ -37,7 +31,6 @@ test('should compile the basic example to pdf using --basedir', async t => {
 		resolve(__dirname, 'basic'),
 	].join(' ');
 
-	t.timeout(60000);
 	t.notThrows(() => execSync(cmd));
 
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'test.pdf'), 'utf-8'));
@@ -52,7 +45,6 @@ test('should compile the nested example to pdfs', t => {
 		join('level-one', 'level-two', 'two.md'),
 	].join(' ');
 
-	t.timeout(60000);
 	t.notThrows(() => execSync(cmd, { cwd: resolve(__dirname, 'nested') }));
 
 	t.notThrows(() => readFileSync(resolve(__dirname, 'nested', 'root.pdf'), 'utf-8'));
