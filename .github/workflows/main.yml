@@ -4,10 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/*'
-      - 'lib/*'
-      - 'test'
-      - 'cli.js'
-      - 'index.js'
+      - 'src/*'
       - 'markdown.css'
       - 'package*.json'
 
