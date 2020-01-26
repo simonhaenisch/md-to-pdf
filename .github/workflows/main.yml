@@ -37,10 +37,10 @@ jobs:
         if: matrix.os != 'windows-latest' # because "Delete ␍  prettier/prettier" o.O
 
       - name: test lib
-        run: npx nyc ava test/lib.spec.js
+        run: npx nyc ava test/lib.spec.ts
 
       - name: test api
-        run: npx ava test/api.spec.js
+        run: npx ava test/api.spec.ts
 
       - name: test cli
-        run: npx ava test/cli.spec.js
+        run: npx ava test/cli.spec.ts
