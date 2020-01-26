@@ -26,6 +26,12 @@ export const convertMdToPdf = async (input: { path: string } | { content: string
 		pdf_options: { ...config.pdf_options, ...frontMatterConfig.pdf_options },
 	};
 
+	const { headerTemplate, footerTemplate, displayHeaderFooter } = config.pdf_options;
+
+	if ((headerTemplate || footerTemplate) && displayHeaderFooter === undefined) {
+		config.pdf_options.displayHeaderFooter = true;
+	}
+
 	// sanitize array cli arguments
 	for (const option of ['stylesheet', 'body_class']) {
 		if (!Array.isArray((config as any)[option])) {
