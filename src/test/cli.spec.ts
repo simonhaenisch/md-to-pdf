@@ -4,6 +4,10 @@ import { join, resolve } from 'path';
 import test, { before } from 'ava';
 
 before(() => {
+	if (process.env.CI) {
+		return;
+	}
+
 	const filesToDelete = [
 		resolve(__dirname, 'basic', 'test.pdf'),
 		resolve(__dirname, 'nested', 'root.pdf'),
@@ -20,6 +24,8 @@ before(() => {
 			}
 		}
 	}
+
+	console.log('all compiled test pdfs have been deleted');
 });
 
 test('should compile the basic example to pdf using --basedir', async t => {
