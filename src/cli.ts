@@ -7,14 +7,13 @@ import path from 'path';
 import arg from 'arg';
 import chalk from 'chalk';
 import Listr from 'listr';
+import getStdin from 'get-stdin';
 import getPort from 'get-port';
 import { watch } from 'chokidar';
 
 import { help } from './lib/help';
-import { getMdFilesInDir } from './lib/get-md-files-in-dir';
-import { serveDirectory } from './lib/serve-dir';
+import { serveDirectory, closeServer } from './lib/serve-dir';
 import { defaultConfig, Config } from './lib/config';
-import { getDir } from './lib/helpers';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { setProcessAndTermTitle } from './lib/helpers';
 
@@ -24,6 +23,7 @@ import { setProcessAndTermTitle } from './lib/helpers';
 const cliFlags = arg({
 	'--help': Boolean,
 	'--version': Boolean,
+	'--basedir': String,
 	'--watch': Boolean,
 	'--stylesheet': [String],
 	'--css': String,
@@ -48,7 +48,15 @@ const cliFlags = arg({
 });
 
 // --
-// Main
+// Run
+
+main(cliFlags, defaultConfig).catch(error => {
+	console.error(error);
+	process.exit(1);
+});
+
+// --
+// Define Main Function
 
 async function main(args: typeof cliFlags, config: Config) {
 	setProcessAndTermTitle('md-to-pdf');
@@ -61,19 +69,22 @@ async function main(args: typeof cliFlags, config: Config) {
 		return help();
 	}
 
-	const [input, dest] = args._;
+	/**
+	 * 1. Get input.
+	 */
 
-	const mdFiles = input ? [input] : await getMdFilesInDir('.');
+	const files = args._;
 
-	if (mdFiles.length === 0) {
+	const stdin = await getStdin();
+
+	if (files.length === 0 && !stdin) {
 		return help();
 	}
 
-	if (dest) {
-		config.dest = dest;
-	}
+	/**
+	 * 2. Read config file and merge it into the config object.
+	 */
 
-	// merge config from config file
 	if (args['--config-file']) {
 		try {
 			const configFile: Partial<Config> = require(path.resolve(args['--config-file']));
@@ -92,26 +103,48 @@ async function main(args: typeof cliFlags, config: Config) {
 		}
 	}
 
-	// serve directory of first file because all files will be in the same dir
-	config.port = args['--port'] || (await getPort());
-	const server = await serveDirectory(getDir(mdFiles[0]), config.port);
+	/**
+	 * 3. Start the file server.
+	 */
 
-	const getListrTask = (mdFile: string) => ({
-		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(mdFile)}`,
-		task: () => convertMdToPdf(mdFile, config, args),
+	if (args['--basedir']) {
+		config.basedir = args['--basedir'];
+	}
+
+	config.port = args['--port'] || (await getPort());
+
+	const server = await serveDirectory(config);
+
+	/**
+	 * 4. Either process stdin or create a Listr task for each file.
+	 */
+
+	if (stdin) {
+		await convertMdToPdf({ content: stdin }, config, args).catch(async (error: Error) => {
+			await closeServer(server);
+
+			console.error(error);
+			process.exit(1);
+		});
+
+		await closeServer(server);
+
+		return;
+	}
+
+	const getListrTask = (file: string) => ({
+		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
+		task: () => convertMdToPdf({ path: file }, config, args),
 	});
 
-	// create list of tasks and run concurrently
-	await new Listr(mdFiles.map(getListrTask), { concurrent: true, exitOnError: false })
+	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
 		.run()
 		.then(() => {
 			if (args['--watch']) {
 				console.log(chalk.bgBlue('\n watching for changes \n'));
 
-				watch(mdFiles).on('change', async mdFile => {
-					await new Listr([getListrTask(mdFile)])
-						.run()
-						.catch((error: Error) => args['--debug'] && console.error(error));
+				watch(files).on('change', async file => {
+					await new Listr([getListrTask(file)]).run().catch((error: Error) => args['--debug'] && console.error(error));
 				});
 			} else {
 				server.close();
@@ -119,11 +152,3 @@ async function main(args: typeof cliFlags, config: Config) {
 		})
 		.catch((error: Error) => (args['--debug'] && console.error(error)) || process.exit(1));
 }
-
-// --
-// Run
-
-main(cliFlags, defaultConfig).catch(error => {
-	console.error(error);
-	process.exit(1);
-});

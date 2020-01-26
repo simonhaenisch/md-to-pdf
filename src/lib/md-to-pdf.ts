@@ -3,17 +3,21 @@ const grayMatter = require('gray-matter');
 
 import { Config } from './config';
 import { readFile } from './read-file';
+import { getMarginObject } from './helpers';
+import { getOutputFilePath } from './get-output-file-path';
 import { getHtml } from './get-html';
 import { writeOutput } from './write-output';
-import { getMarginObject } from './helpers';
 
 /**
  * Convert markdown to pdf.
  */
-export const convertMdToPdf = async (mdFile: string, config: Config, args: any = {}) => {
-	const mdFileContent = await readFile(resolve(mdFile), args['--md-file-encoding'] || config.md_file_encoding);
+export const convertMdToPdf = async (input: { path: string } | { content: string }, config: Config, args: any = {}) => {
+	const mdContent =
+		'content' in input
+			? input.content
+			: await readFile(resolve(input.path), args['--md-file-encoding'] || config.md_file_encoding);
 
-	const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
+	const { content: md, data: frontMatterConfig } = grayMatter(mdContent);
 
 	// merge front-matter config
 	config = {
@@ -43,6 +47,14 @@ export const convertMdToPdf = async (mdFile: string, config: Config, args: any =
 		config.pdf_options.margin = getMarginObject(config.pdf_options.margin);
 	}
 
+	// set output destination
+	if (!config.dest) {
+		config.dest =
+			'path' in input
+				? getOutputFilePath(input.path, config)
+				: resolve(process.cwd(), `output.${config.as_html ? 'html' : 'pdf'}`);
+	}
+
 	const highlightStylesheet = resolve(
 		dirname(require.resolve('highlight.js')),
 		'..',
@@ -54,9 +66,9 @@ export const convertMdToPdf = async (mdFile: string, config: Config, args: any =
 
 	const html = getHtml(md, config);
 
-	const output = await writeOutput(mdFile, html, config);
+	const output = await writeOutput(mdContent, html, config);
 
-	if (!output.filename) {
+	if (!('filename' in output)) {
 		throw new Error(`Failed to create ${config.as_html ? 'HTML' : 'PDF'}.`);
 	}
 

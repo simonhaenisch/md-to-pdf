@@ -8,9 +8,9 @@ export const getMarked = (options: MarkedOptions) => {
 	if (!Object.prototype.hasOwnProperty.call(renderer, 'code')) {
 		renderer.code = (code, language) => {
 			// if the given language is not available in highlight.js, fall back to plaintext
-			language = (getLanguage(language) && language) || 'plaintext';
+			const languageName = language && getLanguage(language) ? language : 'plaintext';
 
-			return `<pre><code class="hljs ${language}">${highlight(language, code).value}</code></pre>`;
+			return `<pre><code class="hljs ${languageName}">${highlight(languageName, code).value}</code></pre>`;
 		};
 	}
 

@@ -3,6 +3,7 @@ import { MarkedOptions } from 'marked';
 import { PDFOptions, LaunchOptions } from 'puppeteer';
 
 export const defaultConfig: Config = {
+	basedir: process.cwd(),
 	stylesheet: [resolve(__dirname, '..', '..', 'markdown.css')],
 	css: '',
 	body_class: [],
@@ -29,6 +30,11 @@ export const defaultConfig: Config = {
  * In config keys, dashes of cli flag names are replaced with underscores.
  */
 export interface Config {
+	/**
+	 * Base directory to be served by the file server.
+	 */
+	basedir: string;
+
 	/**
 	 * Optional destination path for the output file (including the extension).
 	 */

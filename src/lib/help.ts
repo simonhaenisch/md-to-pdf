@@ -8,6 +8,7 @@ const helpText = `
     -h, --help ${chalk.dim('...............')} Output usage information
     -v, --version ${chalk.dim('............')} Output version
     -w, --watch ${chalk.dim('..............')} Watch the current file(s) for changes
+    --basedir ${chalk.dim('................')} Base directory to be served by the file server
     --stylesheet ${chalk.dim('.............')} Path to a local or remote stylesheet (can be passed multiple times)
     --css ${chalk.dim('....................')} String of styles
     --body-class ${chalk.dim('.............')} Classes to be added to the body tag (can be passed multiple times)
