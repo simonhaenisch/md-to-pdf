@@ -15,7 +15,7 @@ jobs:
   build:
     strategy:
       matrix:
-        node: [8, 10, 12]
+        node: [10, 12, 13]
         os: ['ubuntu-latest', 'windows-latest', 'macOS-latest']
 
     name: Node ${{ matrix.node }} on ${{ matrix.os }}
