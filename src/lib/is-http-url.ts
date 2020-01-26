@@ -1,13 +1,11 @@
-const { URL } = require('url');
+import { URL } from 'url'; // only available globally since Node v10
 
 /**
  * Check whether the input is a url.
  *
- * @param {string} input string to be tested
- *
  * @returns `true` if a URL can be constructed from `input`, `false` otherwise.
  */
-module.exports = input => {
+export const isHttpUrl = (input: string) => {
 	try {
 		return new URL(input).protocol.startsWith('http');
 	} catch (error) {

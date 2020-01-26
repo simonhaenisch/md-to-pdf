@@ -1,17 +1,16 @@
 # Markdown to PDF
 
 [![Github Actions Badge](https://github.com/simonhaenisch/md-to-pdf/workflows/Node%20CI/badge.svg)](https://github.com/simonhaenisch/md-to-pdf/actions)
-[![CircleCI](https://circleci.com/gh/simonhaenisch/md-to-pdf/tree/master.svg?style=shield)](https://circleci.com/gh/simonhaenisch/md-to-pdf)
 [![NPM version](https://img.shields.io/npm/v/md-to-pdf.svg)](https://www.npmjs.com/md-to-pdf)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 
 ![Screenshot of markdown file and resulting PDF](https://file-boswoulruu.now.sh)
 
-**A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is only ~250 lines of JS and ~100 lines of CSS, so it is easy to clone and customize.
+**A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is ~only \~250 lines of JS~ ~400 lines of Typescript and ~100 lines of CSS, so it is easy to clone and customize.
 
 **Highlights:**
 
-* Concurrently convert all Markdown files in the current directory
+* Concurrently convert multiple Markdown files
 * Watch mode
 * Use your own or remote stylesheets
 * Front-matter for configuration
@@ -20,6 +19,7 @@
 * Syntax highlighting in code blocks
 * Extend the options of the underlying tools
 * Programmatic API
+* Read from `stdin`
 
 ## Installation
 
@@ -48,13 +48,14 @@ If you installed via npm, run `npm i -g md-to-pdf@latest` in your CLI. If you cl
 ## Usage
 
 ```
-$ md-to-pdf [options] [path/to/file.md] [path/to/output.pdf]
+$ md-to-pdf [options] path/to/file.md
 
 Options:
 
   -h, --help ............... Output usage information
   -v, --version ............ Output version
   -w, --watch .............. Watch the current file(s) for changes
+  --basedir ................ Base directory to be served by the file server
   --stylesheet ............. Path to a local or remote stylesheet (can be passed multiple times)
   --css .................... String of styles
   --body-class ............. Classes to be added to the body tag (can be passed multiple times)
@@ -62,6 +63,7 @@ Options:
   --marked-options ......... Set custom options for marked (as a JSON string)
   --pdf-options ............ Set custom options for the generated PDF (as a JSON string)
   --launch-options ......... Set custom launch options for Puppeteer
+  --port ................... Set the port to run the http server on
   --md-file-encoding ....... Set the file encoding for the markdown file
   --stylesheet-encoding .... Set the file encoding for the stylesheet
   --as-html ................ Output as HTML instead
@@ -70,19 +72,32 @@ Options:
   --debug .................. Show more output on errors
 ```
 
-If no arguments are given, all markdown files in the current directory will be converted. Otherwise, the first argument is `path/to/file.md` and the second one optionally specifies the `path/to/output.pdf`. If you omit the second argument, it will derive the pdf name from the markdown filename and save it into the same directory that contains the markdown file. Run `md2pdf --help` for examples on how to use the cli options.
+The pdf is generated into the same directory as the source file and uses the same filename (with `.pdf` extension) by default. Multiple files can be specified by using shell globbing, e. g.:
 
-Paths to local images have to be relative to the markdown file location and the files have to be within the same directory the markdown file lives in, or subdirectories of it.
+```sh
+md-to-pdf ./**/*.md
+```
+
+_(You might need to enable the `globstar` option in bash for recursive globbing)_
+
+Alternatively, you can pass the markdown in from `stdin`:
+
+```sh
+cat file.md | md-to-pdf > output.pdf
+```
+
+The current working directory (`process.cwd()`) serves as the base directory of the file server by default. This can be adjusted with the `--basedir` flag (or equivalent config option).
+
 
 #### Programmatic API
 
-Currently the programmatic API is very simple: it only exposes one function that accepts the path to a markdown file, and an optional config object.
+The programmatic API is very simple: it only exposes one function that accepts either the path to or content of a markdown file, and an optional config object (which can be used to specify the output file destination).
 
 ```js
 const mdToPdf = require('md-to-pdf');
 
 (async () => {
-	const pdf = await mdToPdf('readme.md', { dest: 'readme.pdf' }).catch(console.error);
+	const pdf = await mdToPdf({ path: 'readme.md' }, { dest: 'readme.pdf' }).catch(console.error);
 
 	if (pdf) {
 		console.log(pdf.filename);
@@ -102,7 +117,9 @@ Place an element with class `page-break` to force a page break at a certain poin
 
 #### Header/Footer
 
-Set the PDF option `displayHeaderFooter` to `true`, then use `headerTemplate` and `footerTemplate` with the provided classes to inject printing values, e. g. with front-matter (the styles in the `<style/>` tag of the header template will be applied to both header and footer):
+Use `headerTemplate` and `footerTemplate` of Puppeteer's [`page.pdf()` options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions). If either of the two is set, then `displayHeaderFooter` will be enabled by default. It's possible to inject a few dynamic values like page numbers by using certain class names, as stated in the Puppeteer docs. Please note that for some reason the font-size defaults to 1pt, and you need to make sure to have enough page margin, otherwise your header/footer might be overlayed by your content. If you add a `<style/>` tag in either of the templates, it will be applied to both header and footer.
+
+Example markdown frontmatter config that prints the date in the header and the page number in the footer:
 
 ```markdown
 ---
@@ -110,7 +127,6 @@ pdf_options:
   format: A4
   margin: 30mm 20mm
   printBackground: true
-  displayHeaderFooter: true
   headerTemplate: |-
     <style>
       section {
@@ -136,9 +152,7 @@ Refer to the [Puppeteer docs](https://github.com/GoogleChrome/puppeteer/blob/mas
 
 #### Default and Advanced Options
 
-For markdown, GFM and tables are enabled by default (see `util/config.js` for default options). The default highlight.js styling for code blocks is `github`.
-
-For advanced options see the following links:
+For default and advanced options see the following links. The default highlight.js styling for code blocks is `github`. The default PDF options are the A4 format and some margin (see `lib/config.ts` for the full default config).
 
 * [Marked Advanced Options](https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md)
 * [Puppeteer PDF Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions)
@@ -149,13 +163,15 @@ For advanced options see the following links:
 
 | Option | Examples |
 | - | - |
+| `--basedir` | `path/to/folder` |
 | `--stylesheet` | `path/to/style.css`, `https://example.org/stylesheet.css` |
 | `--css` | `body { color: tomato; }` |
-| `--body_class` | `markdown-body` |
+| `--body-class` | `markdown-body` |
 | `--highlight-style` | `monokai`, `solarized-light` |
 | `--marked-options` | `'{ "gfm": false }'` |
 | `--pdf-options` | `'{ "format": "Letter", "margin": "20mm", "printBackground": true }'` |
 | `--launch-options` | `'{ "args": ["--no-sandbox"] }'` |
+| `--port` | `3000` |
 | `--md-file-encoding` | `utf-8`, `windows1252` |
 | `--stylesheet-encoding` | `utf-8`, `windows1252` |
 | `--config-file` | `path/to/config.json` |
@@ -164,7 +180,7 @@ For advanced options see the following links:
 
 **`highlight-style`:** if you set a highlight style with a background color, make sure that `"printBackground": true` is set in the pdf options.
 
-The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). It's possible to set the output path for the PDF as `dest` in the config. In that case, remove the leading dashes (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. as an array). If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
+The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). In that case, remove the leading two hyphens (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. to create an array). It's possible to set the output path for the PDF as `dest` in the config. If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
 
 Example front-matter:
 
@@ -184,27 +200,37 @@ pdf_options:
 # Content
 ```
 
-Example `config.json` (can also be a `.js` that default exports an object):
+The config file can be a Javascript file that exports a config object, which gives you the full power of the eco-system (e. g. for advanced header/footer templates); or it can also be a `.json` if you like it simple.
+
+Example `config.js`:
+
+```js
+module.exports = {
+  stylesheet: [
+    "path/to/style.css",
+    "https://example.org/stylesheet.css",
+  ],
+  css: `body { color: tomato; }`,
+  body_class: "markdown-body",
+  marked_options: {
+    headerIds: false,
+    smartypants: true,
+  },
+  pdf_options: {
+    format: "A5",
+    margin: "20mm",
+    printBackground: true
+  },
+  stylesheet_encoding: "utf-8",
+};
+```
+
+Example `config.json`:
 
 ```json
 {
-  "stylesheet": [
-    "path/to/style.css",
-    "https://example.org/stylesheet.css"
-  ],
-  "css": "body { color: tomato; }",
-  "body_class": "markdown-body",
   "highlight_style": "monokai",
-  "marked_options": {
-    "headerIds": false,
-    "smartypants": true,
-  },
-  "pdf_options": {
-    "format": "A5",
-    "margin": "20mm",
-    "printBackground": true
-  },
-  "stylesheet_encoding": "utf-8"
+  "body_class": ["dark", "content"]
 }
 ```
 
@@ -223,15 +249,19 @@ css: |-
 ---
 ```
 
+## Security Consideration
+
+This tool serves the directory that contains the given markdown file(s) via a http server on `localhost` on a relatively random port (or the port you specify), and that server gets shut down before the process exits (or as soon as it is killed). Please be aware that for the duration of the process this server will be accessible on your local network, and therefore all files within the served folder that the process has permission to read. So as a suggestion, maybe don't run this in watch mode in your system's root folder 🤓.
+
 ## Customization/Development
 
-You can just start making changes to the files in this repository. NPM 5+ uses symlinks for local global packages, so all changes are reflected immediately without re-installing the package globally (except when there are changes to required packages, then reinstall using `npm i`). This also means that you can just do a `git pull` to get the latest version onto your machine.
+After cloning and linking/installing globally (`npm link`), just run the transpiler in watch mode (`npm start`). Then you can start making changes to the files and Typescript will transpile them on save. NPM 5+ uses symlinks for locally installed global packages, so all changes are reflected immediately without needing to re-install the package (except when there have been changes to required packages, then re-install using `npm i`). This also means that you can just do a `git pull` to get the latest version onto your machine.
 
 Ideas, feature requests and PRs are welcome. Just keep it simple! 🤓
 
 ## Credits
 
-Huge thanks to:
+I want to thank the following people:
 
 * [imcvampire](https://github.com/imcvampire) for handing over the npm package name.
 * [Sindre Sorhus](https://github.com/sindresorhus) and [Zeit](https://github.com/zeit) for inspiration on how to write cli tools.
@@ -239,4 +269,4 @@ Huge thanks to:
 
 ## License
 
-[The Unlicense](/license).
+[MIT](/license).

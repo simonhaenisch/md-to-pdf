@@ -1,23 +1,15 @@
-const { parse, resolve } = require('path');
+import { parse, resolve } from 'path';
+import { PDFOptions } from 'puppeteer';
 
 /**
  * Get the directory that a file is in.
- *
- * @param {string} filePath path to the source markdown file
- *
- * @returns the assets base path, which is the directory of the source markdown
- * file
  */
-module.exports.getDir = filePath => resolve(parse(filePath).dir);
+export const getDir = (filePath: string) => resolve(parse(filePath).dir);
 
 /**
- * Get a margin object from a string.
- *
- * @param {string} margin a CSS-like margin setting
- *
- * @returns object with keys 'top', 'right', 'bottom', 'left'
+ * Get a margin object from a CSS-like margin string.
  */
-module.exports.getMarginObject = margin => {
+export const getMarginObject = (margin: string): PDFOptions['margin'] => {
 	if (typeof margin !== 'string') {
 		throw new TypeError(`margin needs to be a string.`);
 	}
@@ -36,5 +28,10 @@ module.exports.getMarginObject = margin => {
 		? { top, right, bottom: top, left: right }
 		: top
 		? { top, right: top, bottom: top, left: top }
-		: null;
+		: undefined;
+};
+
+export const setProcessAndTermTitle = (title: string) => {
+	process.title = title;
+	process.stdout.write(`${String.fromCharCode(27)}]0;${title}${String.fromCharCode(7)}`);
 };

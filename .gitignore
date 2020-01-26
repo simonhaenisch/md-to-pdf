@@ -2,8 +2,11 @@
 .vscode
 node_modules
 
+# generated
+dist
+
 # tests
 .nyc_output
 coverage
-test/**/*.pdf
-test/**/*.html
+src/test/**/*.pdf
+src/test/**/*.html

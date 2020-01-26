@@ -15,47 +15,66 @@
     "headless-chrome"
   ],
   "engines": {
-    "node": ">= 8.3.0"
+    "node": ">= 10.0.0"
   },
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "start": "node . --help",
-    "test": "xo && nyc ava test/lib.spec.js && ava test/api.spec.js && ava test/cli.spec.js",
+    "start": "tsc --watch",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "xo && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts",
     "release": "npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish"
   },
   "bin": {
-    "md-to-pdf": "./cli.js",
-    "md2pdf": "./cli.js"
+    "md-to-pdf": "dist/cli.js",
+    "md2pdf": "dist/cli.js"
   },
-  "author": "Simon Haenisch (https://simonhaenisch.com)",
-  "license": "Unlicense",
+  "author": "Simon Haenisch (https://github.com/simonhaenisch)",
+  "license": "MIT",
   "repository": "simonhaenisch/md-to-pdf",
   "homepage": "https://github.com/simonhaenisch/md-to-pdf#readme",
   "dependencies": {
-    "arg": "4.1.1",
-    "chalk": "2.4.2",
-    "chokidar": "3.1.0",
-    "get-port": "5.0.0",
+    "arg": "4.1.2",
+    "chalk": "3.0.0",
+    "chokidar": "3.3.1",
+    "get-port": "5.1.1",
+    "get-stdin": "7.0.0",
     "gray-matter": "4.0.2",
-    "highlight.js": "9.15.10",
-    "iconv-lite": "0.5.0",
+    "highlight.js": "9.18.0",
+    "iconv-lite": "0.5.1",
     "listr": "0.14.3",
-    "marked": "0.7.0",
+    "marked": "0.8.0",
     "puppeteer": "2.0.0",
-    "serve-handler": "6.1.1"
+    "serve-handler": "6.1.2"
   },
   "devDependencies": {
-    "ava": "1.4.1",
-    "husky": "2.3.0",
-    "nyc": "14.1.1",
-    "prettier": "1.17.1",
-    "tap-xunit": "2.3.0",
-    "xo": "0.24.0"
+    "@types/highlight.js": "9.12.3",
+    "@types/listr": "0.14.2",
+    "@types/marked": "0.7.2",
+    "@types/puppeteer": "2.0.0",
+    "@types/serve-handler": "6.1.0",
+    "ava": "3.0.0",
+    "husky": "4.2.1",
+    "nyc": "15.0.0",
+    "prettier": "1.19.1",
+    "tap-xunit": "2.4.1",
+    "ts-node": "8.6.2",
+    "typescript": "3.7.5",
+    "xo": "0.25.3"
   },
   "husky": {
     "hooks": {
       "post-merge": "git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep --quiet package-lock.json && npm install"
     }
+  },
+  "ava": {
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   },
   "prettier": {
     "printWidth": 120,
