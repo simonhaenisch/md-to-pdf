@@ -95,10 +95,12 @@ async function main(args: typeof cliFlags, config: Config) {
 				pdf_options: { ...config.pdf_options, ...configFile.pdf_options },
 			};
 		} catch (error) {
-			console.warn(chalk.red(`Warning: couldn't read config file: ${args['--config-file']}`));
+			console.warn(chalk.red(`Warning: couldn't read config file: ${path.resolve(args['--config-file'])}`));
 
 			if (args['--debug']) {
 				console.error(error);
+			} else if (error instanceof SyntaxError) {
+				console.error(error.message);
 			}
 		}
 	}
