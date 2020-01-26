@@ -12,12 +12,12 @@ import { writeOutput } from './write-output';
  * Convert markdown to pdf.
  */
 export const convertMdToPdf = async (input: { path: string } | { content: string }, config: Config, args: any = {}) => {
-	const mdContent =
+	const mdFileContent =
 		'content' in input
 			? input.content
-			: await readFile(resolve(input.path), args['--md-file-encoding'] || config.md_file_encoding);
+			: await readFile(input.path, args['--md-file-encoding'] || config.md_file_encoding);
 
-	const { content: md, data: frontMatterConfig } = grayMatter(mdContent);
+	const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
 
 	// merge front-matter config
 	config = {
@@ -57,7 +57,7 @@ export const convertMdToPdf = async (input: { path: string } | { content: string
 	if (!config.dest) {
 		config.dest =
 			'path' in input
-				? getOutputFilePath(input.path, config)
+				? getOutputFilePath(input.path, config.as_html ? 'html' : 'pdf')
 				: resolve(process.cwd(), `output.${config.as_html ? 'html' : 'pdf'}`);
 	}
 
@@ -72,7 +72,9 @@ export const convertMdToPdf = async (input: { path: string } | { content: string
 
 	const html = getHtml(md, config);
 
-	const output = await writeOutput(mdContent, html, config);
+	const relativePath = 'path' in input ? resolve(input.path).replace(config.basedir, '') : '/';
+
+	const output = await writeOutput(html, relativePath, config);
 
 	if (!('filename' in output)) {
 		throw new Error(`Failed to create ${config.as_html ? 'HTML' : 'PDF'}.`);

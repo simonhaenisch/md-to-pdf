@@ -105,8 +105,8 @@ test('getMarked should accept a custom renderer with custom code highlighter', t
 test('getOutputFilePath should return the same path but with different extension', t => {
 	const mdFilePath = posix.join('/', 'var', 'foo', 'bar.md');
 
-	t.is(getOutputFilePath(mdFilePath, {}), `${sep}var${sep}foo${sep}bar.pdf`);
-	t.is(getOutputFilePath(mdFilePath, { as_html: true }), `${sep}var${sep}foo${sep}bar.html`);
+	t.is(getOutputFilePath(mdFilePath, 'pdf'), `${sep}var${sep}foo${sep}bar.pdf`);
+	t.is(getOutputFilePath(mdFilePath, 'html'), `${sep}var${sep}foo${sep}bar.html`);
 });
 
 // --

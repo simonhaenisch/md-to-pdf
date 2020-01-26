@@ -1,7 +1,6 @@
 import { writeFile as fsWriteFile } from 'fs';
 import { promisify } from 'util';
 import puppeteer from 'puppeteer';
-import { getOutputFilePath } from './get-output-file-path';
 import { isHttpUrl } from './is-http-url';
 import { Config } from './config';
 
@@ -13,15 +12,19 @@ const writeFile = promisify(fsWriteFile);
  * The reason that relative paths are resolved properly is that the base dir is served locally
  */
 export const writeOutput = async (
-	mdContent: string,
 	html: string,
+	relativePath: string,
 	config: Config,
 ): Promise<{} | { filename: string; content: string | Buffer }> => {
+	if (!config.dest) {
+		throw new Error('No output file destination has been specified.');
+	}
+
 	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 	const page = await browser.newPage();
 
-	await page.goto(`http://localhost:${config.port}`);
+	await page.goto(`http://localhost:${config.port}${relativePath}`); // make sure relative paths work as expected
 	await page.setContent(html); // overwrite the page content with what was generated from the markdown
 
 	await Promise.all([
@@ -42,26 +45,22 @@ export const writeOutput = async (
 		page.evaluate(() => history.pushState(undefined, '', '#')),
 	]);
 
-	/**
-	 * @todo should it be `getOutputFilePath(config.dest || mdFilePath, config)`?
-	 */
-	const outputFilePath = config.dest || getOutputFilePath(mdContent, config);
-
 	let outputFileContent: string | Buffer = '';
 
 	if (config.devtools) {
 		await new Promise(resolve => page.on('close', resolve));
-	} else if (config.as_html) {
-		outputFileContent = await page.content();
-		await writeFile(outputFilePath, outputFileContent);
 	} else {
-		await page.emulateMediaType('screen');
-		outputFileContent = await page.pdf(config.pdf_options);
+		if (config.as_html) {
+			outputFileContent = await page.content();
+		} else {
+			await page.emulateMediaType('screen');
+			outputFileContent = await page.pdf(config.pdf_options);
+		}
 
-		await writeFile(outputFilePath, outputFileContent);
+		await writeFile(config.dest, outputFileContent);
 	}
 
 	await browser.close();
 
-	return config.devtools ? {} : { filename: outputFilePath, content: outputFileContent };
+	return config.devtools ? {} : { filename: config.dest, content: outputFileContent };
 };

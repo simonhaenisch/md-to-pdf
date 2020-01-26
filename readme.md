@@ -78,6 +78,8 @@ The pdf is generated into the same directory as the source file and uses the sam
 md-to-pdf ./**/*.md
 ```
 
+_(You might need to enable the `globstar` option in bash for recursive globbing)_
+
 Alternatively, you can pass the markdown in from `stdin`:
 
 ```sh

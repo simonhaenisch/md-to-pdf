@@ -1,12 +1,10 @@
-import { parse, join } from 'path';
-import { Config } from './config';
+import { parse, resolve } from 'path';
 
 /**
- * Derive the output file path from the source markdown file.
+ * Derive the output file path from a source file.
  */
-export const getOutputFilePath = (mdFilePath: string, config: Partial<Config>) => {
+export const getOutputFilePath = (mdFilePath: string, extension: 'html' | 'pdf') => {
 	const { dir, name } = parse(mdFilePath);
-	const extension = config.as_html ? 'html' : 'pdf';
 
-	return join(dir, `${name}.${extension}`);
+	return resolve(dir, `${name}.${extension}`);
 };
