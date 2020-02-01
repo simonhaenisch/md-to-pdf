@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-pre.1](https://github.com/simonhaenisch/md-to-pdf/compare/v3.0.0-pre.0...v3.0.0-pre.1) (2020-02-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* The `--debug` flag has been removed. All errors are printed instead, in the hopes that giving the user every hint possible will help them get down to the root of their problem. Hopefully the error stacks don't confuse anyone. 🤓
+
+### Features
+
+* get rid of the --debug flag ([94fb214](https://github.com/simonhaenisch/md-to-pdf/commit/94fb214980f27f867659c37d1137f8864158ca9b)), closes [#54](https://github.com/simonhaenisch/md-to-pdf/issues/54)
+
 ## [3.0.0-pre.0](https://github.com/simonhaenisch/md-to-pdf/compare/v2.8.2...v3.0.0-pre.0) (2020-01-26)
 
 
