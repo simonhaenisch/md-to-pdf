@@ -1,4 +1,4 @@
-import { parse, join } from 'path';
+import { join, parse } from 'path';
 
 /**
  * Derive the output file path from a source file.

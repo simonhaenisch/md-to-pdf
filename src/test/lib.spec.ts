@@ -1,16 +1,15 @@
-import { EOL } from 'os';
-import { posix, sep, resolve } from 'path';
 import test from 'ava';
 import { Renderer } from 'marked';
-
-import { setProcessAndTermTitle, getDir, getMarginObject } from '../lib/helpers';
+import { EOL } from 'os';
+import { posix, resolve, sep } from 'path';
 import { defaultConfig } from '../lib/config';
 import { getHtml } from '../lib/get-html';
 import { getMarked } from '../lib/get-marked-with-highlighter';
 import { getOutputFilePath } from '../lib/get-output-file-path';
-import { readFile } from '../lib/read-file';
-import { isMdFile } from '../lib/is-md-file';
+import { getDir, getMarginObject, setProcessAndTermTitle } from '../lib/helpers';
 import { isHttpUrl } from '../lib/is-http-url';
+import { isMdFile } from '../lib/is-md-file';
+import { readFile } from '../lib/read-file';
 
 // --
 // helpers

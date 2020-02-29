@@ -3,19 +3,18 @@
 // --
 // Packages
 
-import path from 'path';
 import arg from 'arg';
 import chalk from 'chalk';
-import Listr from 'listr';
-import getStdin from 'get-stdin';
-import getPort from 'get-port';
 import { watch } from 'chokidar';
-
+import getPort from 'get-port';
+import getStdin from 'get-stdin';
+import Listr from 'listr';
+import path from 'path';
+import { Config, defaultConfig } from './lib/config';
 import { help } from './lib/help';
-import { serveDirectory, closeServer } from './lib/serve-dir';
-import { defaultConfig, Config } from './lib/config';
-import { convertMdToPdf } from './lib/md-to-pdf';
 import { setProcessAndTermTitle } from './lib/helpers';
+import { convertMdToPdf } from './lib/md-to-pdf';
+import { closeServer, serveDirectory } from './lib/serve-dir';
 
 // --
 // Configure CLI Arguments

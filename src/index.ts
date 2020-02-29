@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
 import getPort from 'get-port';
-
-import { defaultConfig, Config } from './lib/config';
-import { serveDirectory } from './lib/serve-dir';
-import { convertMdToPdf } from './lib/md-to-pdf';
+import { Config, defaultConfig } from './lib/config';
 import { getDir } from './lib/helpers';
+import { convertMdToPdf } from './lib/md-to-pdf';
+import { serveDirectory } from './lib/serve-dir';
 
 /**
  * Convert a markdown file to PDF.

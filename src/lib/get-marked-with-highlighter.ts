@@ -1,5 +1,5 @@
-import marked, { MarkedOptions } from 'marked';
 import { getLanguage, highlight } from 'highlight.js';
+import marked, { MarkedOptions } from 'marked';
 
 export const getMarked = (options: MarkedOptions) => {
 	const renderer = options.renderer || new marked.Renderer();
