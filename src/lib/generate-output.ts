@@ -1,25 +1,15 @@
-import { writeFile as fsWriteFile } from 'fs';
-import { promisify } from 'util';
 import puppeteer from 'puppeteer';
-import { isHttpUrl } from './is-http-url';
 import { Config } from './config';
-
-const writeFile = promisify(fsWriteFile);
+import { isHttpUrl } from './is-http-url';
 
 /**
- * Write the output (either PDF or HTML) to disk.
- *
- * The reason that relative paths are resolved properly is that the base dir is served locally
+ * Generate the output (either PDF or HTML).
  */
-export const writeOutput = async (
+export const generateOutput = async (
 	html: string,
 	relativePath: string,
 	config: Config,
 ): Promise<{} | { filename: string; content: string | Buffer }> => {
-	if (!config.dest) {
-		throw new Error('No output file destination has been specified.');
-	}
-
 	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 	const page = await browser.newPage();
@@ -56,8 +46,6 @@ export const writeOutput = async (
 			await page.emulateMediaType('screen');
 			outputFileContent = await page.pdf(config.pdf_options);
 		}
-
-		await writeFile(config.dest, outputFileContent);
 	}
 
 	await browser.close();

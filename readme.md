@@ -81,34 +81,39 @@ md-to-pdf ./**/*.md
 
 _(You might need to enable the `globstar` option in bash for recursive globbing.)_
 
-Alternatively, you can pass the markdown in from `stdin`:
+Alternatively, you can pass the markdown in from `stdin` and pipe its `stdout` into a target file:
 
 ```sh
-cat file.md | md-to-pdf
+cat file.md | md-to-pdf > path/to/output.pdf
 ```
 
-_(It's not currently possible to pipe the output into a file, it will just be written to `output.pdf` in the current working directory. However this will be implemented before the release of v3.)_
+_You can concatenate multiple files using `cat file1.md file2.md`._
 
 The current working directory (`process.cwd()`) serves as the base directory of the file server by default. This can be adjusted with the `--basedir` flag (or equivalent config option).
 
-
 #### Programmatic API
 
-The programmatic API is very simple: it only exposes one function that accepts either the path to or content of a markdown file, and an optional config object (which can be used to specify the output file destination).
+The programmatic API is very simple: it only exposes one function that accepts either a `path` to or `content` of a markdown file, and an optional config object (which can be used to specify the output file destination).
 
 ```js
+const fs = require('fs');
 const mdToPdf = require('md-to-pdf');
 
 (async () => {
-	const pdf = await mdToPdf({ path: 'readme.md' }, { dest: 'readme.pdf' }).catch(console.error);
+  const pdf = await mdToPdf({ path: 'readme.md' }).catch(console.error);
 
-	if (pdf) {
-		console.log(pdf.filename);
-	}
+  if (pdf) {
+    fs.writeFileSync(pdf.filename, pdf.content);
+  }
 })();
 ```
 
-The function throws an error if anything goes wrong, which can be handled by catching the rejected promise.
+The function throws an error if anything goes wrong, which can be handled by catching the rejected promise. If you set the `dest` option in the config, the file will be written to the specified location straight away:
+
+```js
+await mdToPdf({ content: '# Hello, World' }, { dest: 'path/to/output.pdf' });
+```
+
 
 #### Page Break
 

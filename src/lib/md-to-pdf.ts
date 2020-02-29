@@ -1,12 +1,12 @@
+import { promises as fs } from 'fs';
 import { dirname, resolve } from 'path';
-const grayMatter = require('gray-matter');
-
 import { Config } from './config';
-import { readFile } from './read-file';
-import { getMarginObject } from './helpers';
-import { getOutputFilePath } from './get-output-file-path';
+import { generateOutput } from './generate-output';
 import { getHtml } from './get-html';
-import { writeOutput } from './write-output';
+import { getOutputFilePath } from './get-output-file-path';
+import { getMarginObject } from './helpers';
+import { readFile } from './read-file';
+const grayMatter = require('gray-matter');
 
 /**
  * Convert markdown to pdf.
@@ -54,11 +54,8 @@ export const convertMdToPdf = async (input: { path: string } | { content: string
 	}
 
 	// set output destination
-	if (!config.dest) {
-		config.dest =
-			'path' in input
-				? getOutputFilePath(input.path, config.as_html ? 'html' : 'pdf')
-				: resolve(process.cwd(), `output.${config.as_html ? 'html' : 'pdf'}`);
+	if (config.dest === undefined) {
+		config.dest = 'path' in input ? getOutputFilePath(input.path, config.as_html ? 'html' : 'pdf') : 'stdout';
 	}
 
 	const highlightStylesheet = resolve(
@@ -74,11 +71,23 @@ export const convertMdToPdf = async (input: { path: string } | { content: string
 
 	const relativePath = 'path' in input ? resolve(input.path).replace(config.basedir, '') : '/';
 
-	const output = await writeOutput(html, relativePath, config);
+	const output = await generateOutput(html, relativePath, config);
 
 	if (!('filename' in output)) {
+		if (config.devtools) {
+			throw new Error('No file is generated when the --devtools option is enabled.');
+		}
+
 		throw new Error(`Failed to create ${config.as_html ? 'HTML' : 'PDF'}.`);
 	}
 
-	return output as { filename: string };
+	if (output.filename) {
+		if (output.filename === 'stdout') {
+			process.stdout.write(output.content);
+		} else {
+			await fs.writeFile(output.filename, output.content);
+		}
+	}
+
+	return output;
 };
