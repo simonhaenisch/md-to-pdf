@@ -26,10 +26,8 @@
 **Option 1: NPM**
 
 ```sh
-npm i -g md-to-pdf@next
+npm i -g md-to-pdf
 ```
-
-This installs the prerelease of version 3 which this documentation is for. If you need the docs for `v2.8.2`, you can find them [here](https://github.com/simonhaenisch/md-to-pdf/tree/v2.8.2#readme).
 
 **Option 2: Git**
 
@@ -41,11 +39,11 @@ cd md-to-pdf
 npm link # or npm i -g
 ```
 
-After this, the commands `md-to-pdf` and `md2pdf` (as a shorthand) are globally available in your cli.
+Then the commands `md-to-pdf` and `md2pdf` (as a shorthand) will be globally available in your cli. Use `npm start` to start the TypeScript compiler (`tsc`) in watch mode.
 
 ## Update
 
-If you installed via npm, run `npm i -g md-to-pdf@latest` in your CLI. If you cloned this repository instead, you can simply do a `git pull` to get the latest changes from the master branch. Unless there have been changes to packages, you don't need to re-install the package (because NPM 5+ uses symlinks, at least on Unix systems). There is a post-merge hook that should run the install for you automatically.
+If you installed via npm, run `npm i -g md-to-pdf@latest` in your CLI. If you cloned this repository instead, you can simply do a `git pull` to get the latest changes from the master branch, then do `npm run build` to re-build. Unless there have been changes to packages (i. e. `package-lock.json`), you don't need to re-install the package (because NPM 5+ uses symlinks, at least on Unix systems).
 
 ## Usage
 
@@ -79,7 +77,7 @@ The pdf is generated into the same directory as the source file and uses the sam
 md-to-pdf ./**/*.md
 ```
 
-_(You might need to enable the `globstar` option in bash for recursive globbing.)_
+_(If you use bash, you might need to enable the `globstar` shell option to make recursive globbing work.)_
 
 Alternatively, you can pass the markdown in from `stdin` and pipe its `stdout` into a target file:
 
@@ -259,7 +257,7 @@ css: |-
 
 ## Security Consideration
 
-This tool serves the directory that contains the given markdown file(s) via a http server on `localhost` on a relatively random port (or the port you specify), and that server gets shut down before the process exits (or as soon as it is killed). Please be aware that for the duration of the process this server will be accessible on your local network, and therefore all files within the served folder that the process has permission to read. So as a suggestion, maybe don't run this in watch mode in your system's root folder 🤓.
+By default, this tool serves the current working directory via a http server on `localhost` on a relatively random port (or the port you specify), and that server gets shut down when the process exits (or as soon as it is killed). Please be aware that for the duration of the process this server will be accessible on your local network, and therefore all files within the served folder that the process has permission to read. So as a suggestion, maybe don't run this in watch mode in your system's root folder. 😉
 
 ## Customization/Development
 
