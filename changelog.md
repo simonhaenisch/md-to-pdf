@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.0.0-pre.1...v3.0.0) (2020-02-29)
+
+
+### Features
+
+* output to stdout if input comes from stdin ([73f8e0d](https://github.com/simonhaenisch/md-to-pdf/commit/73f8e0d38bc205031f35099485bcfdca0b035fe0))
+
 ## [3.0.0-pre.1](https://github.com/simonhaenisch/md-to-pdf/compare/v3.0.0-pre.0...v3.0.0-pre.1) (2020-02-01)
 
 
