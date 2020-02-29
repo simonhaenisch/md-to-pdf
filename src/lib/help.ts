@@ -51,7 +51,7 @@ const helpText = `
 
   ${chalk.gray('–')} Convert file.md using custom page options
 
-    ${chalk.cyan('$ md2pdf file.md --pdf-options \'{ "format": "Letter", "margin": null }\'')}
+    ${chalk.cyan('$ md2pdf file.md --pdf-options \'{ "format": "Letter" }\'')}
 
   ${chalk.gray('–')} Convert file.md but save the intermediate HTML instead
 
