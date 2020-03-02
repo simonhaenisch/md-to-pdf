@@ -95,7 +95,7 @@ The programmatic API is very simple: it only exposes one function that accepts e
 
 ```js
 const fs = require('fs');
-const mdToPdf = require('md-to-pdf');
+const { mdToPdf } = require('md-to-pdf');
 
 (async () => {
   const pdf = await mdToPdf({ path: 'readme.md' }).catch(console.error);
