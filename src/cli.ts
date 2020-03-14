@@ -106,7 +106,7 @@ async function main(args: typeof cliFlags, config: Config) {
 		config.basedir = args['--basedir'];
 	}
 
-	config.port = args['--port'] || (await getPort());
+	config.port = args['--port'] ?? (await getPort());
 
 	const server = await serveDirectory(config);
 
@@ -128,7 +128,7 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	const getListrTask = (file: string) => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-		task: () => convertMdToPdf({ path: file }, config, args),
+		task: async () => convertMdToPdf({ path: file }, config, args),
 	});
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })

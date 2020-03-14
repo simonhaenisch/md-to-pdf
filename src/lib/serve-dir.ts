@@ -9,7 +9,7 @@ import { Config } from './config';
  */
 export const serveDirectory = async ({ basedir, port }: Config) =>
 	new Promise<Server>(resolve => {
-		const server = createServer((req, res) => serveHandler(req, res, { public: basedir }));
+		const server = createServer(async (request, response) => serveHandler(request, response, { public: basedir }));
 
 		server.listen(port, () => resolve(server));
 	});

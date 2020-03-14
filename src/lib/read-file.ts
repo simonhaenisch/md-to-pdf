@@ -6,5 +6,5 @@ import iconv from 'iconv-lite';
  *
  * Uses iconv-lite to solve some issues with Windows encodings.
  */
-export const readFile = async (file: string, encoding: string = 'utf-8') =>
+export const readFile = async (file: string, encoding = 'utf-8') =>
 	/utf-?8/i.test(encoding) ? fs.readFile(file, { encoding }) : iconv.decode(await fs.readFile(file), encoding);

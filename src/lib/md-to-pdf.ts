@@ -43,7 +43,7 @@ export const convertMdToPdf = async (input: { path: string } | { content: string
 	const jsonArgs = ['--marked-options', '--pdf-options', '--launch-options'];
 	for (const arg of Object.entries(args)) {
 		const [argKey, argValue] = arg as [string, string];
-		const key = argKey.substring(2).replace(/-/g, '_');
+		const key = argKey.slice(2).replace(/-/g, '_');
 
 		(config as any)[key] = jsonArgs.includes(argKey) ? JSON.parse(argValue) : argValue;
 	}
@@ -73,7 +73,7 @@ export const convertMdToPdf = async (input: { path: string } | { content: string
 
 	const output = await generateOutput(html, relativePath, config);
 
-	if (!('filename' in output)) {
+	if (!output) {
 		if (config.devtools) {
 			throw new Error('No file is generated when the --devtools option is enabled.');
 		}

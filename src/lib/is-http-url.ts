@@ -1,5 +1,3 @@
-import { URL } from 'url'; // only available globally since Node v10
-
 /**
  * Check whether the input is a url.
  *

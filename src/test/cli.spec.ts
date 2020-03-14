@@ -50,8 +50,6 @@ test('should compile the basic example using stdio', t => {
 		resolve(__dirname, 'basic', 'test-stdio.pdf'),
 	].join(' ');
 
-	console.log(cmd);
-
 	t.notThrows(() => execSync(cmd));
 
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'test-stdio.pdf'), 'utf-8'));

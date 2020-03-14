@@ -5,16 +5,12 @@ import { isHttpUrl } from './is-http-url';
 /**
  * Generate the output (either PDF or HTML).
  */
-export const generateOutput = async (
-	html: string,
-	relativePath: string,
-	config: Config,
-): Promise<{} | { filename: string; content: string | Buffer }> => {
+export const generateOutput = async (html: string, relativePath: string, config: Config) => {
 	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 	const page = await browser.newPage();
 
-	await page.goto(`http://localhost:${config.port}${relativePath}`); // make sure relative paths work as expected
+	await page.goto(`http://localhost:${config.port!}${relativePath}`); // make sure relative paths work as expected
 	await page.setContent(html); // overwrite the page content with what was generated from the markdown
 
 	await Promise.all([
@@ -32,23 +28,21 @@ export const generateOutput = async (
 	 */
 	await Promise.all([
 		page.waitForNavigation({ waitUntil: 'networkidle0' }),
-		page.evaluate(() => history.pushState(undefined, '', '#')),
+		page.evaluate(() => history.pushState(undefined, '', '#')) /* eslint no-undef: off */,
 	]);
 
 	let outputFileContent: string | Buffer = '';
 
 	if (config.devtools) {
 		await new Promise(resolve => page.on('close', resolve));
+	} else if (config.as_html) {
+		outputFileContent = await page.content();
 	} else {
-		if (config.as_html) {
-			outputFileContent = await page.content();
-		} else {
-			await page.emulateMediaType('screen');
-			outputFileContent = await page.pdf(config.pdf_options);
-		}
+		await page.emulateMediaType('screen');
+		outputFileContent = await page.pdf(config.pdf_options);
 	}
 
 	await browser.close();
 
-	return config.devtools ? {} : { filename: config.dest, content: outputFileContent };
+	return config.devtools ? undefined : { filename: config.dest, content: outputFileContent };
 };

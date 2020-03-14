@@ -2,7 +2,7 @@ import { getLanguage, highlight } from 'highlight.js';
 import marked, { MarkedOptions } from 'marked';
 
 export const getMarked = (options: MarkedOptions) => {
-	const renderer = options.renderer || new marked.Renderer();
+	const renderer = options.renderer ?? new marked.Renderer();
 
 	// only add if the renderer has no custom `code` property yet
 	if (!Object.prototype.hasOwnProperty.call(renderer, 'code')) {
