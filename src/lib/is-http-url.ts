@@ -6,7 +6,7 @@
 export const isHttpUrl = (input: string) => {
 	try {
 		return new URL(input).protocol.startsWith('http');
-	} catch (error) {
+	} catch (_) {
 		return false;
 	}
 };
