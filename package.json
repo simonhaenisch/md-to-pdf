@@ -15,7 +15,7 @@
     "headless-chrome"
   ],
   "engines": {
-    "node": ">= 10.1.0"
+    "node": ">=10.17 <11.0 || >=11.14"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -89,12 +89,11 @@
   "xo": {
     "prettier": true,
     "rules": {
-			"@typescript-eslint/explicit-function-return-type": "off",
-			"@typescript-eslint/no-unused-vars": "off",
-			"@typescript-eslint/no-var-requires": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-var-requires": "off",
       "camelcase": "off",
       "capitalized-comments": "off",
-			"node/no-unsupported-features/node-builtins": "off",
       "unicorn/string-content": "off"
     }
   }

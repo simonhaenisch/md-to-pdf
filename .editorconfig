@@ -8,6 +8,9 @@ charset = utf-8
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+[package.json]
+indent_style = space
+
 [*.{md,yml,yaml}]
 indent_style = space
 
