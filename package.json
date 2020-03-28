@@ -45,7 +45,7 @@
     "highlight.js": "9.18.1",
     "iconv-lite": "0.5.1",
     "listr": "0.14.3",
-    "marked": "0.8.0",
+    "marked": "0.8.2",
     "puppeteer": "^2.0.0",
     "serve-handler": "6.1.2"
   },
@@ -55,15 +55,15 @@
     "@types/marked": "0.7.3",
     "@types/puppeteer": "2.0.1",
     "@types/serve-handler": "6.1.0",
-    "ava": "3.5.0",
+    "ava": "3.5.1",
     "husky": "4.2.3",
     "nyc": "15.0.0",
-    "prettier": "1.19.1",
-    "prettier-plugin-organize-imports": "1.0.1",
+    "prettier": "2.0.2",
+    "prettier-plugin-organize-imports": "1.0.2",
     "tap-xunit": "2.4.1",
-    "ts-node": "8.6.2",
+    "ts-node": "8.8.1",
     "typescript": "3.8.3",
-    "xo": "0.28.0"
+    "xo": "0.28.1"
   },
   "husky": {
     "hooks": {
