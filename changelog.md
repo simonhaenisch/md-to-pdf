@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/simonhaenisch/md-to-pdf/compare/v3.0.0...v3.0.1) (2020-03-28)
+
+
+### Bug Fixes
+
+* engines field (required node version) ([9e88564](https://github.com/simonhaenisch/md-to-pdf/commit/9e8856406b684a099261e4b2800df65b8a52c2a4))
+
 ## [3.0.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.0.0-pre.1...v3.0.0) (2020-02-29)
 
 

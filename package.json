@@ -1,6 +1,6 @@
 {
   "name": "md-to-pdf",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "CLI tool for converting Markdown files to PDF.",
   "keywords": [
     "markdown-to-pdf",
