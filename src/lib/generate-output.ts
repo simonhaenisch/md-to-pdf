@@ -15,7 +15,7 @@ export const generateOutput = async (html: string, relativePath: string, config:
 
 	await Promise.all([
 		...config.stylesheet.map(
-			async stylesheet => page.addStyleTag(isHttpUrl(stylesheet) ? { url: stylesheet } : { path: stylesheet }), // add each stylesheet
+			async (stylesheet) => page.addStyleTag(isHttpUrl(stylesheet) ? { url: stylesheet } : { path: stylesheet }), // add each stylesheet
 		),
 		config.css ? page.addStyleTag({ content: config.css }) : undefined, // add custom css
 	]);
@@ -34,7 +34,7 @@ export const generateOutput = async (html: string, relativePath: string, config:
 	let outputFileContent: string | Buffer = '';
 
 	if (config.devtools) {
-		await new Promise(resolve => page.on('close', resolve));
+		await new Promise((resolve) => page.on('close', resolve));
 	} else if (config.as_html) {
 		outputFileContent = await page.content();
 	} else {

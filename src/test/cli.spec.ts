@@ -23,7 +23,7 @@ before(() => {
 	}
 });
 
-test('should compile the basic example to pdf using --basedir', t => {
+test('should compile the basic example to pdf using --basedir', (t) => {
 	const cmd = [
 		resolve(__dirname, '..', '..', 'node_modules', '.bin', 'ts-node'), // ts-node binary
 		resolve(__dirname, '..', 'cli'), // md-to-pdf cli script (typescript)
@@ -37,7 +37,7 @@ test('should compile the basic example to pdf using --basedir', t => {
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'test.pdf'), 'utf-8'));
 });
 
-test('should compile the basic example using stdio', t => {
+test('should compile the basic example using stdio', (t) => {
 	const cmd = [
 		'cat',
 		resolve(__dirname, 'basic', 'test.md'), // file to convert
@@ -55,7 +55,7 @@ test('should compile the basic example using stdio', t => {
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'test-stdio.pdf'), 'utf-8'));
 });
 
-test('should compile the nested example to pdfs', t => {
+test('should compile the nested example to pdfs', (t) => {
 	const cmd = [
 		resolve(__dirname, '..', '..', 'node_modules', '.bin', 'ts-node'), // ts-node binary
 		resolve(__dirname, '..', 'cli'), // md-to-pdf cli script (typescript)

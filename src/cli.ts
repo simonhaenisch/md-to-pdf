@@ -48,7 +48,7 @@ const cliFlags = arg({
 // --
 // Run
 
-main(cliFlags, defaultConfig).catch(error => {
+main(cliFlags, defaultConfig).catch((error) => {
 	console.error(error);
 	process.exit(1);
 });
@@ -137,7 +137,7 @@ async function main(args: typeof cliFlags, config: Config) {
 			if (args['--watch']) {
 				console.log(chalk.bgBlue('\n watching for changes \n'));
 
-				watch(files).on('change', async file =>
+				watch(files).on('change', async (file) =>
 					new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error),
 				);
 			} else {

@@ -35,7 +35,7 @@ export const convertMdToPdf = async (input: { path: string } | { content: string
 	// sanitize array cli arguments
 	for (const option of ['stylesheet', 'body_class']) {
 		if (!Array.isArray((config as any)[option])) {
-			(config as any)[option] = [(config as any)[option]].filter(value => Boolean(value));
+			(config as any)[option] = [(config as any)[option]].filter((value) => Boolean(value));
 		}
 	}
 

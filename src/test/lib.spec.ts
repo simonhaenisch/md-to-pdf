@@ -14,17 +14,17 @@ import { readFile } from '../lib/read-file';
 // --
 // helpers
 
-test('setProcessAndTermTitle should not throw', t => {
+test('setProcessAndTermTitle should not throw', (t) => {
 	t.notThrows(() => setProcessAndTermTitle('md-to-pdf tests'));
 });
 
-test('getDir should get the directory the given file is in', t => {
+test('getDir should get the directory the given file is in', (t) => {
 	const filePath = posix.join('/', 'var', 'foo', 'bar.txt');
 
 	t.regex(getDir(filePath), new RegExp(`\\${sep}var\\${sep}foo`));
 });
 
-test('getMarginObject should be able to handle all valid CSS margin inputs', t => {
+test('getMarginObject should be able to handle all valid CSS margin inputs', (t) => {
 	t.deepEqual(getMarginObject('1em'), { top: '1em', right: '1em', bottom: '1em', left: '1em' });
 	t.deepEqual(getMarginObject('1px 2px'), { top: '1px', right: '2px', bottom: '1px', left: '2px' });
 	t.deepEqual(getMarginObject('1mm 2mm 3mm'), { top: '1mm', right: '2mm', bottom: '3mm', left: '2mm' });
@@ -41,19 +41,19 @@ test('getMarginObject should be able to handle all valid CSS margin inputs', t =
 // --
 // get-html
 
-test('getHtml should return a valid html document', t => {
+test('getHtml should return a valid html document', (t) => {
 	const html = getHtml('', defaultConfig).replace(/\n/g, '');
 
 	t.regex(html, /<!DOCTYPE html>.*<html>.*<head>.*<body class="">.*<\/body>.*<\/html>/);
 });
 
-test('getHtml should inject rendered markdown', t => {
+test('getHtml should inject rendered markdown', (t) => {
 	const html = getHtml('# Foo', defaultConfig).replace(/\n/g, '');
 
 	t.regex(html, /<body class=""><h1 id="foo">Foo<\/h1>.*<\/body>/);
 });
 
-test('getHtml should inject body classes', t => {
+test('getHtml should inject body classes', (t) => {
 	const html = getHtml('', { ...defaultConfig, body_class: ['foo', 'bar'] }).replace(/\n/g, '');
 
 	t.regex(html, /<body class="foo bar">/);
@@ -62,21 +62,21 @@ test('getHtml should inject body classes', t => {
 // --
 // get-marked-with-highlighter
 
-test('getMarked should highlight js code', t => {
+test('getMarked should highlight js code', (t) => {
 	const marked = getMarked({});
 	const html = marked('```js\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code class="hljs js">'));
 });
 
-test('getMarked should highlight unknown code as plaintext', t => {
+test('getMarked should highlight unknown code as plaintext', (t) => {
 	const marked = getMarked({});
 	const html = marked('```\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code class="hljs plaintext">'));
 });
 
-test('getMarked should accept a custom renderer', t => {
+test('getMarked should accept a custom renderer', (t) => {
 	const renderer = new Renderer();
 
 	renderer.link = (href, _, text) => `<a class="custom" href="${href}">${text}</a>`;
@@ -87,10 +87,10 @@ test('getMarked should accept a custom renderer', t => {
 	t.true(html.includes('<a class="custom" href="/bar">Foo</a>'));
 });
 
-test('getMarked should accept a custom renderer with custom code highlighter', t => {
+test('getMarked should accept a custom renderer with custom code highlighter', (t) => {
 	const renderer = new Renderer();
 
-	renderer.code = code => `<custom-code>${code}</custom-code>`;
+	renderer.code = (code) => `<custom-code>${code}</custom-code>`;
 
 	const marked = getMarked({ renderer });
 	const html = marked('```\nvar foo="bar";\n```');
@@ -101,7 +101,7 @@ test('getMarked should accept a custom renderer with custom code highlighter', t
 // --
 // get-pdf-file-path
 
-test('getOutputFilePath should return the same path but with different extension', t => {
+test('getOutputFilePath should return the same path but with different extension', (t) => {
 	const mdFilePath = posix.join('/', 'var', 'foo', 'bar.md');
 
 	t.is(getOutputFilePath(mdFilePath, 'pdf'), `${sep}var${sep}foo${sep}bar.pdf`);
@@ -111,7 +111,7 @@ test('getOutputFilePath should return the same path but with different extension
 // --
 // read-file
 
-test('readFile should return the content of a file', async t => {
+test('readFile should return the content of a file', async (t) => {
 	const gitignore = resolve(__dirname, 'basic', 'markdown-mark.svg');
 	const gitignoreContent = `<svg xmlns="http://www.w3.org/2000/svg" width="208" height="128" viewBox="0 0 208 128"><rect width="198" height="118" x="5" y="5" ry="10" stroke="#000" stroke-width="10" fill="none"/><path d="M30 98V30h20l20 25 20-25h20v68H90V59L70 84 50 59v39zm125 0l-30-33h20V30h20v35h20z"/></svg>${EOL}`;
 
@@ -122,7 +122,7 @@ test('readFile should return the content of a file', async t => {
 // --
 // is-md-file
 
-test('isMdFile should return true if the file extension indicates a markdown file', t => {
+test('isMdFile should return true if the file extension indicates a markdown file', (t) => {
 	t.is(isMdFile('md.txt'), false);
 	t.is(isMdFile('.md.txt'), true);
 	t.is(isMdFile('test.txt'), false);
@@ -140,7 +140,7 @@ test('isMdFile should return true if the file extension indicates a markdown fil
 // --
 // is-url
 
-test('isUrl should return true for strings that are valid http(s) urls', t => {
+test('isUrl should return true for strings that are valid http(s) urls', (t) => {
 	t.is(isHttpUrl('foo'), false);
 	t.is(isHttpUrl('foo/bar'), false);
 	t.is(isHttpUrl('/foo/bar'), false);

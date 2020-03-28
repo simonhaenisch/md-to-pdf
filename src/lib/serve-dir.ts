@@ -8,7 +8,7 @@ import { Config } from './config';
  * @returns a promise that resolves with the server instance once the server is ready and listening.
  */
 export const serveDirectory = async ({ basedir, port }: Config) =>
-	new Promise<Server>(resolve => {
+	new Promise<Server>((resolve) => {
 		const server = createServer(async (request, response) => serveHandler(request, response, { public: basedir }));
 
 		server.listen(port, () => resolve(server));
@@ -17,4 +17,4 @@ export const serveDirectory = async ({ basedir, port }: Config) =>
 /**
  * Close the given server instance asynchronously.
  */
-export const closeServer = async (server: Server) => new Promise(resolve => server.close(resolve));
+export const closeServer = async (server: Server) => new Promise((resolve) => server.close(resolve));
