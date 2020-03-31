@@ -17,6 +17,10 @@
   "engines": {
     "node": ">=10.17 <11.0 || >=11.14"
   },
+  "files": [
+    "/dist",
+    "markdown.css"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -24,7 +28,7 @@
     "build": "tsc",
     "prepare": "npm run build",
     "test": "xo && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts --timeout=1m",
-    "release": "npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish",
+    "release": "npm test && npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish",
     "loc": "npx cloc src --exclude-dir=test --by-file"
   },
   "bin": {

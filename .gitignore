@@ -1,12 +1,11 @@
-# source
 .vscode
 node_modules
 
 # generated
-dist
+/dist/*
 
 # tests
-.nyc_output
-coverage
-src/test/**/*.pdf
-src/test/**/*.html
+/.nyc_output
+/coverage
+/src/test/**/*.pdf
+/src/test/**/*.html
