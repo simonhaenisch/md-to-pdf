@@ -42,3 +42,10 @@ export const mdToPdf = async (input: { path: string } | { content: string }, con
 };
 
 export default mdToPdf;
+
+export interface PackageJson {
+	engines: {
+		node: string;
+	};
+	version: string;
+}

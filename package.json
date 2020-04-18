@@ -51,6 +51,7 @@
     "listr": "0.14.3",
     "marked": "0.8.2",
     "puppeteer": ">=2.0.0",
+    "semver": "7.3.2",
     "serve-handler": "6.1.2"
   },
   "devDependencies": {
@@ -58,6 +59,7 @@
     "@types/listr": "0.14.2",
     "@types/marked": "0.7.4",
     "@types/puppeteer": "2.0.1",
+    "@types/semver": "7.1.0",
     "@types/serve-handler": "6.1.0",
     "ava": "3.7.0",
     "husky": "4.2.5",

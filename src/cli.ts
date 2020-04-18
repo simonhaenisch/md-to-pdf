@@ -10,11 +10,13 @@ import getPort from 'get-port';
 import getStdin from 'get-stdin';
 import Listr from 'listr';
 import path from 'path';
+import { PackageJson } from '.';
 import { Config, defaultConfig } from './lib/config';
 import { help } from './lib/help';
 import { setProcessAndTermTitle } from './lib/helpers';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
+import { validateNodeVersion } from './lib/validate-node-version';
 
 // --
 // Configure CLI Arguments
@@ -59,8 +61,12 @@ main(cliFlags, defaultConfig).catch((error) => {
 async function main(args: typeof cliFlags, config: Config) {
 	setProcessAndTermTitle('md-to-pdf');
 
+	if (!validateNodeVersion()) {
+		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');
+	}
+
 	if (args['--version']) {
-		return console.log((require('../package') as { version: string }).version);
+		return console.log((require('../package') as PackageJson).version);
 	}
 
 	if (args['--help']) {
