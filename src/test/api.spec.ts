@@ -10,7 +10,7 @@ before(() => {
 		try {
 			unlinkSync(file);
 		} catch (error) {
-			if (error.code !== 'ENOENT') {
+			if ((error as { code: string }).code !== 'ENOENT') {
 				throw error;
 			}
 		}

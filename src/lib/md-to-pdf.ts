@@ -1,4 +1,5 @@
 import { promises as fs } from 'fs';
+import grayMatter from 'gray-matter';
 import { dirname, resolve } from 'path';
 import { Config } from './config';
 import { generateOutput } from './generate-output';
@@ -6,16 +7,21 @@ import { getHtml } from './get-html';
 import { getOutputFilePath } from './get-output-file-path';
 import { getMarginObject } from './helpers';
 import { readFile } from './read-file';
-const grayMatter = require('gray-matter');
+
+type cliArgs = typeof import('../cli').cliFlags;
 
 /**
  * Convert markdown to pdf.
  */
-export const convertMdToPdf = async (input: { path: string } | { content: string }, config: Config, args: any = {}) => {
+export const convertMdToPdf = async (
+	input: { path: string } | { content: string },
+	config: Config,
+	args: cliArgs = {} as cliArgs,
+) => {
 	const mdFileContent =
 		'content' in input
 			? input.content
-			: await readFile(input.path, args['--md-file-encoding'] || config.md_file_encoding);
+			: await readFile(input.path, args['--md-file-encoding'] ?? config.md_file_encoding);
 
 	const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
 
@@ -33,19 +39,19 @@ export const convertMdToPdf = async (input: { path: string } | { content: string
 	}
 
 	// sanitize array cli arguments
-	for (const option of ['stylesheet', 'body_class']) {
-		if (!Array.isArray((config as any)[option])) {
-			(config as any)[option] = [(config as any)[option]].filter((value) => Boolean(value));
+	for (const option of ['stylesheet', 'body_class'] as Array<'stylesheet' | 'body_class'>) {
+		if (!Array.isArray(config[option])) {
+			config[option] = [config[option]].filter(Boolean) as any;
 		}
 	}
 
 	// merge cli args into config
-	const jsonArgs = ['--marked-options', '--pdf-options', '--launch-options'];
+	const jsonArgs = new Set(['--marked-options', '--pdf-options', '--launch-options']);
 	for (const arg of Object.entries(args)) {
 		const [argKey, argValue] = arg as [string, string];
 		const key = argKey.slice(2).replace(/-/g, '_');
 
-		(config as any)[key] = jsonArgs.includes(argKey) ? JSON.parse(argValue) : argValue;
+		(config as { [key: string]: any })[key] = jsonArgs.has(argKey) ? JSON.parse(argValue) : argValue;
 	}
 
 	// sanitize the margin in pdf_options

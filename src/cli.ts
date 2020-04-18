@@ -19,7 +19,7 @@ import { closeServer, serveDirectory } from './lib/serve-dir';
 // --
 // Configure CLI Arguments
 
-const cliFlags = arg({
+export const cliFlags = arg({
 	'--help': Boolean,
 	'--version': Boolean,
 	'--basedir': String,
@@ -60,7 +60,7 @@ async function main(args: typeof cliFlags, config: Config) {
 	setProcessAndTermTitle('md-to-pdf');
 
 	if (args['--version']) {
-		return console.log(require('../package').version);
+		return console.log((require('../package') as { version: string }).version);
 	}
 
 	if (args['--help']) {

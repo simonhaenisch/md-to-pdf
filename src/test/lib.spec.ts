@@ -79,6 +79,7 @@ test('getMarked should highlight unknown code as plaintext', (t) => {
 test('getMarked should accept a custom renderer', (t) => {
 	const renderer = new Renderer();
 
+	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 	renderer.link = (href, _, text) => `<a class="custom" href="${href}">${text}</a>`;
 
 	const marked = getMarked({ renderer });
