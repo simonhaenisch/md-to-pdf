@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.0.1...v3.1.0) (2020-04-18)
+
+
+### Features
+
+* **cli:** add node version check ([be72a7d](https://github.com/simonhaenisch/md-to-pdf/commit/be72a7d4bbf6aa8a66aefccb42c5d3b0bb2688eb)), closes [#70](https://github.com/simonhaenisch/md-to-pdf/issues/70) [#71](https://github.com/simonhaenisch/md-to-pdf/issues/71)
+
 ### [3.0.1](https://github.com/simonhaenisch/md-to-pdf/compare/v3.0.0...v3.0.1) (2020-03-28)
 
 
