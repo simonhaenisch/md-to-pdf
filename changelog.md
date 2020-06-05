@@ -2,7 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [3.1.1](https://github.com/simonhaenisch/md-to-pdf/compare/v3.1.0...v3.1.1) (2020-06-05)
+### [3.1.1](https://github.com/simonhaenisch/md-to-pdf/compare/v3.1.0...v3.1.1) 
+(2020-06-05)
+
+Warning: Updates marked to 1.1.0 which has some breaking changes (see https://github.com/markedjs/marked/releases/tag/v1.0.0), and those might also apply to the usage of this package if a custom renderer was used. I don't expect anyone to run into issues though which is why I decided not to do a major version bump.
 
 ## [3.1.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.0.1...v3.1.0) (2020-04-18)
 
