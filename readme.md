@@ -112,6 +112,41 @@ The function throws an error if anything goes wrong, which can be handled by cat
 await mdToPdf({ content: '# Hello, World' }, { dest: 'path/to/output.pdf' });
 ```
 
+#### Table of content
+
+Place the following comment `<!-- TOC -->` where you want the table of content be generated from document headings
+
+Options for table of content are : 
+
+* `TOC_headings`: Set the table of content title ( default: 'Table of content' )
+* `TOC_depth`: Skip n level for the table of content generation ( default: 0 ) 
+ 
+If you want to skip the first level headings of your document, set level to 1. 
+With this, you can define a Document title that will not be included inside the table content.
+
+If you want to customize the table of content style, use the id `#table-of-contents` to target the div that wrap the table of content
+
+Example of custom style.
+```
+#table-of-contents {
+    background: #f9f9f9 none repeat scroll 0 0;
+    border: 1px solid #aaa;
+    display: table;
+    font-size: 95%;
+    margin-bottom: 1em;
+    padding: 20px;
+    width: 100%;
+}
+
+.table-of-contents h1 {
+    font-weight: 700;
+    text-align: center;
+}
+
+#table-of-contents li, table-of-contents h1 ul, table-of-contents h1 ul li{
+    list-style: outside none none !important;
+}
+```
 
 #### Page Break
 

@@ -1,10 +1,10 @@
 import test from 'ava';
-import { Renderer } from 'marked';
+import marked, { Renderer } from 'marked';
 import { EOL } from 'os';
 import { posix, resolve, sep } from 'path';
 import { defaultConfig } from '../lib/config';
 import { getHtml } from '../lib/get-html';
-import { getMarked } from '../lib/get-marked-with-highlighter';
+import { getHighlightRenderer } from '../lib/get-marked-with-highlighter';
 import { getOutputFilePath } from '../lib/get-output-file-path';
 import { getDir, getMarginObject, setProcessAndTermTitle } from '../lib/helpers';
 import { isHttpUrl } from '../lib/is-http-url';
@@ -59,18 +59,31 @@ test('getHtml should inject body classes', (t) => {
 	t.regex(html, /<body class="foo bar">/);
 });
 
+test('getHtml should return a valid html document with table of content', (t) => {
+	const html = getHtml('<!-- TOC --> \n # Foo', {
+		...defaultConfig,
+		toc_headings: 'TOC',
+	}).replace(/\n/g, '');
+
+	t.regex(
+		html,
+		/.*<div id="table-of-contents"><h1>TOC<\/h1><ul><li><a href="#foo">Foo<\/a><\/li><\/ul><\/div>.*<h1 id="foo">Foo<\/h1>.*/,
+	);
+});
+
 // --
 // get-marked-with-highlighter
 
 test('getMarked should highlight js code', (t) => {
-	const marked = getMarked({});
+	(marked as any).use({ renderer: getHighlightRenderer(defaultConfig.marked_options) });
+
 	const html = marked('```js\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code class="hljs js">'));
 });
 
 test('getMarked should highlight unknown code as plaintext', (t) => {
-	const marked = getMarked({});
+	(marked as any).use({ renderer: getHighlightRenderer(defaultConfig.marked_options) });
 	const html = marked('```\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code class="hljs plaintext">'));
@@ -79,10 +92,12 @@ test('getMarked should highlight unknown code as plaintext', (t) => {
 test('getMarked should accept a custom renderer', (t) => {
 	const renderer = new Renderer();
 
-	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-	renderer.link = (href, _, text) => `<a class="custom" href="${href}">${text}</a>`;
+	const config = defaultConfig;
+	config.marked_options.renderer = renderer;
 
-	const marked = getMarked({ renderer });
+	renderer.link = (href: string, _: string, text: string) => `<a class="custom" href="${href}">${text}</a>`;
+
+	(marked as any).use({ renderer: getHighlightRenderer(config.marked_options) });
 	const html = marked('[Foo](/bar)');
 
 	t.true(html.includes('<a class="custom" href="/bar">Foo</a>'));
@@ -91,9 +106,12 @@ test('getMarked should accept a custom renderer', (t) => {
 test('getMarked should accept a custom renderer with custom code highlighter', (t) => {
 	const renderer = new Renderer();
 
-	renderer.code = (code) => `<custom-code>${code}</custom-code>`;
+	const config = defaultConfig;
+	config.marked_options.renderer = renderer;
 
-	const marked = getMarked({ renderer });
+	renderer.code = (code: string) => `<custom-code>${code}</custom-code>`;
+
+	(marked as any).use({ renderer: getHighlightRenderer(config.marked_options) });
 	const html = marked('```\nvar foo="bar";\n```');
 
 	t.true(html.includes('<custom-code>var foo="bar";</custom-code>'));

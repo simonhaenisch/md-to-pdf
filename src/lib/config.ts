@@ -19,6 +19,8 @@ export const defaultConfig: Config = {
 			left: '20mm',
 		},
 	},
+	toc_headings: 'Table of content',
+	toc_depth: 0,
 	launch_options: {},
 	md_file_encoding: 'utf-8',
 	stylesheet_encoding: 'utf-8',
@@ -108,4 +110,14 @@ export interface Config {
 	 * Port to run the local server on.
 	 */
 	port?: number;
+
+	/**
+	 * The text to display on top of the table of content. Default to 'Table of content'
+	 */
+	toc_headings?: string;
+
+	/**
+	 * The starting depth from where to include headings inside the table of content. Default to 0
+	 */
+	toc_depth: number;
 }
