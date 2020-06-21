@@ -62,12 +62,26 @@ test('getHtml should inject body classes', (t) => {
 test('getHtml should return a valid html document with table of content', (t) => {
 	const html = getHtml('<!-- TOC --> \n # Foo', {
 		...defaultConfig,
-		toc_headings: 'TOC',
+		toc_heading: 'TOC',
 	}).replace(/\n/g, '');
 
 	t.regex(
 		html,
-		/.*<div id="table-of-contents"><h1>TOC<\/h1><ul><li><a href="#foo">Foo<\/a><\/li><\/ul><\/div>.*<h1 id="foo">Foo<\/h1>.*/,
+		/.*<div id="table-of-contents"><h1>TOC<\/h1><p><a href="#foo" class="toc-depth-1">Foo<\/a><br\/><\/p><\/div>.*<h1 id="foo">Foo<\/h1>.*/,
+	);
+});
+
+test('getHtml should return a valid html document with table of content taking skip and depth into account', (t) => {
+	const html = getHtml('<!-- TOC --> \n # Foo \n ## Depth2 \n ### Depth3 \n #### Depth4', {
+		...defaultConfig,
+		toc_heading: 'TOC',
+		toc_skip: 1,
+		toc_depth: 2,
+	}).replace(/\n/g, '');
+
+	t.regex(
+		html,
+		/.*<div id="table-of-contents"><h1>TOC<\/h1><p><a href="#depth2" clas{2}="toc-depth-2">Depth2<\/a><br\/><a href="#depth3" clas{2}="toc-depth-3">Depth3<\/a><br\/><\/p><\/div>.*<h1 id="fo{2}">Fo{2}<\/h1>.*/,
 	);
 });
 

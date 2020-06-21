@@ -12,7 +12,7 @@ export const getHtml = (md: string, config: Config) => {
 	(marked as any).use({ renderer: getHighlightRenderer(config.marked_options) });
 	(marked as any).use({ renderer: getHeadingRenderer(config).renderer });
 
-	const markedContent: string = marked(md);
+	const markedContent = marked(md);
 	let html = `<!DOCTYPE html>
 	<html>
 		<head><meta charset="utf-8"></head>
@@ -25,43 +25,27 @@ export const getHtml = (md: string, config: Config) => {
 	// generate table of content only if we have headings
 	// const { toc } = getHeadingRenderer(config);
 	if (html.includes('<!-- TOC -->') && toc.length !== 0) {
-		const ctx = [];
-		ctx.push(`<div id="table-of-contents"><h1>${config.toc_headings ?? 'Table of content'}</h1>\n<ul>`);
-		build(toc, config.toc_depth ?? 0, 0, ctx);
-		ctx.push('</ul></div>');
-		html = html.replace('<!-- TOC -->', ctx.join(''));
+		const generatedToc = [];
+		generatedToc.push(`<div id="table-of-contents"><h1>${config.toc_heading}</h1>\n<p>`);
+		build(toc, config.toc_skip, config.toc_depth, generatedToc);
+		generatedToc.push('</p></div>');
+		html = html.replace('<!-- TOC -->', generatedToc.join(''));
 	}
 
 	return html;
 };
 
 /**
- * Build a tree with the calculated table of content
- * @param coll The table of content data previously calculated
- * @param startHeading The starting index for the generation
- * @param level The starting level for the generation
- * @param ctx A array that will handle generated table of content link
+ * Build the table of content
+ * @param toc The marked list of heading
+ * @param toc_skip Level to skip for the generation
+ * @param toc_depth The depth of the toc. Default to 3, increment by the toc_skip value
+ * @param generatedToc The array that will content the final toc data
  */
-function build(coll: TableOfContent[], startHeading: number, level: number, ctx: any[]) {
-	if (startHeading >= coll.length || coll[startHeading].level <= level) {
-		return startHeading;
-	}
-
-	const node = coll[startHeading];
-	ctx.push(`<li><a href="#${node.anchor}">${node.text}</a>`);
-	startHeading++;
-	const childCtx: any[] = [];
-	startHeading = build(coll, startHeading, node.level, childCtx);
-	if (childCtx.length > 0) {
-		ctx.push('<ul>');
-		childCtx.forEach(function (idm) {
-			ctx.push(idm);
-		});
-		ctx.push('</ul>');
-	}
-
-	ctx.push('</li>');
-	startHeading = build(coll, startHeading, level, ctx);
-
-	return startHeading;
+function build(toc: TableOfContent[], toc_skip: number, toc_depth: number, generatedToc: string[]) {
+	toc.forEach((node) => {
+		if (node.level > toc_skip && node.level <= toc_skip + toc_depth) {
+			generatedToc.push(`<a href="#${node.anchor}" class="toc-depth-${node.level}">${node.text}</a><br/>`);
+		}
+	});
 }
