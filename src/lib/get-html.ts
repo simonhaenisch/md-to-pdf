@@ -9,8 +9,8 @@ import { getHeadingRenderer, TableOfContent, toc } from './get-marked-with-toc';
 export const getHtml = (md: string, config: Config) => {
 	marked.setOptions(config.marked_options);
 
-	(marked as any).use({ renderer: getHighlightRenderer(config.marked_options) });
-	(marked as any).use({ renderer: getHeadingRenderer(config).renderer });
+	marked.use({ renderer: getHighlightRenderer(config.marked_options) });
+	marked.use({ renderer: getHeadingRenderer(config).renderer });
 
 	const markedContent = marked(md);
 	let html = `<!DOCTYPE html>
