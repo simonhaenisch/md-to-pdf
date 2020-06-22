@@ -25,11 +25,11 @@ export const getHtml = (md: string, config: Config) => {
 	// generate table of content only if we have headings
 	// const { toc } = getHeadingRenderer(config);
 	if (html.includes('<!-- TOC -->') && toc.length !== 0) {
-		const generatedToc = [];
-		generatedToc.push(`<div id="table-of-contents"><h1>${config.toc_heading}</h1>\n<p>`);
-		build(toc, config.toc_skip, config.toc_depth, generatedToc);
-		generatedToc.push('</p></div>');
-		html = html.replace('<!-- TOC -->', generatedToc.join(''));
+		const parts = [];
+		parts.push(`<div id="table-of-contents"><h1>${config.toc_heading}</h1>\n<p>`);
+		build(toc, config.toc_skip, config.toc_depth, parts);
+		parts.push('</p></div>');
+		html = html.replace('<!-- TOC -->', parts.join(''));
 	}
 
 	return html;
@@ -40,12 +40,12 @@ export const getHtml = (md: string, config: Config) => {
  * @param toc The marked list of heading
  * @param toc_skip Level to skip for the generation
  * @param toc_depth The depth of the toc. Default to 3, increment by the toc_skip value
- * @param generatedToc The array that will content the final toc data
+ * @param parts The array that will content the final toc data
  */
-function build(toc: TableOfContent[], toc_skip: number, toc_depth: number, generatedToc: string[]) {
+function build(toc: TableOfContent[], toc_skip: number, toc_depth: number, parts: string[]) {
 	toc.forEach((node) => {
 		if (node.level > toc_skip && node.level <= toc_skip + toc_depth) {
-			generatedToc.push(`<a href="#${node.anchor}" class="toc-depth-${node.level}">${node.text}</a><br/>`);
+			parts.push(`<a href="#${node.anchor}" class="toc-depth-${node.level}">${node.text}</a><br/>`);
 		}
 	});
 }
