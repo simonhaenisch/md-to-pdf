@@ -50,7 +50,7 @@ test('getHtml should return a valid html document', (t) => {
 test('getHtml should inject rendered markdown', (t) => {
 	const html = getHtml('# Foo', defaultConfig).replace(/\n/g, '');
 
-	t.regex(html, /<body class=""><h1 id="foo">Foo<\/h1>.*<\/body>/);
+	t.regex(html, /<body class="">.*<h1 id="foo" class="heading-1">Foo<\/h1>.*<\/body>/);
 });
 
 test('getHtml should inject body classes', (t) => {
@@ -67,7 +67,7 @@ test('getHtml should return a valid html document with table of content', (t) =>
 
 	t.regex(
 		html,
-		/.*<div id="table-of-contents"><h1>TOC<\/h1><p><a href="#foo" class="toc-depth-1">Foo<\/a><br\/><\/p><\/div>.*<h1 id="foo">Foo<\/h1>.*/,
+		/.*<div id="table-of-contents"><h1>TOC<\/h1><p><a href="#foo" class="toc-depth-1">Foo<\/a><br\/><\/p><\/div>.*<h1 id="foo" class="heading-1">Foo<\/h1>.*/,
 	);
 });
 
@@ -81,7 +81,7 @@ test('getHtml should return a valid html document with table of content taking s
 
 	t.regex(
 		html,
-		/.*<div id="table-of-contents"><h1>TOC<\/h1><p><a href="#depth2" clas{2}="toc-depth-2">Depth2<\/a><br\/><a href="#depth3" clas{2}="toc-depth-3">Depth3<\/a><br\/><\/p><\/div>.*<h1 id="fo{2}">Fo{2}<\/h1>.*/,
+		/.*<div id="table-of-contents"><h1>TOC<\/h1><p><a href="#depth2" clas{2}="toc-depth-2">Depth2<\/a><br\/><a href="#depth3" clas{2}="toc-depth-3">Depth3<\/a><br\/><\/p><\/div>.*<h1 id="fo{2}" class="heading-1">Fo{2}<\/h1>.*/,
 	);
 });
 

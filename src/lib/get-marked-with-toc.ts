@@ -18,7 +18,7 @@ export const getHeadingRenderer = (config: Config) => {
 				text,
 			});
 
-			return `<h${level} id="${anchor}">${text}</h${level}>\n`;
+			return `<h${level} id="${anchor}" class="heading-${level}">${text}</h${level}>\n`;
 		};
 	}
 
