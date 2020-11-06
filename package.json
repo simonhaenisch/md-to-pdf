@@ -1,6 +1,6 @@
 {
   "name": "md-to-pdf",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "CLI tool for converting Markdown files to PDF.",
   "keywords": [
     "markdown-to-pdf",
@@ -106,6 +106,7 @@
     "prettier": true,
     "rules": {
       "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-implicit-any-catch": "off",
       "@typescript-eslint/no-var-requires": "off",
       "@typescript-eslint/prefer-readonly-parameter-types": "off",
       "camelcase": "off",
