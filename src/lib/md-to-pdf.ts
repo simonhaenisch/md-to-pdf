@@ -51,7 +51,7 @@ export const convertMdToPdf = async (
 		const [argKey, argValue] = arg as [string, string];
 		const key = argKey.slice(2).replace(/-/g, '_');
 
-		(config as { [key: string]: any })[key] = jsonArgs.has(argKey) ? JSON.parse(argValue) : argValue;
+		(config as Record<string, any>)[key] = jsonArgs.has(argKey) ? JSON.parse(argValue) : argValue;
 	}
 
 	// sanitize the margin in pdf_options
