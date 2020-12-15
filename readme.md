@@ -59,6 +59,7 @@ Options:
   --stylesheet ............. Path to a local or remote stylesheet (can be passed multiple times)
   --css .................... String of styles
   --body-class ............. Classes to be added to the body tag (can be passed multiple times)
+  --page-media-type ........ Media type to emulate the page with (default: screen)
   --highlight-style ........ Style to be used by highlight.js (default: github)
   --marked-options ......... Set custom options for marked (as a JSON string)
   --pdf-options ............ Set custom options for the generated PDF (as a JSON string)
@@ -173,6 +174,7 @@ For default and advanced options see the following links. The default highlight.
 | `--stylesheet` | `path/to/style.css`, `https://example.org/stylesheet.css` |
 | `--css` | `body { color: tomato; }` |
 | `--body-class` | `markdown-body` |
+| `--page-media-type` | `print` |
 | `--highlight-style` | `monokai`, `solarized-light` |
 | `--marked-options` | `'{ "gfm": false }'` |
 | `--pdf-options` | `'{ "format": "Letter", "margin": "20mm", "printBackground": true }'` |

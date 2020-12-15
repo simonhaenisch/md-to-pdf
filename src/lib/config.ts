@@ -7,6 +7,7 @@ export const defaultConfig: Config = {
 	stylesheet: [resolve(__dirname, '..', '..', 'markdown.css')],
 	css: '',
 	body_class: [],
+	pageMediaType: 'screen',
 	highlight_style: 'github',
 	marked_options: {},
 	pdf_options: {
@@ -54,6 +55,11 @@ export interface Config {
 	 * List of classes for the body tag.
 	 */
 	body_class: string[];
+
+	/**
+	 * Media type to emulate the page with.
+	 */
+	pageMediaType: 'screen' | 'print';
 
 	/**
 	 * Highlight.js stylesheet to use (without the .css extension).

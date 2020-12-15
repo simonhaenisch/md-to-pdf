@@ -29,6 +29,7 @@ export const cliFlags = arg({
 	'--stylesheet': [String],
 	'--css': String,
 	'--body-class': [String],
+	'--page-media-type': String,
 	'--highlight-style': String,
 	'--marked-options': String,
 	'--html-pdf-options': String,

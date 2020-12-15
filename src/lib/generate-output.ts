@@ -38,7 +38,7 @@ export const generateOutput = async (html: string, relativePath: string, config:
 	} else if (config.as_html) {
 		outputFileContent = await page.content();
 	} else {
-		await page.emulateMediaType('screen');
+		await page.emulateMediaType(config.pageMediaType);
 		outputFileContent = await page.pdf(config.pdf_options);
 	}
 

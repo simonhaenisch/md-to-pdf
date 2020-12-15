@@ -8,7 +8,7 @@ import { getOutputFilePath } from './get-output-file-path';
 import { getMarginObject } from './helpers';
 import { readFile } from './read-file';
 
-type cliArgs = typeof import('../cli').cliFlags;
+type CliArgs = typeof import('../cli').cliFlags;
 
 /**
  * Convert markdown to pdf.
@@ -16,7 +16,7 @@ type cliArgs = typeof import('../cli').cliFlags;
 export const convertMdToPdf = async (
 	input: { path: string } | { content: string },
 	config: Config,
-	args: cliArgs = {} as cliArgs,
+	args: CliArgs = {} as CliArgs,
 ) => {
 	const mdFileContent =
 		'content' in input

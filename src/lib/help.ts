@@ -12,6 +12,7 @@ const helpText = `
     --stylesheet ${chalk.dim('.............')} Path to a local or remote stylesheet (can be passed multiple times)
     --css ${chalk.dim('....................')} String of styles
     --body-class ${chalk.dim('.............')} Classes to be added to the body tag (can be passed multiple times)
+    --page-media-type ${chalk.dim('........')} Media type to emulate the page with (default: screen)
     --highlight-style ${chalk.dim('........')} Style to be used by highlight.js (default: github)
     --marked-options ${chalk.dim('.........')} Set custom options for marked (as a JSON string)
     --pdf-options ${chalk.dim('............')} Set custom options for the generated PDF (as a JSON string)
