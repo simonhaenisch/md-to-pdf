@@ -1,5 +1,4 @@
 import { promises as fs } from 'fs';
-import iconv from 'iconv-lite';
 
 /**
  * Read a file with the given encoding, and return its content as a string.
@@ -7,4 +6,6 @@ import iconv from 'iconv-lite';
  * Uses iconv-lite to solve some issues with Windows encodings.
  */
 export const readFile = async (file: string, encoding = 'utf-8') =>
-	/utf-?8/i.test(encoding) ? fs.readFile(file, { encoding: 'utf-8' }) : iconv.decode(await fs.readFile(file), encoding);
+	/utf-?8/i.test(encoding)
+		? fs.readFile(file, { encoding: 'utf-8' })
+		: (await import('iconv-lite')).decode(await fs.readFile(file), encoding);
