@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/simonhaenisch/md-to-pdf/compare/v3.2.0...v3.2.1) (2020-12-16)
+
+
+### Bug Fixes
+
+* pageMediaType -> page_media_type ([29d8a75](https://github.com/simonhaenisch/md-to-pdf/commit/29d8a75eb21904da0b95556a0101039604aa1374))
+
 ## [3.2.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.1.2...v3.2.0) (2020-12-16)
 
 
