@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.1.2...v3.2.0) (2020-12-16)
+
+
+### Features
+
+* add page-media-type option ([8e68e6f](https://github.com/simonhaenisch/md-to-pdf/commit/8e68e6f4926d2eec6ffdaf47f6fa95987ff501ce)), closes [#80](https://github.com/simonhaenisch/md-to-pdf/issues/80)
+
+
+### Bug Fixes
+
+* readFile encoding ([2c7296d](https://github.com/simonhaenisch/md-to-pdf/commit/2c7296d802eda973f5a67fe66875354291ef8b69))
+
 ### [3.1.2](https://github.com/simonhaenisch/md-to-pdf/compare/v3.1.1...v3.1.2) (2020-11-06)
 
 

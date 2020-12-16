@@ -1,6 +1,6 @@
 {
   "name": "md-to-pdf",
-  "version": "3.1.2",
+  "version": "3.2.0",
   "description": "CLI tool for converting Markdown files to PDF.",
   "keywords": [
     "markdown-to-pdf",
@@ -112,6 +112,7 @@
       "camelcase": "off",
       "capitalized-comments": "off",
       "no-promise-executor-return": "off",
+      "node/no-unsupported-features/es-syntax": "off",
       "unicorn/no-fn-reference-in-iterator": "off",
       "unicorn/string-content": "off"
     }
