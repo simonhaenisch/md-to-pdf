@@ -86,7 +86,7 @@ Alternatively, you can pass the markdown in from `stdin` and pipe its `stdout` i
 cat file.md | md-to-pdf > path/to/output.pdf
 ```
 
-_You can concatenate multiple files using `cat file1.md file2.md`._
+_Tip: You can concatenate multiple files using `cat file1.md file2.md`._
 
 The current working directory (`process.cwd()`) serves as the base directory of the file server by default. This can be adjusted with the `--basedir` flag (or equivalent config option).
 
