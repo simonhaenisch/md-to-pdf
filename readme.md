@@ -113,6 +113,67 @@ The function throws an error if anything goes wrong, which can be handled by cat
 await mdToPdf({ content: '# Hello, World' }, { dest: 'path/to/output.pdf' });
 ```
 
+#### Table of content
+
+Place the following comment `<!-- TOC -->` where you want the table of content be generated from document headings
+
+Options for table of content are : 
+
+* `toc_heading`: Set the TOC title ( default: 'Contents' )
+* `toc_skip`: Skip n level for the TOC generation ( default: 0 )
+* `toc_depth`: The depth of the table of content to generate. ( Default to 3 ). This take into account a possible toc_skip.
+               So if toc_skip = 1 and toc_depth = 3 then the generation will include levels 2, 3 and 4
+ 
+If you want to skip the first level headings of your document, set level to 1. 
+With this, you can define a Document title that will not be included inside the table content.
+
+If you want to customize the table of content style, use the id `#table-of-contents` to target the div that wrap the table of content
+Table of content element will have class toc-depth-{n} where n is the level of the heading.
+Example of custom style.
+```
+#table-of-contents {
+    background: #f9f9f9 none repeat scroll 0 0;
+    border: 1px solid #aaa;
+    display: table;
+    font-size: 95%;
+    margin-bottom: 1em;
+    padding: 20px;
+    width: 100%;
+}
+
+.table-of-contents h1 {
+    font-weight: 700;
+    text-align: center;
+}
+
+#table-of-contents .toc-depth-1 {
+    margin-left: 1rem;
+}
+
+#table-of-contents .toc-depth-2 {
+    margin-left: 2rem;
+}
+
+
+#table-of-contents .toc-depth-3 {
+    margin-left: 3rem;
+}
+
+
+#table-of-contents .toc-depth-4 {
+    margin-left: 4rem;
+}
+
+
+#table-of-contents .toc-depth-5 {
+    margin-left: 5rem;
+}
+
+
+#table-of-contents .toc-depth-6 {
+    margin-left: 6rem;
+}
+```
 
 #### Page Break
 

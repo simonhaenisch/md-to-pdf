@@ -20,6 +20,9 @@ export const defaultConfig: Config = {
 			left: '20mm',
 		},
 	},
+	toc_heading: 'Contents',
+	toc_skip: 0,
+	toc_depth: 3,
 	launch_options: {},
 	md_file_encoding: 'utf-8',
 	stylesheet_encoding: 'utf-8',
@@ -114,4 +117,20 @@ export interface Config {
 	 * Port to run the local server on.
 	 */
 	port?: number;
+
+	/**
+	 * The text to display on top of the table of content. Defaults to 'Content'
+	 */
+	toc_heading: string;
+
+	/**
+	 * The starting depth from where to include headings inside the table of content. Defaults to 0
+	 */
+	toc_skip: number;
+
+	/**
+	 * The depth of the table of content to generate. Default to 3. This take into account a possible toc_skip.
+	 * So if toc_skip = 1 and toc_depth = 3 then the generation will include levels 2, 3 and 4
+	 */
+	toc_depth: number;
 }
