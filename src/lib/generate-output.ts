@@ -1,11 +1,28 @@
 import puppeteer from 'puppeteer';
-import { Config } from './config';
+import { Config, HtmlConfig, PdfConfig } from './config';
 import { isHttpUrl } from './is-http-url';
+
+export type Output = PdfOutput | HtmlOutput;
+
+export interface PdfOutput extends BasicOutput {
+	content: Buffer;
+}
+
+export interface HtmlOutput extends BasicOutput {
+	content: string;
+}
+
+interface BasicOutput {
+	filename: string | undefined;
+}
 
 /**
  * Generate the output (either PDF or HTML).
  */
-export const generateOutput = async (html: string, relativePath: string, config: Config) => {
+export async function generateOutput(html: string, relativePath: string, config: PdfConfig): Promise<PdfOutput>;
+export async function generateOutput(html: string, relativePath: string, config: HtmlConfig): Promise<HtmlOutput>;
+export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output>;
+export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output> {
 	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 	const page = await browser.newPage();
@@ -44,5 +61,5 @@ export const generateOutput = async (html: string, relativePath: string, config:
 
 	await browser.close();
 
-	return config.devtools ? undefined : { filename: config.dest, content: outputFileContent };
-};
+	return config.devtools ? (undefined as any) : { filename: config.dest, content: outputFileContent };
+}

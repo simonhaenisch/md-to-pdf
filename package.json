@@ -27,7 +27,7 @@
     "start": "tsc --watch",
     "build": "tsc",
     "prepare": "npm run build",
-    "test": "xo && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts --timeout=1m",
+    "test": "xo && tsc -p tsconfig.type-test.json && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts --timeout=1m",
     "release": "npm test && npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish",
     "loc": "npx cloc src --exclude-dir=test --by-file"
   },
@@ -68,6 +68,7 @@
     "prettier-plugin-organize-imports": "1.1.1",
     "tap-xunit": "2.4.1",
     "ts-node": "9.1.1",
+    "tsd": "0.14.0",
     "typescript": "4.1.3",
     "xo": "0.36.1"
   },

@@ -30,7 +30,23 @@ export const defaultConfig: Config = {
 /**
  * In config keys, dashes of cli flag names are replaced with underscores.
  */
-export interface Config {
+export type Config = PdfConfig | HtmlConfig;
+
+export interface PdfConfig extends BasicConfig {
+	/**
+	 * If true, generate HTML output instead of PDF output. Default: `false`.
+	 */
+	as_html?: false;
+}
+
+export interface HtmlConfig extends BasicConfig {
+	/**
+	 * If true, generate HTML output instead of PDF output. Default: `false`.
+	 */
+	as_html: true;
+}
+
+interface BasicConfig {
 	/**
 	 * Base directory to be served by the file server.
 	 */
@@ -98,11 +114,6 @@ export interface Config {
 	 * CSS stylesheet encoding. Default: `utf-8`.
 	 */
 	stylesheet_encoding: string;
-
-	/**
-	 * If true, generate HTML output instead of PDF output. Default: `false`.
-	 */
-	as_html: boolean;
 
 	/**
 	 * If true, open chromium with devtools instead of saving the pdf. This is

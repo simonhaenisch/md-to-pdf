@@ -1,17 +1,33 @@
 #!/usr/bin/env node
 
 import getPort from 'get-port';
-import { Config, defaultConfig } from './lib/config';
+import { Config, defaultConfig, HtmlConfig, PdfConfig } from './lib/config';
+import { HtmlOutput, Output, PdfOutput } from './lib/generate-output';
 import { getDir } from './lib/helpers';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { serveDirectory } from './lib/serve-dir';
 
+type Input = ContentInput | PathInput;
+
+interface ContentInput {
+	content: string;
+}
+
+interface PathInput {
+	path: string;
+}
+
+const hasContent = (input: Input): input is ContentInput => 'content' in input;
+const hasPath = (input: Input): input is PathInput => 'path' in input;
+
 /**
  * Convert a markdown file to PDF.
  */
-export const mdToPdf = async (input: { path: string } | { content: string }, config: Partial<Config> = {}) => {
-	if (!('path' in input ? input.path : input.content)) {
-		throw new Error('Specify either content or path.');
+export async function mdToPdf(input: ContentInput | PathInput, config?: Partial<PdfConfig>): Promise<PdfOutput>;
+export async function mdToPdf(input: ContentInput | PathInput, config?: Partial<HtmlConfig>): Promise<HtmlOutput>;
+export async function mdToPdf(input: Input, config: Partial<Config> = {}): Promise<Output> {
+	if (!hasContent(input) && !hasPath(input)) {
+		throw new Error('The input is missing one of the properties "content" or "path".');
 	}
 
 	if (!config.port) {
@@ -39,7 +55,7 @@ export const mdToPdf = async (input: { path: string } | { content: string }, con
 	server.close();
 
 	return pdf;
-};
+}
 
 export default mdToPdf;
 
