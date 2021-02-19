@@ -6,6 +6,7 @@
 import arg from 'arg';
 import chalk from 'chalk';
 import { watch } from 'chokidar';
+import { promises as fs } from 'fs';
 import getPort from 'get-port';
 import getStdin from 'get-stdin';
 import Listr from 'listr';
@@ -144,9 +145,27 @@ async function main(args: typeof cliFlags, config: Config) {
 			if (args['--watch']) {
 				console.log(chalk.bgBlue('\n watching for changes \n'));
 
-				watch(files).on('change', async (file) =>
-					new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error),
-				);
+				const waitForFile = async (path: string) => {
+					let handle: fs.FileHandle | void;
+
+					while (!(handle = await fs.open(path, 'r+').catch(throwIfNotBusy))) {
+						await new Promise((resolve) => setTimeout(resolve, 5));
+					}
+
+					handle.close();
+				};
+
+				const throwIfNotBusy = (error: any) => {
+					if (error.code !== 'EBUSY') {
+						throw error;
+					}
+				};
+
+				watch(files).on('change', async (file) => {
+					await waitForFile(file);
+
+					return new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error);
+				});
 			} else {
 				server.close();
 			}
