@@ -148,11 +148,12 @@ async function main(args: typeof cliFlags, config: Config) {
 				const waitForFile = async (path: string) => {
 					let handle: fs.FileHandle | void;
 
+					// eslint-disable-next-line no-await-in-loop
 					while (!(handle = await fs.open(path, 'r+').catch(throwIfNotBusy))) {
-						await new Promise((resolve) => setTimeout(resolve, 5));
+						await new Promise((resolve) => setTimeout(resolve, 5)); // eslint-disable-line no-await-in-loop
 					}
 
-					handle.close();
+					await handle.close();
 				};
 
 				const throwIfNotBusy = (error: any) => {
