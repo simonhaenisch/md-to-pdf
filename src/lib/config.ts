@@ -1,10 +1,11 @@
 import { MarkedOptions } from 'marked';
 import { resolve } from 'path';
-import { LaunchOptions, PDFOptions } from 'puppeteer';
+import { LaunchOptions, PDFOptions, ScriptTagOptions } from 'puppeteer';
 
 export const defaultConfig: Config = {
 	basedir: process.cwd(),
 	stylesheet: [resolve(__dirname, '..', '..', 'markdown.css')],
+	script: [],
 	css: '',
 	body_class: [],
 	page_media_type: 'screen',
@@ -66,6 +67,13 @@ interface BasicConfig {
 	 * Custom css styles.
 	 */
 	css: string;
+
+	/**
+	 * List of scripts to load into the page.
+	 *
+	 * @see https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pageaddscripttagoptions
+	 */
+	script: ScriptTagOptions[];
 
 	/**
 	 * List of classes for the body tag.

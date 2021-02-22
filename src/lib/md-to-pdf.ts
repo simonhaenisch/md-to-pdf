@@ -38,20 +38,23 @@ export const convertMdToPdf = async (
 		config.pdf_options.displayHeaderFooter = true;
 	}
 
-	// sanitize array cli arguments
-	for (const option of ['stylesheet', 'body_class'] as Array<'stylesheet' | 'body_class'>) {
+	const arrayOptions = ['body_class', 'script', 'stylesheet'] as const;
+
+	// sanitize frontmatter array options
+	for (const option of arrayOptions) {
 		if (!Array.isArray(config[option])) {
 			config[option] = [config[option]].filter(Boolean) as any;
 		}
 	}
 
+	const jsonArgs = ['--marked-options', '--pdf-options', '--launch-options'];
+
 	// merge cli args into config
-	const jsonArgs = new Set(['--marked-options', '--pdf-options', '--launch-options']);
 	for (const arg of Object.entries(args)) {
 		const [argKey, argValue] = arg as [string, string];
 		const key = argKey.slice(2).replace(/-/g, '_');
 
-		(config as Record<string, any>)[key] = jsonArgs.has(argKey) ? JSON.parse(argValue) : argValue;
+		(config as Record<string, any>)[key] = jsonArgs.includes(argKey) ? JSON.parse(argValue) : argValue;
 	}
 
 	// sanitize the margin in pdf_options
@@ -81,7 +84,7 @@ export const convertMdToPdf = async (
 
 	if (!output) {
 		if (config.devtools) {
-			throw new Error('No file is generated when the --devtools option is enabled.');
+			throw new Error('No file is generated with --devtools.');
 		}
 
 		throw new Error(`Failed to create ${config.as_html ? 'HTML' : 'PDF'}.`);

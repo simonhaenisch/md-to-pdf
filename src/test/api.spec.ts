@@ -1,6 +1,7 @@
 import test, { before } from 'ava';
 import { readFileSync, unlinkSync } from 'fs';
 import { basename, resolve } from 'path';
+import { getDocument } from 'pdfjs-dist/es5/build/pdf';
 import { mdToPdf } from '..';
 
 before(() => {
@@ -45,3 +46,18 @@ test('should compile the basic example to html and write to disk', async (t) => 
 
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-test.html'), 'utf-8'));
 });
+
+test('compile the MathJax test', async (t) => {
+	const pdf = await mdToPdf({ path: resolve(__dirname, 'mathjax', 'math.md') });
+
+	t.is(pdf.filename, '');
+	t.truthy(pdf.content);
+
+	const doc = await getDocument({ data: pdf.content }).promise;
+	const page = await doc.getPage(1);
+	const text = (await page.getTextContent()).items.map(({ str }) => str).join('');
+
+	t.true(text.startsWith('Formulas with MathJax'));
+	t.true(text.includes('a≠0'));
+});
+
