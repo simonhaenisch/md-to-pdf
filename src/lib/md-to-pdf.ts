@@ -47,14 +47,14 @@ export const convertMdToPdf = async (
 		}
 	}
 
-	const jsonArgs = ['--marked-options', '--pdf-options', '--launch-options'];
+	const jsonArgs = new Set(['--marked-options', '--pdf-options', '--launch-options']);
 
 	// merge cli args into config
 	for (const arg of Object.entries(args)) {
 		const [argKey, argValue] = arg as [string, string];
 		const key = argKey.slice(2).replace(/-/g, '_');
 
-		(config as Record<string, any>)[key] = jsonArgs.includes(argKey) ? JSON.parse(argValue) : argValue;
+		(config as Record<string, any>)[key] = jsonArgs.has(argKey) ? JSON.parse(argValue) : argValue;
 	}
 
 	// sanitize the margin in pdf_options

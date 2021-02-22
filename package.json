@@ -107,6 +107,9 @@
   },
   "xo": {
     "prettier": true,
+    "ignores": [
+      "src/test/mathjax"
+    ],
     "rules": {
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-implicit-any-catch": "off",

@@ -69,4 +69,3 @@ test('compile the MathJax test', async (t) => {
 	t.true(text.startsWith('Formulas with MathJax'));
 	t.true(text.includes('a≠0'));
 });
-
