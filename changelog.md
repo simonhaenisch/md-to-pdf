@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.2.1...v3.3.0) (2021-02-22)
+
+
+### Features
+
+* **cli:** expose watchOptions ([9a68f5f](https://github.com/simonhaenisch/md-to-pdf/commit/9a68f5f266ab86a393cab631365c345cbf7f7a14)), closes [#84](https://github.com/simonhaenisch/md-to-pdf/issues/84)
+* new script config option to inject scripts, mathjax test ([c8628a4](https://github.com/simonhaenisch/md-to-pdf/commit/c8628a4b24fad3a1cafc47ad1c4a2b37a9b764c7))
+
 ### [3.2.1](https://github.com/simonhaenisch/md-to-pdf/compare/v3.2.0...v3.2.1) (2020-12-16)
 
 
