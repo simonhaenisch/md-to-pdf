@@ -29,43 +29,43 @@ const helpText = `
 
   ${chalk.gray('–')} Convert ./file.md and save to ./file.pdf
 
-    ${chalk.cyan('$ md2pdf file.md')}
+    ${chalk.cyan('$ md-to-pdf file.md')}
 
   ${chalk.gray('–')} Convert all markdown files in current directory
 
-    ${chalk.cyan('$ md2pdf ./*.md')}
+    ${chalk.cyan('$ md-to-pdf ./*.md')}
 
   ${chalk.gray('–')} Convert all markdown files in current directory recursively
 
-    ${chalk.cyan('$ md2pdf ./**/*.md')}
+    ${chalk.cyan('$ md-to-pdf ./**/*.md')}
 
   ${chalk.gray('–')} Convert and enable watch mode
 
-    ${chalk.cyan('$ md2pdf ./*.md --watch')}
+    ${chalk.cyan('$ md-to-pdf ./*.md -w')}
 
   ${chalk.gray('–')} Convert and enable watch mode with custom options
 
-    ${chalk.cyan('$ md2pdf ./*.md --watch --watch-options \'{ "atomic": true }\'')}
+    ${chalk.cyan('$ md-to-pdf ./*.md --watch --watch-options \'{ "atomic": true }\'')}
 
   ${chalk.gray('–')} Convert path/to/file.md with a different base directory
 
-    ${chalk.cyan('$ md2pdf path/to/file.md --basedir path')}
+    ${chalk.cyan('$ md-to-pdf path/to/file.md --basedir path')}
 
   ${chalk.gray('–')} Convert file.md using custom-markdown.css
 
-    ${chalk.cyan('$ md2pdf file.md --stylesheet custom-markdown.css')}
+    ${chalk.cyan('$ md-to-pdf file.md --stylesheet custom-markdown.css')}
 
   ${chalk.gray('–')} Convert file.md using the Monokai theme for code highlighting
 
-    ${chalk.cyan('$ md2pdf file.md --highlight-style monokai')}
+    ${chalk.cyan('$ md-to-pdf file.md --highlight-style monokai')}
 
   ${chalk.gray('–')} Convert file.md using custom page options
 
-    ${chalk.cyan('$ md2pdf file.md --pdf-options \'{ "format": "Letter" }\'')}
+    ${chalk.cyan('$ md-to-pdf file.md --pdf-options \'{ "format": "Letter" }\'')}
 
   ${chalk.gray('–')} Convert file.md but save the intermediate HTML instead
 
-    ${chalk.cyan('$ md2pdf file.md --as-html')}
+    ${chalk.cyan('$ md-to-pdf file.md --as-html')}
 `;
 
 export const help = () => console.log(helpText);
