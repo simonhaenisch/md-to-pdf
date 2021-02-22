@@ -18,14 +18,15 @@ before(() => {
 	}
 });
 
-test('should compile the basic example to pdf', async (t) => {
+test('compile the basic example to pdf', async (t) => {
 	const pdf = await mdToPdf({ path: resolve(__dirname, 'basic', 'test.md') });
 
 	t.is(pdf.filename, '');
 	t.truthy(pdf.content);
+	t.truthy(pdf.content instanceof Buffer);
 });
 
-test('should compile the basic example to pdf and write to disk', async (t) => {
+test('compile the basic example to pdf and write to disk', async (t) => {
 	const pdf = await mdToPdf(
 		{ path: resolve(__dirname, 'basic', 'test.md') },
 		{ dest: resolve(__dirname, 'basic', 'api-test.pdf') },
@@ -36,13 +37,21 @@ test('should compile the basic example to pdf and write to disk', async (t) => {
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-test.pdf'), 'utf-8'));
 });
 
-test('should compile the basic example to html and write to disk', async (t) => {
-	const pdf = await mdToPdf(
+test('compile some content to html', async (t) => {
+	const html = await mdToPdf({ content: '# Foo' }, { as_html: true });
+
+	t.is(html.filename, '');
+	t.is(typeof html.content, 'string');
+	t.truthy(html.content.includes('<h1 id="foo">Foo</h1>'));
+});
+
+test('compile the basic example to html and write to disk', async (t) => {
+	const html = await mdToPdf(
 		{ path: resolve(__dirname, 'basic', 'test.md') },
 		{ dest: resolve(__dirname, 'basic', 'api-test.html'), as_html: true },
 	);
 
-	t.is(basename(pdf.filename!), 'api-test.html');
+	t.is(basename(html.filename!), 'api-test.html');
 
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-test.html'), 'utf-8'));
 });
