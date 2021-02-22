@@ -70,3 +70,16 @@ test('compile the MathJax test', async (t) => {
 	t.true(text.includes('a≠0'));
 });
 
+test('compile multiple files to pdf', async (t) => {
+	const testFile = resolve(__dirname, 'basic', 'test.md');
+
+	const pdfs = await mdToPdf({ paths: [testFile, testFile] });
+
+	t.is(pdfs.length, 2);
+
+	t.is(pdfs[0].filename, '');
+	t.is(pdfs[1].filename, '');
+
+	t.truthy(pdfs[0].content instanceof Buffer);
+	t.truthy(pdfs[1].content instanceof Buffer);
+});
