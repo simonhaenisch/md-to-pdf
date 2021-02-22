@@ -37,7 +37,7 @@ export async function generateOutput(html: string, relativePath: string, config:
 		config.css ? page.addStyleTag({ content: config.css }) : undefined, // add custom css
 	]);
 
-	await Promise.all(config.script.map((scriptTagOptions) => page.addScriptTag(scriptTagOptions)));
+	await Promise.all(config.script.map(async (scriptTagOptions) => page.addScriptTag(scriptTagOptions)));
 
 	/**
 	 * Trick to wait for network to be idle.

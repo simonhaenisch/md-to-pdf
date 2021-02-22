@@ -26,7 +26,7 @@
   "scripts": {
     "start": "tsc -p tsconfig.build.json --watch",
     "build": "tsc -p tsconfig.build.json",
-    "clean": "rm -r dist",
+    "clean": "rm -rf dist",
     "prepare": "npm run clean && npm run build",
     "test": "xo && tsc -p tsconfig.type-test.json && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts --timeout=1m",
     "release": "npm test && npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish",
@@ -107,6 +107,9 @@
   },
   "xo": {
     "prettier": true,
+    "ignores": [
+      "src/test/mathjax"
+    ],
     "rules": {
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-implicit-any-catch": "off",
