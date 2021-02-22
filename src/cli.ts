@@ -5,7 +5,7 @@
 
 import arg from 'arg';
 import chalk from 'chalk';
-import { watch } from 'chokidar';
+import { watch, WatchOptions } from 'chokidar';
 import getPort from 'get-port';
 import getStdin from 'get-stdin';
 import Listr from 'listr';
@@ -26,6 +26,7 @@ export const cliFlags = arg({
 	'--version': Boolean,
 	'--basedir': String,
 	'--watch': Boolean,
+	'--watch-options': String,
 	'--stylesheet': [String],
 	'--css': String,
 	'--body-class': [String],
@@ -144,7 +145,11 @@ async function main(args: typeof cliFlags, config: Config) {
 			if (args['--watch']) {
 				console.log(chalk.bgBlue('\n watching for changes \n'));
 
-				watch(files).on('change', async (file) =>
+				const watchOptions = args['--watch-options']
+					? (JSON.parse(args['--watch-options']) as WatchOptions)
+					: config.watch_options;
+
+				watch(files, watchOptions).on('change', async (file) =>
 					new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error),
 				);
 			} else {

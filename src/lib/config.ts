@@ -1,3 +1,4 @@
+import { WatchOptions } from 'chokidar';
 import { MarkedOptions } from 'marked';
 import { resolve } from 'path';
 import { LaunchOptions, PDFOptions, ScriptTagOptions } from 'puppeteer';
@@ -133,4 +134,11 @@ interface BasicConfig {
 	 * Port to run the local server on.
 	 */
 	port?: number;
+
+	/**
+	 * Options to pass to Chokidar's `watch` call.
+	 *
+	 * This is specifically useful when running into issues when editor plugins trigger additional saves after the initial save.
+	 */
+	watch_options?: WatchOptions;
 }

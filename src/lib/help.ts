@@ -8,6 +8,7 @@ const helpText = `
     -h, --help ${chalk.dim('...............')} Output usage information
     -v, --version ${chalk.dim('............')} Output version
     -w, --watch ${chalk.dim('..............')} Watch the current file(s) for changes
+		--watch-options ${chalk.dim('..........')} Options for Chokidar's watch call
     --basedir ${chalk.dim('................')} Base directory to be served by the file server
     --stylesheet ${chalk.dim('.............')} Path to a local or remote stylesheet (can be passed multiple times)
     --css ${chalk.dim('....................')} String of styles
@@ -37,6 +38,14 @@ const helpText = `
   ${chalk.gray('–')} Convert all markdown files in current directory recursively
 
     ${chalk.cyan('$ md2pdf ./**/*.md')}
+
+  ${chalk.gray('–')} Convert and enable watch mode
+
+    ${chalk.cyan('$ md2pdf ./*.md --watch')}
+
+  ${chalk.gray('–')} Convert and enable watch mode with custom options
+
+    ${chalk.cyan('$ md2pdf ./*.md --watch --watch-options \'{ "atomic": true }\'')}
 
   ${chalk.gray('–')} Convert path/to/file.md with a different base directory
 

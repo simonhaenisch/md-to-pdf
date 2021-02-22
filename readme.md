@@ -55,6 +55,7 @@ Options:
   -h, --help ............... Output usage information
   -v, --version ............ Output version
   -w, --watch .............. Watch the current file(s) for changes
+  --watch-options .......... Options for Chokidar's watch call
   --basedir ................ Base directory to be served by the file server
   --stylesheet ............. Path to a local or remote stylesheet (can be passed multiple times)
   --css .................... String of styles
@@ -89,6 +90,12 @@ cat file.md | md-to-pdf > path/to/output.pdf
 _Tip: You can concatenate multiple files using `cat file1.md file2.md`._
 
 The current working directory (`process.cwd()`) serves as the base directory of the file server by default. This can be adjusted with the `--basedir` flag (or equivalent config option).
+
+#### Watch Mode
+
+Watch mode (`--watch`) uses Chokidar's `watch` method on the markdown file. If you're having issues, you can adjust the watch options via the config (`watch_options`) or `--watch-options` CLI arg. The `awaitWriteFinish` option might be particularly useful if you use editor plugins (e. g. TOC generators) that modify and save the file after the initial save. Check out the [Chokidar docs](https://github.com/paulmillr/chokidar#api) for a full list of options.
+
+Note that Preview on macOS does not automatically reload the preview when the file has changed (or at least not reliably). There are PDF viewers available that can check for file changes and offer auto-reload (e. g. [Skim](https://skim-app.sourceforge.io/)'s "Sync" feature).
 
 #### Programmatic API
 
