@@ -1,7 +1,7 @@
 import { WatchOptions } from 'chokidar';
 import { MarkedOptions } from 'marked';
 import { resolve } from 'path';
-import { LaunchOptions, PDFOptions, ScriptTagOptions } from 'puppeteer';
+import { FrameAddScriptTagOptions, LaunchOptions, PDFOptions } from 'puppeteer';
 
 export const defaultConfig: Config = {
 	basedir: process.cwd(),
@@ -14,7 +14,7 @@ export const defaultConfig: Config = {
 	marked_options: {},
 	pdf_options: {
 		printBackground: true,
-		format: 'A4',
+		format: 'a4',
 		margin: {
 			top: '30mm',
 			right: '40mm',
@@ -61,6 +61,8 @@ interface BasicConfig {
 
 	/**
 	 * List of css files to use for styling.
+	 *
+	 * @todo change to `FrameAddStyleTagOptions` (will be a breaking change)
 	 */
 	stylesheet: string[];
 
@@ -74,7 +76,7 @@ interface BasicConfig {
 	 *
 	 * @see https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pageaddscripttagoptions
 	 */
-	script: ScriptTagOptions[];
+	script: FrameAddScriptTagOptions[];
 
 	/**
 	 * List of classes for the body tag.

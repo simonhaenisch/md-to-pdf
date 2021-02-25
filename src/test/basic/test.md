@@ -1,6 +1,6 @@
 ---
 pdf_options:
-  format: A4
+  format: a4
   margin: 30mm 25mm
   headerTemplate: >-
     <style>div { font-size: 11px; width: 100%; text-align: center; }</style>

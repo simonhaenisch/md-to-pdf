@@ -138,7 +138,7 @@ Example markdown frontmatter config that prints the date in the header and the p
 ```markdown
 ---
 pdf_options:
-  format: A4
+  format: a4
   margin: 30mm 20mm
   printBackground: true
   headerTemplate: |-
