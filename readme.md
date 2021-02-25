@@ -12,14 +12,14 @@
 
 * Concurrently convert multiple Markdown files
 * Watch mode
-* Use your own or remote stylesheets
+* Use your own or remote stylesheets/scripts
 * Front-matter for configuration
 * Headers and Footers
 * Page Breaks
 * Syntax highlighting in code blocks
 * Extend the options of the underlying tools
 * Programmatic API
-* Read from `stdin`
+* Supports `stdio`
 
 ## Installation
 
@@ -163,6 +163,10 @@ pdf_options:
 ```
 
 Refer to the [Puppeteer docs](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions) for more info about headers and footers.
+
+#### Formulas
+
+This can be achieved with [MathJax](https://www.mathjax.org/). A simple example can be found in [`/src/test/mathjax`](/src/test/mathjax).
 
 #### Default and Advanced Options
 
