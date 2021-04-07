@@ -28,8 +28,8 @@ pdf_options:
 
 #### 2.2.1. Unordered
 
-* foo
-* bar
+- foo
+- bar
 
 #### 2.2.2. Ordered
 
@@ -53,7 +53,8 @@ pdf_options:
 const foo = 'bar';
 console.log(foo === 'bar'); // => true
 
-const longString = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, itaque error vero eius perferendis iusto voluptas, eum saepe quae nemo et ab, nostrum debitis sequi quas. Est eum officia praesentium.';
+const longString =
+	'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, itaque error vero eius perferendis iusto voluptas, eum saepe quae nemo et ab, nostrum debitis sequi quas. Est eum officia praesentium.';
 ```
 
 ## 5. Long Paragraph

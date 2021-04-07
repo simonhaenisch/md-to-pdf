@@ -10,16 +10,16 @@
 
 **Highlights:**
 
-* Concurrently convert multiple Markdown files
-* Watch mode
-* Use your own or remote stylesheets/scripts
-* Front-matter for configuration
-* Headers and Footers
-* Page Breaks
-* Syntax highlighting in code blocks
-* Extend the options of the underlying tools
-* Programmatic API
-* Supports `stdio`
+- Concurrently convert multiple Markdown files
+- Watch mode
+- Use your own or remote stylesheets/scripts
+- Front-matter for configuration
+- Headers and Footers
+- Page Breaks
+- Syntax highlighting in code blocks
+- Extend the options of the underlying tools
+- Programmatic API
+- Supports `stdio`
 
 ## Installation
 
@@ -106,11 +106,11 @@ const fs = require('fs');
 const { mdToPdf } = require('md-to-pdf');
 
 (async () => {
-  const pdf = await mdToPdf({ path: 'readme.md' }).catch(console.error);
+	const pdf = await mdToPdf({ path: 'readme.md' }).catch(console.error);
 
-  if (pdf) {
-    fs.writeFileSync(pdf.filename, pdf.content);
-  }
+	if (pdf) {
+		fs.writeFileSync(pdf.filename, pdf.content);
+	}
 })();
 ```
 
@@ -119,7 +119,6 @@ The function throws an error if anything goes wrong, which can be handled by cat
 ```js
 await mdToPdf({ content: '# Hello, World' }, { dest: 'path/to/output.pdf' });
 ```
-
 
 #### Page Break
 
@@ -172,28 +171,28 @@ This can be achieved with [MathJax](https://www.mathjax.org/). A simple example 
 
 For default and advanced options see the following links. The default highlight.js styling for code blocks is `github`. The default PDF options are the A4 format and some margin (see `lib/config.ts` for the full default config).
 
-* [Marked Advanced Options](https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md)
-* [Puppeteer PDF Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions)
-* [Puppeteer Launch Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions)
-* [highlight.js Styles](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
+- [Marked Advanced Options](https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md)
+- [Puppeteer PDF Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions)
+- [Puppeteer Launch Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions)
+- [highlight.js Styles](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
 
 ## Options
 
-| Option | Examples |
-| - | - |
-| `--basedir` | `path/to/folder` |
-| `--stylesheet` | `path/to/style.css`, `https://example.org/stylesheet.css` |
-| `--css` | `body { color: tomato; }` |
-| `--body-class` | `markdown-body` |
-| `--page-media-type` | `print` |
-| `--highlight-style` | `monokai`, `solarized-light` |
-| `--marked-options` | `'{ "gfm": false }'` |
-| `--pdf-options` | `'{ "format": "Letter", "margin": "20mm", "printBackground": true }'` |
-| `--launch-options` | `'{ "args": ["--no-sandbox"] }'` |
-| `--port` | `3000` |
-| `--md-file-encoding` | `utf-8`, `windows1252` |
-| `--stylesheet-encoding` | `utf-8`, `windows1252` |
-| `--config-file` | `path/to/config.json` |
+| Option                  | Examples                                                              |
+| ----------------------- | --------------------------------------------------------------------- |
+| `--basedir`             | `path/to/folder`                                                      |
+| `--stylesheet`          | `path/to/style.css`, `https://example.org/stylesheet.css`             |
+| `--css`                 | `body { color: tomato; }`                                             |
+| `--body-class`          | `markdown-body`                                                       |
+| `--page-media-type`     | `print`                                                               |
+| `--highlight-style`     | `monokai`, `solarized-light`                                          |
+| `--marked-options`      | `'{ "gfm": false }'`                                                  |
+| `--pdf-options`         | `'{ "format": "Letter", "margin": "20mm", "printBackground": true }'` |
+| `--launch-options`      | `'{ "args": ["--no-sandbox"] }'`                                      |
+| `--port`                | `3000`                                                                |
+| `--md-file-encoding`    | `utf-8`, `windows1252`                                                |
+| `--stylesheet-encoding` | `utf-8`, `windows1252`                                                |
+| `--config-file`         | `path/to/config.json`                                                 |
 
 **`margin`:** instead of an object (as stated in the Puppeteer docs), it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
 
@@ -225,22 +224,19 @@ Example `config.js`:
 
 ```js
 module.exports = {
-  stylesheet: [
-    "path/to/style.css",
-    "https://example.org/stylesheet.css",
-  ],
-  css: `body { color: tomato; }`,
-  body_class: "markdown-body",
-  marked_options: {
-    headerIds: false,
-    smartypants: true,
-  },
-  pdf_options: {
-    format: "A5",
-    margin: "20mm",
-    printBackground: true
-  },
-  stylesheet_encoding: "utf-8",
+	stylesheet: ['path/to/style.css', 'https://example.org/stylesheet.css'],
+	css: `body { color: tomato; }`,
+	body_class: 'markdown-body',
+	marked_options: {
+		headerIds: false,
+		smartypants: true,
+	},
+	pdf_options: {
+		format: 'A5',
+		margin: '20mm',
+		printBackground: true,
+	},
+	stylesheet_encoding: 'utf-8',
 };
 ```
 
@@ -248,8 +244,8 @@ Example `config.json`:
 
 ```json
 {
-  "highlight_style": "monokai",
-  "body_class": ["dark", "content"]
+	"highlight_style": "monokai",
+	"body_class": ["dark", "content"]
 }
 ```
 
@@ -282,9 +278,9 @@ Ideas, feature requests and PRs are welcome. Just keep it simple! 🤓
 
 I want to thank the following people:
 
-* [imcvampire](https://github.com/imcvampire) for handing over the npm package name.
-* [Sindre Sorhus](https://github.com/sindresorhus) and [Zeit](https://github.com/zeit) for inspiration on how to write cli tools.
-* [Josh Bruce](https://github.com/joshbruce) for [reviving Marked](https://github.com/markedjs/marked/issues/1106).
+- [imcvampire](https://github.com/imcvampire) for handing over the npm package name.
+- [Sindre Sorhus](https://github.com/sindresorhus) and [Zeit](https://github.com/zeit) for inspiration on how to write cli tools.
+- [Josh Bruce](https://github.com/joshbruce) for [reviving Marked](https://github.com/markedjs/marked/issues/1106).
 
 ## License
 
