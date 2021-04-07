@@ -30,14 +30,17 @@ export async function generateOutput(html: string, relativePath: string, config:
 	await page.goto(`http://localhost:${config.port!}${relativePath}`); // make sure relative paths work as expected
 	await page.setContent(html); // overwrite the page content with what was generated from the markdown
 
-	await Promise.all([
-		...config.stylesheet.map(
-			async (stylesheet) => page.addStyleTag(isHttpUrl(stylesheet) ? { url: stylesheet } : { path: stylesheet }), // add each stylesheet
-		),
-		config.css ? page.addStyleTag({ content: config.css }) : undefined, // add custom css
-	]);
+	for (const stylesheet of config.stylesheet) {
+		await page.addStyleTag(isHttpUrl(stylesheet) ? { url: stylesheet } : { path: stylesheet });
+	}
 
-	await Promise.all(config.script.map(async (scriptTagOptions) => page.addScriptTag(scriptTagOptions)));
+	if (config.css) {
+		await page.addStyleTag({ content: config.css });
+	}
+
+	for (const scriptTagOptions of config.script) {
+		await page.addScriptTag(scriptTagOptions);
+	}
 
 	/**
 	 * Trick to wait for network to be idle.

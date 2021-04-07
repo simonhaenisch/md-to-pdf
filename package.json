@@ -118,6 +118,7 @@
       "@typescript-eslint/prefer-readonly-parameter-types": "off",
       "camelcase": "off",
       "capitalized-comments": "off",
+      "no-await-in-loop": "off",
       "no-promise-executor-return": "off",
       "node/no-unsupported-features/es-syntax": "off",
       "unicorn/no-array-callback-reference": "off",
