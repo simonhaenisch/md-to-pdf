@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.2](https://github.com/simonhaenisch/md-to-pdf/compare/v3.3.1...v3.3.2) (2021-04-09)
+
+
+### Bug Fixes
+
+* inject styles and scripts in given order ([e1b6003](https://github.com/simonhaenisch/md-to-pdf/commit/e1b6003a1f1e2ad512706215ab5d0ddb992c9f00))
+
 ### [3.3.1](https://github.com/simonhaenisch/md-to-pdf/compare/v3.3.0...v3.3.1) (2021-02-25)
 
 ## [3.3.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.2.1...v3.3.0) (2021-02-22)
