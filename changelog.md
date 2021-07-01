@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.3.2...v4.0.0) (2021-07-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade dependencies
+
+* upgrade dependencies ([738029c](https://github.com/simonhaenisch/md-to-pdf/commit/738029c0850fdd4a0149e5aa924c50f4899584e3)), closes [#87](https://github.com/simonhaenisch/md-to-pdf/issues/87)
+
 ### [3.3.2](https://github.com/simonhaenisch/md-to-pdf/compare/v3.3.1...v3.3.2) (2021-04-09)
 
 
