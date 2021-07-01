@@ -1,4 +1,4 @@
-import { getLanguage, highlight } from 'highlight.js';
+import hljs from 'highlight.js';
 import marked, { MarkedOptions } from 'marked';
 
 export const getMarked = (options: MarkedOptions) => {
@@ -6,11 +6,11 @@ export const getMarked = (options: MarkedOptions) => {
 
 	// only add if the renderer has no custom `code` property yet
 	if (!Object.prototype.hasOwnProperty.call(renderer, 'code')) {
-		renderer.code = (code, language) => {
+		renderer.code = (code, languageName) => {
 			// if the given language is not available in highlight.js, fall back to plaintext
-			const languageName = language && getLanguage(language) ? language : 'plaintext';
+			const language = languageName && hljs.getLanguage(languageName) ? languageName : 'plaintext';
 
-			return `<pre><code class="hljs ${languageName}">${highlight(languageName, code).value}</code></pre>`;
+			return `<pre><code class="hljs ${language}">${hljs.highlight(code, { language }).value}</code></pre>`;
 		};
 	}
 

@@ -27,6 +27,7 @@ export async function generateOutput(html: string, relativePath: string, config:
 
 	const page = await browser.newPage();
 
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	await page.goto(`http://localhost:${config.port!}${relativePath}`); // make sure relative paths work as expected
 	await page.setContent(html); // overwrite the page content with what was generated from the markdown
 

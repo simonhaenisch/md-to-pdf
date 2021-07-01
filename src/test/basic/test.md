@@ -47,7 +47,13 @@ pdf_options:
 | foo | bar   |
 | bar | foo   |
 
-## 4. Highlighted Code
+## 4. Long Paragraph
+
+Cross-reference to [The End](#6-the-end).
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eos, fugit totam laboriosam harum earum cupiditate corporis, facilis nulla dolor hic consequatur. Magnam maiores unde aut esse est perferendis quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nobis laudantium iste repudiandae! Iusto, voluptas. Suscipit, iure autem! Fugiat, enim? Placeat quisquam optio reiciendis similique et ex voluptatum labore sit?
+
+## 5. Highlighted Code
 
 ```js
 const foo = 'bar';
@@ -57,12 +63,14 @@ const longString =
 	'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, itaque error vero eius perferendis iusto voluptas, eum saepe quae nemo et ab, nostrum debitis sequi quas. Est eum officia praesentium.';
 ```
 
-## 5. Long Paragraph
+```html
+<h1>I'm a Header</h1>
+```
 
-Cross-reference to [Yay](#6-yay).
+## 6. Inline `Code`
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eos, fugit totam laboriosam harum earum cupiditate corporis, facilis nulla dolor hic consequatur. Magnam maiores unde aut esse est perferendis quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nobis laudantium iste repudiandae! Iusto, voluptas. Suscipit, iure autem! Fugiat, enim? Placeat quisquam optio reiciendis similique et ex voluptatum labore sit?
+Lorem `ipsum` dolor sit `amet consectetur` adipisicing elit.
 
-## 6. Yay
+## 7. The End
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eos, fugit totam laboriosam harum earum cupiditate corporis, facilis nulla dolor hic consequatur. Magnam maiores unde aut esse est perferendis quos.

@@ -68,7 +68,7 @@ async function main(args: typeof cliFlags, config: Config) {
 	}
 
 	if (args['--version']) {
-		return console.log((require('../package') as PackageJson).version);
+		return console.log((require('../package.json') as PackageJson).version);
 	}
 
 	if (args['--help']) {

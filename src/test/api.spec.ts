@@ -1,7 +1,7 @@
 import test, { before } from 'ava';
 import { readFileSync, unlinkSync } from 'fs';
 import { basename, resolve } from 'path';
-import { getDocument } from 'pdfjs-dist/es5/build/pdf.js';
+import { getDocument } from 'pdfjs-dist/legacy/build/pdf';
 import { mdToPdf } from '..';
 
 before(() => {
