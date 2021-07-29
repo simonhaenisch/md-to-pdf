@@ -1,7 +1,7 @@
 import { WatchOptions } from 'chokidar';
 import { MarkedOptions } from 'marked';
 import { resolve } from 'path';
-import { FrameAddScriptTagOptions, LaunchOptions, PDFOptions } from 'puppeteer';
+import { BrowserConnectOptions, BrowserLaunchArgumentOptions, FrameAddScriptTagOptions, LaunchOptions, PDFOptions,Product } from 'puppeteer';
 
 export const defaultConfig: Config = {
 	basedir: process.cwd(),
@@ -114,7 +114,7 @@ interface BasicConfig {
 	 *
 	 * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
 	 */
-	launch_options: LaunchOptions;
+	launch_options: PuppeteerLaunchSignatureOptions;
 
 	/**
 	 * Markdown file encoding. Default: `utf-8`.
@@ -143,4 +143,9 @@ interface BasicConfig {
 	 * This is specifically useful when running into issues when editor plugins trigger additional saves after the initial save.
 	 */
 	watch_options?: WatchOptions;
+}
+
+type PuppeteerLaunchSignatureOptions = LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions & {
+  product?: Product;
+  extraPrefsFirefox?: Record<string, unknown>;
 }
