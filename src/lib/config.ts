@@ -1,7 +1,7 @@
 import { WatchOptions } from 'chokidar';
 import { MarkedOptions } from 'marked';
 import { resolve } from 'path';
-import { BrowserConnectOptions, BrowserLaunchArgumentOptions, FrameAddScriptTagOptions, LaunchOptions, PDFOptions,Product } from 'puppeteer';
+import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
 
 export const defaultConfig: Config = {
 	basedir: process.cwd(),
@@ -114,7 +114,7 @@ interface BasicConfig {
 	 *
 	 * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
 	 */
-	launch_options: PuppeteerLaunchSignatureOptions;
+	launch_options: PuppeteerLaunchOptions;
 
 	/**
 	 * Markdown file encoding. Default: `utf-8`.
@@ -145,7 +145,4 @@ interface BasicConfig {
 	watch_options?: WatchOptions;
 }
 
-type PuppeteerLaunchSignatureOptions = LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions & {
-  product?: Product;
-  extraPrefsFirefox?: Record<string, unknown>;
-}
+export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
