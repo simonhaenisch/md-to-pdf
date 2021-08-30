@@ -69,3 +69,13 @@ test('compile the MathJax test', async (t) => {
 	t.true(text.startsWith('Formulas with MathJax'));
 	t.true(text.includes('a≠0'));
 });
+
+test('compile passing some Puppeteer args', async (t) => {
+  const pdf = await mdToPdf(
+    { path: resolve(__dirname, 'basic', 'test.md') },
+    { launch_options: { args: [ '--no-sandbox' ] } });
+
+  t.is(pdf.filename, '');
+  t.truthy(pdf.content);
+  t.truthy(pdf.content instanceof Buffer);
+});
