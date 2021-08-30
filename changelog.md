@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.1](https://github.com/simonhaenisch/md-to-pdf/compare/v4.0.0...v4.0.1) (2021-08-30)
+
+
+### Bug Fixes
+
+* expose correct puppeteer launch options interface ([#98](https://github.com/simonhaenisch/md-to-pdf/issues/98)) ([32af9b3](https://github.com/simonhaenisch/md-to-pdf/commit/32af9b39bb10a5ed89f0fb11ef024b6c733fbcb8))
+
 ## [4.0.0](https://github.com/simonhaenisch/md-to-pdf/compare/v3.3.2...v4.0.0) (2021-07-01)
 
 
