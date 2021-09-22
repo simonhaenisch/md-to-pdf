@@ -59,6 +59,7 @@ Options:
   --basedir ................ Base directory to be served by the file server
   --stylesheet ............. Path to a local or remote stylesheet (can be passed multiple times)
   --css .................... String of styles
+  --document-title ......... Name of the HTML Document.
   --body-class ............. Classes to be added to the body tag (can be passed multiple times)
   --page-media-type ........ Media type to emulate the page with (default: screen)
   --highlight-style ........ Style to be used by highlight.js (default: github)

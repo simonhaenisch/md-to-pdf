@@ -29,6 +29,7 @@ export const cliFlags = arg({
 	'--watch-options': String,
 	'--stylesheet': [String],
 	'--css': String,
+	'--document-title': String,
 	'--body-class': [String],
 	'--page-media-type': String,
 	'--highlight-style': String,

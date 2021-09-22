@@ -8,6 +8,7 @@ export const defaultConfig: Config = {
 	stylesheet: [resolve(__dirname, '..', '..', 'markdown.css')],
 	script: [],
 	css: '',
+	document_title: '',
 	body_class: [],
 	page_media_type: 'screen',
 	highlight_style: 'github',
@@ -77,6 +78,11 @@ interface BasicConfig {
 	 * @see https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pageaddscripttagoptions
 	 */
 	script: FrameAddScriptTagOptions[];
+
+	/**
+	 * Name of the HTML Document.
+	 */
+	document_title: string;
 
 	/**
 	 * List of classes for the body tag.
