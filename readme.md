@@ -59,6 +59,7 @@ Options:
   --basedir ................ Base directory to be served by the file server
   --stylesheet ............. Path to a local or remote stylesheet (can be passed multiple times)
   --css .................... String of styles
+  --document-title ......... Name of the HTML Document.
   --body-class ............. Classes to be added to the body tag (can be passed multiple times)
   --page-media-type ........ Media type to emulate the page with (default: screen)
   --highlight-style ........ Style to be used by highlight.js (default: github)
@@ -149,6 +150,7 @@ pdf_options:
       }
     </style>
     <section>
+      <span class="title"></span>
       <span class="date"></span>
     </section>
   footerTemplate: |-
@@ -183,6 +185,7 @@ For default and advanced options see the following links. The default highlight.
 | `--basedir`             | `path/to/folder`                                                      |
 | `--stylesheet`          | `path/to/style.css`, `https://example.org/stylesheet.css`             |
 | `--css`                 | `body { color: tomato; }`                                             |
+| `--document-title`      | `Read me`                                                             |
 | `--body-class`          | `markdown-body`                                                       |
 | `--page-media-type`     | `print`                                                               |
 | `--highlight-style`     | `monokai`, `solarized-light`                                          |
