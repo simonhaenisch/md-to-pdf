@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/simonhaenisch/md-to-pdf/compare/v4.0.1...v4.1.0) (2021-09-23)
+
+
+### Features
+
+* add the option to set the document title ([#100](https://github.com/simonhaenisch/md-to-pdf/issues/100)) ([519fbc9](https://github.com/simonhaenisch/md-to-pdf/commit/519fbc98d6b472c368a4a379357aa3547f2b2dae))
+
 ### [4.0.1](https://github.com/simonhaenisch/md-to-pdf/compare/v4.0.0...v4.0.1) (2021-08-30)
 
 
