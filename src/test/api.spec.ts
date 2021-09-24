@@ -2,12 +2,16 @@ import test, { before } from 'ava';
 import { readFileSync, unlinkSync } from 'fs';
 import { basename, resolve } from 'path';
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf';
+import { TextItem } from 'pdfjs-dist/types/display/api';
 import { mdToPdf } from '..';
 
 const getPdfTextContent = async (content: Buffer) => {
 	const doc = await getDocument({ data: content }).promise;
 	const page = await doc.getPage(1);
-	const textContent = (await page.getTextContent()).items.map(({ str }) => str).join('');
+	const textContent = (await page.getTextContent()).items
+		.filter((item): item is TextItem => 'str' in item)
+		.map(({ str }) => str)
+		.join('');
 
 	return textContent;
 };
