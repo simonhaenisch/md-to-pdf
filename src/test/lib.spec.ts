@@ -59,8 +59,14 @@ test('getHtml should inject body classes', (t) => {
 	t.regex(html, /<body class="foo bar">/);
 });
 
+test('getHtml should have the title set', (t) => {
+	const html = getHtml('', { ...defaultConfig, document_title: 'Foo' }).replace(/\n/g, '');
+
+	t.regex(html, /<title>Foo<\/title>/);
+});
+
 // --
-// get-marked-with-highlighter
+// get-marked
 
 test('getMarked should highlight js code', (t) => {
 	const marked = getMarked({});
