@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/simonhaenisch/md-to-pdf/compare/v4.1.0...v5.0.0) (2021-09-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* If you previously used JS in front-matter, you'll now have to set `--gray-matter-options 'null'` (or `gray_matter_options: undefined`) to overwrite the new default options that disable the JS engine.
+
+### Bug Fixes
+
+* disable JS engine for front-matter by default to prevent RCE ([a716259](https://github.com/simonhaenisch/md-to-pdf/commit/a716259c548c82fa1d3b14a3422e9100619d2d8a)), closes [#99](https://github.com/simonhaenisch/md-to-pdf/issues/99)
+
 ## [4.1.0](https://github.com/simonhaenisch/md-to-pdf/compare/v4.0.1...v4.1.0) (2021-09-23)
 
 
