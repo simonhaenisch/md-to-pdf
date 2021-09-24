@@ -4,6 +4,14 @@ import { basename, resolve } from 'path';
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf';
 import { mdToPdf } from '..';
 
+const getPdfTextContent = async (content: Buffer) => {
+	const doc = await getDocument({ data: content }).promise;
+	const page = await doc.getPage(1);
+	const textContent = (await page.getTextContent()).items.map(({ str }) => str).join('');
+
+	return textContent;
+};
+
 before(() => {
 	const filesToDelete = [resolve(__dirname, 'basic', 'api-test.pdf'), resolve(__dirname, 'basic', 'api-test.html')];
 
@@ -62,10 +70,28 @@ test('compile the MathJax test', async (t) => {
 	t.is(pdf.filename, '');
 	t.truthy(pdf.content);
 
-	const doc = await getDocument({ data: pdf.content }).promise;
-	const page = await doc.getPage(1);
-	const text = (await page.getTextContent()).items.map(({ str }) => str).join('');
+	const textContent = await getPdfTextContent(pdf.content);
 
-	t.true(text.startsWith('Formulas with MathJax'));
-	t.true(text.includes('a≠0'));
+	t.true(textContent.startsWith('Formulas with MathJax'));
+	t.true(textContent.includes('a≠0'));
+});
+
+test('the JS engine is disabled by default', async (t) => {
+	const css = '`body::before { display: block; content: "${"i am injected"}"}`'; // eslint-disable-line no-template-curly-in-string
+
+	const pdf = await mdToPdf({ content: `---js\n{ css: ${css} }\n---` });
+
+	const textContent = await getPdfTextContent(pdf.content);
+
+	t.is(textContent, '');
+});
+
+test('the JS engine for front-matter can be enabled', async (t) => {
+	const css = '`body::before { display: block; content: "${"i am injected"}"}`'; // eslint-disable-line no-template-curly-in-string
+
+	const pdf = await mdToPdf({ content: `---js\n{ css: ${css} }\n---` }, { gray_matter_options: undefined });
+
+	const textContent = await getPdfTextContent(pdf.content);
+
+	t.is(textContent, 'i am injected');
 });

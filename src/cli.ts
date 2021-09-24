@@ -37,6 +37,7 @@ export const cliFlags = arg({
 	'--html-pdf-options': String,
 	'--pdf-options': String,
 	'--launch-options': String,
+	'--gray-matter-options': String,
 	'--port': Number,
 	'--md-file-encoding': String,
 	'--stylesheet-encoding': String,

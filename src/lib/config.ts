@@ -1,4 +1,5 @@
 import { WatchOptions } from 'chokidar';
+import { GrayMatterOption } from 'gray-matter';
 import { MarkedOptions } from 'marked';
 import { resolve } from 'path';
 import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
@@ -24,6 +25,14 @@ export const defaultConfig: Config = {
 		},
 	},
 	launch_options: {},
+	gray_matter_options: {
+		engines: {
+			js: () =>
+				new Error(
+					'The JS engine for front-matter is disabled by default for security reasons. You can enable it by configuring graymatter_options.',
+				),
+		},
+	},
 	md_file_encoding: 'utf-8',
 	stylesheet_encoding: 'utf-8',
 	as_html: false,
@@ -121,6 +130,13 @@ interface BasicConfig {
 	 * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
 	 */
 	launch_options: PuppeteerLaunchOptions;
+
+	/**
+	 * Options for gray-matter (front-matter parser).
+	 *
+	 * @see https://github.com/jonschlinkert/gray-matter#options
+	 */
+	gray_matter_options: GrayMatterOption<string, any>;
 
 	/**
 	 * Markdown file encoding. Default: `utf-8`.

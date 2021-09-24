@@ -66,6 +66,7 @@ Options:
   --marked-options ......... Set custom options for marked (as a JSON string)
   --pdf-options ............ Set custom options for the generated PDF (as a JSON string)
   --launch-options ......... Set custom launch options for Puppeteer
+  --gray-matter-options .... Set custom options for gray-matter
   --port ................... Set the port to run the http server on
   --md-file-encoding ....... Set the file encoding for the markdown file
   --stylesheet-encoding .... Set the file encoding for the stylesheet
@@ -192,6 +193,7 @@ For default and advanced options see the following links. The default highlight.
 | `--marked-options`      | `'{ "gfm": false }'`                                                  |
 | `--pdf-options`         | `'{ "format": "Letter", "margin": "20mm", "printBackground": true }'` |
 | `--launch-options`      | `'{ "args": ["--no-sandbox"] }'`                                      |
+| `--gray-matter-options` | `null`                                                                |
 | `--port`                | `3000`                                                                |
 | `--md-file-encoding`    | `utf-8`, `windows1252`                                                |
 | `--stylesheet-encoding` | `utf-8`, `windows1252`                                                |
@@ -202,6 +204,8 @@ For default and advanced options see the following links. The default highlight.
 **`highlight-style`:** if you set a highlight style with a background color, make sure that `"printBackground": true` is set in the pdf options.
 
 The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). In that case, remove the leading two hyphens (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. to create an array). It's possible to set the output path for the PDF as `dest` in the config. If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
+
+The JS engine for front-matter is disabled by default for security reasons. You can enable it by overwriting the default gray-matter options (`--gray-matter-options null`, or `gray_matter_options: undefined` in the API).
 
 Example front-matter:
 
@@ -267,9 +271,15 @@ css: |-
 ---
 ```
 
-## Security Consideration
+## Security Considerations
+
+### Local file server
 
 By default, this tool serves the current working directory via a http server on `localhost` on a relatively random port (or the port you specify), and that server gets shut down when the process exits (or as soon as it is killed). Please be aware that for the duration of the process this server will be accessible on your local network, and therefore all files within the served folder that the process has permission to read. So as a suggestion, maybe don't run this in watch mode in your system's root folder. 😉
+
+### Don't trust markdown content you don't control
+
+If you intend to use this tool to convert user-provided markdown content, please be aware that - as always - you should sanitize it before processing it with `md-to-pdf`.
 
 ## Customization/Development
 

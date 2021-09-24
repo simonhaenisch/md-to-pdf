@@ -23,14 +23,21 @@ export const convertMdToPdf = async (
 			? input.content
 			: await readFile(input.path, args['--md-file-encoding'] ?? config.md_file_encoding);
 
-	const { content: md, data: frontMatterConfig } = grayMatter(mdFileContent);
+	const { content: md, data: frontMatterConfig } = grayMatter(
+		mdFileContent,
+		args['--gray-matter-options'] ? JSON.parse(args['--gray-matter-options']) : config.gray_matter_options,
+	);
 
 	// merge front-matter config
-	config = {
-		...config,
-		...(frontMatterConfig as Config),
-		pdf_options: { ...config.pdf_options, ...frontMatterConfig.pdf_options },
-	};
+	if (frontMatterConfig instanceof Error) {
+		console.warn('Warning: the front-matter was ignored because it could not be parsed:\n', frontMatterConfig);
+	} else {
+		config = {
+			...config,
+			...(frontMatterConfig as Config),
+			pdf_options: { ...config.pdf_options, ...frontMatterConfig.pdf_options },
+		};
+	}
 
 	const { headerTemplate, footerTemplate, displayHeaderFooter } = config.pdf_options;
 
