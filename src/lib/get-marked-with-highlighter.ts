@@ -1,7 +1,7 @@
 import hljs from 'highlight.js';
-import marked, { MarkedOptions } from 'marked';
+import { marked } from 'marked';
 
-export const getMarked = (options: MarkedOptions) => {
+export const getMarked = (options: marked.MarkedOptions) => {
 	const renderer = options.renderer ?? new marked.Renderer();
 
 	// only add if the renderer has no custom `code` property yet

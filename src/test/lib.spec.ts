@@ -50,7 +50,7 @@ test('getHtml should return a valid html document', (t) => {
 test('getHtml should inject rendered markdown', (t) => {
 	const html = getHtml('# Foo', defaultConfig).replace(/\n/g, '');
 
-	t.regex(html, /<body class=""><h1 id="foo">Foo<\/h1>.*<\/body>/);
+	t.regex(html, /<body class="">\s*<h1 id="foo">Foo<\/h1>\s*<\/body>/);
 });
 
 test('getHtml should inject body classes', (t) => {

@@ -1,6 +1,6 @@
 import { WatchOptions } from 'chokidar';
 import { GrayMatterOption } from 'gray-matter';
-import { MarkedOptions } from 'marked';
+import { marked } from 'marked';
 import { resolve } from 'path';
 import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
 
@@ -115,7 +115,7 @@ interface BasicConfig {
 	 *
 	 * @see https://marked.js.org/#/USING_ADVANCED.md
 	 */
-	marked_options: MarkedOptions;
+	marked_options: marked.MarkedOptions;
 
 	/**
 	 * PDF options for Puppeteer.

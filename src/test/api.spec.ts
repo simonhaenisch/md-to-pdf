@@ -2,7 +2,7 @@ import test, { before } from 'ava';
 import { readFileSync, unlinkSync } from 'fs';
 import { basename, resolve } from 'path';
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf';
-import { TextItem } from 'pdfjs-dist/types/display/api';
+import { TextItem } from 'pdfjs-dist/types/src/display/api';
 import { mdToPdf } from '..';
 
 const getPdfTextContent = async (content: Buffer) => {
