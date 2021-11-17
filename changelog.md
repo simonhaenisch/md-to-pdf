@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.0.1](https://github.com/simonhaenisch/md-to-pdf/compare/v5.0.0...v5.0.1) (2021-11-17)
+
+
+### Bug Fixes
+
+* remove !important from code-block bg color ([01ab732](https://github.com/simonhaenisch/md-to-pdf/commit/01ab732befafa3189c0b22e77d2a4f487c757398)), closes [#103](https://github.com/simonhaenisch/md-to-pdf/issues/103)
+
 ## [5.0.0](https://github.com/simonhaenisch/md-to-pdf/compare/v4.1.0...v5.0.0) (2021-09-24)
 
 
