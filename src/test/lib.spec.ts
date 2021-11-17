@@ -12,6 +12,14 @@ import { isMdFile } from '../lib/is-md-file';
 import { readFile } from '../lib/read-file';
 
 // --
+// config
+test("gray-matter's js engine is disabled by default", (t) => {
+	t.throws(() => {
+		throw (defaultConfig.gray_matter_options.engines!.js as () => Error)();
+	});
+});
+
+// --
 // helpers
 
 test('setProcessAndTermTitle should not throw', (t) => {

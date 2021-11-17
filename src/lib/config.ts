@@ -29,7 +29,7 @@ export const defaultConfig: Config = {
 		engines: {
 			js: () =>
 				new Error(
-					'The JS engine for front-matter is disabled by default for security reasons. You can enable it by configuring graymatter_options.',
+					'The JS engine for front-matter is disabled by default for security reasons. You can enable it by configuring gray_matter_options.',
 				),
 		},
 	},
