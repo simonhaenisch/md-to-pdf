@@ -57,6 +57,7 @@ Options:
   -w, --watch .............. Watch the current file(s) for changes
   --watch-options .......... Options for Chokidar's watch call
   --basedir ................ Base directory to be served by the file server
+  --dest ................... Optional destination directory for the output file(s)
   --stylesheet ............. Path to a local or remote stylesheet (can be passed multiple times)
   --css .................... String of styles
   --document-title ......... Name of the HTML Document.

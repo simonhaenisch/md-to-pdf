@@ -25,6 +25,7 @@ export const cliFlags = arg({
 	'--help': Boolean,
 	'--version': Boolean,
 	'--basedir': String,
+	'--dest': String,
 	'--watch': Boolean,
 	'--watch-options': String,
 	'--stylesheet': [String],
