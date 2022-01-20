@@ -7,6 +7,7 @@ on:
       - 'src/**'
       - 'markdown.css'
       - 'package*.json'
+  pull_request:
 
 jobs:
   build:
