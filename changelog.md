@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.0.2](https://github.com/simonhaenisch/md-to-pdf/compare/v5.0.1...v5.0.2) (2022-01-21)
+
+
+### Bug Fixes
+
+* upgrade marked to prevent GHSA-rrrm-qjm4-v8hf ([80083a8](https://github.com/simonhaenisch/md-to-pdf/commit/80083a8f8f1e6a860526d48a5e90f5371c408cb9)), closes [#112](https://github.com/simonhaenisch/md-to-pdf/issues/112)
+
 ### [5.0.1](https://github.com/simonhaenisch/md-to-pdf/compare/v5.0.0...v5.0.1) (2021-11-17)
 
 
