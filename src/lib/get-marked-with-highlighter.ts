@@ -3,8 +3,7 @@ import { marked } from 'marked';
 
 export const getMarked = (options: marked.MarkedOptions) => {
 	const highlightPatch = {
-		highlight: function(code, lang) {
-			const hljs = require('highlight.js');
+		highlight: (code, lang) => {
 			const language = hljs.getLanguage(lang) ? lang : 'plaintext';
 			return hljs.highlight(code, { language }).value;
 		},
