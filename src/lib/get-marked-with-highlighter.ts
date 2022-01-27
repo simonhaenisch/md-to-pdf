@@ -11,7 +11,7 @@ export const getMarked = (options: marked.MarkedOptions) => {
 		// langPrefix: 'hljs language-' // utilizes the hljs CSS class
 	}
 
-	marked.setOptions({ highlightPatch, ...options});
+	marked.setOptions({ ...highlightPatch, ...options});
 
 	return marked;
 };
