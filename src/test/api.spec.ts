@@ -76,8 +76,6 @@ test('compile the MathJax test', async (t) => {
 
 	const textContent = await getPdfTextContent(pdf.content);
 
-	console.log({ textContent });
-
 	t.true(textContent.startsWith('Formulas with MathJax'));
 	t.regex(textContent, /a\s≠\s0/);
 });
