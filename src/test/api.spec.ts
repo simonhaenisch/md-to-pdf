@@ -76,8 +76,10 @@ test('compile the MathJax test', async (t) => {
 
 	const textContent = await getPdfTextContent(pdf.content);
 
+	console.log({ textContent });
+
 	t.true(textContent.startsWith('Formulas with MathJax'));
-	t.true(textContent.includes('a≠0'));
+	t.regex(textContent, /a\s≠\s0/);
 });
 
 test('the JS engine is disabled by default', async (t) => {
