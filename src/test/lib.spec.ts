@@ -87,7 +87,7 @@ test('getMarked should highlight unknown code as plaintext', (t) => {
 	const marked = getMarked({});
 	const html = marked('```\nvar foo="bar";\n```');
 
-	t.true(html.includes('<code class="hljs plaintext">'));
+	t.true(html.includes('<code>'));
 });
 
 test('getMarked should accept a custom renderer', (t) => {
