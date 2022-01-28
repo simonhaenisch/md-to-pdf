@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.1.0](https://github.com/simonhaenisch/md-to-pdf/compare/v5.0.2...v5.1.0) (2022-01-28)
+
+
+### Features
+
+* switch to `highlight` option instead of overwriting `renderer.code` ([#115](https://github.com/simonhaenisch/md-to-pdf/issues/115)) ([acee2f8](https://github.com/simonhaenisch/md-to-pdf/commit/acee2f8d612d25ed09a7c7c6cfc388fca8b93a42)), closes [#114](https://github.com/simonhaenisch/md-to-pdf/issues/114)
+
 ### [5.0.2](https://github.com/simonhaenisch/md-to-pdf/compare/v5.0.1...v5.0.2) (2022-01-21)
 
 
