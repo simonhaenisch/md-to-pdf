@@ -37,6 +37,7 @@ export const defaultConfig: Config = {
 	stylesheet_encoding: 'utf-8',
 	as_html: false,
 	devtools: false,
+	marked_extensions: []
 };
 
 /**
@@ -165,6 +166,13 @@ interface BasicConfig {
 	 * This is specifically useful when running into issues when editor plugins trigger additional saves after the initial save.
 	 */
 	watch_options?: WatchOptions;
+
+	/**
+	 * Custm Extensions to be passed to marked.
+	 * 
+	 * See https://marked.js.org/using_pro#extensions
+	 */
+	 marked_extensions: marked.MarkedExtension[]
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
