@@ -170,9 +170,9 @@ interface BasicConfig {
 	/**
 	 * Custm Extensions to be passed to marked.
 	 * 
-	 * See https://marked.js.org/using_pro#extensions
+	 * @see https://marked.js.org/using_pro#extensions
 	 */
-	 marked_extensions: marked.MarkedExtension[]
+	 marked_extensions: marked.MarkedExtension[];
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
