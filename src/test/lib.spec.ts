@@ -77,14 +77,14 @@ test('getHtml should have the title set', (t) => {
 // get-marked
 
 test('getMarked should highlight js code', (t) => {
-	const marked = getMarked({});
+	const marked = getMarked({}, []);
 	const html = marked('```js\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code class="hljs js">'));
 });
 
 test('getMarked should highlight unknown code as plaintext', (t) => {
-	const marked = getMarked({});
+	const marked = getMarked({}, []);
 	const html = marked('```\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code>'));
@@ -96,7 +96,7 @@ test('getMarked should accept a custom renderer', (t) => {
 	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 	renderer.link = (href, _, text) => `<a class="custom" href="${href}">${text}</a>`;
 
-	const marked = getMarked({ renderer });
+	const marked = getMarked({ renderer }, []);
 	const html = marked('[Foo](/bar)');
 
 	t.true(html.includes('<a class="custom" href="/bar">Foo</a>'));
@@ -107,7 +107,7 @@ test('getMarked should accept a custom renderer with custom code highlighter', (
 
 	renderer.code = (code) => `<custom-code>${code}</custom-code>`;
 
-	const marked = getMarked({ renderer });
+	const marked = getMarked({ renderer }, []);
 	const html = marked('```\nvar foo="bar";\n```');
 
 	t.true(html.includes('<custom-code>var foo="bar";</custom-code>'));
