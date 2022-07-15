@@ -37,7 +37,7 @@ export const defaultConfig: Config = {
 	stylesheet_encoding: 'utf-8',
 	as_html: false,
 	devtools: false,
-	marked_extensions: []
+	marked_extensions: [],
 };
 
 /**
