@@ -132,7 +132,7 @@ Place an element with class `page-break` to force a page break at a certain poin
 
 #### Header/Footer
 
-Use `headerTemplate` and `footerTemplate` of Puppeteer's [`page.pdf()` options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions). If either of the two is set, then `displayHeaderFooter` will be enabled by default. It's possible to inject a few dynamic values like page numbers by using certain class names, as stated in the Puppeteer docs. Please note that for some reason the font-size defaults to 1pt, and you need to make sure to have enough page margin, otherwise your header/footer might be overlayed by your content. If you add a `<style/>` tag in either of the templates, it will be applied to both header and footer.
+Use `headerTemplate` and `footerTemplate` of Puppeteer's [`page.pdf()` options](https://pptr.dev/api/puppeteer.pdfoptions/). If either of the two is set, then `displayHeaderFooter` will be enabled by default. It's possible to inject a few dynamic values like page numbers by using certain class names, as stated in the Puppeteer docs. Please note that for some reason the font-size defaults to 1pt, and you need to make sure to have enough page margin, otherwise your header/footer might be overlayed by your content. If you add a `<style/>` tag in either of the templates, it will be applied to both header and footer.
 
 Example markdown frontmatter config that prints the date in the header and the page number in the footer:
 
@@ -164,7 +164,7 @@ pdf_options:
 ---
 ```
 
-Refer to the [Puppeteer docs](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions) for more info about headers and footers.
+Refer to the Puppeteer docs for more info about [header](https://pptr.dev/api/puppeteer.pdfoptions.headertemplate) and [footer](https://pptr.dev/api/puppeteer.pdfoptions.footertemplate) templates.
 
 #### Formulas
 
@@ -174,10 +174,10 @@ This can be achieved with [MathJax](https://www.mathjax.org/). A simple example 
 
 For default and advanced options see the following links. The default highlight.js styling for code blocks is `github`. The default PDF options are the A4 format and some margin (see `lib/config.ts` for the full default config).
 
-- [Marked Advanced Options](https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md)
-- [Puppeteer PDF Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions)
-- [Puppeteer Launch Options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions)
-- [highlight.js Styles](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
+- [Marked Advanced Options](https://marked.js.org/using_advanced)
+- [Puppeteer PDF Options](https://pptr.dev/api/puppeteer.pdfoptions)
+- [Puppeteer Launch Options](https://pptr.dev/next/api/puppeteer.launchoptions)
+- [highlight.js Styles](https://github.com/highlightjs/highlight.js/tree/main/src/styles)
 
 ## Options
 
@@ -292,7 +292,7 @@ Ideas, feature requests and PRs are welcome. Just keep it simple! 🤓
 I want to thank the following people:
 
 - [imcvampire](https://github.com/imcvampire) for handing over the npm package name.
-- [Sindre Sorhus](https://github.com/sindresorhus) and [Zeit](https://github.com/zeit) for inspiration on how to write cli tools.
+- [Sindre Sorhus](https://github.com/sindresorhus) and [Vercel](https://github.com/vercel) (formerly _Zeit_) for inspiration on how to write cli tools.
 - [Josh Bruce](https://github.com/joshbruce) for [reviving Marked](https://github.com/markedjs/marked/issues/1106).
 
 ## License
