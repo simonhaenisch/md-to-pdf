@@ -49,7 +49,7 @@ pdf_options:
 
 ## 4. Long Paragraph
 
-Cross-reference to [The End](#6-the-end).
+Cross-reference to [The End](#7-the-end).
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eos, fugit totam laboriosam harum earum cupiditate corporis, facilis nulla dolor hic consequatur. Magnam maiores unde aut esse est perferendis quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nobis laudantium iste repudiandae! Iusto, voluptas. Suscipit, iure autem! Fugiat, enim? Placeat quisquam optio reiciendis similique et ex voluptatum labore sit?
 
