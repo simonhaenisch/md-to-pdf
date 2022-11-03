@@ -10,6 +10,7 @@ import getPort from 'get-port';
 import getStdin from 'get-stdin';
 import Listr from 'listr';
 import path from 'path';
+import puppeteer from 'puppeteer';
 import { PackageJson } from '.';
 import { Config, defaultConfig } from './lib/config';
 import { help } from './lib/help';
@@ -64,6 +65,7 @@ main(cliFlags, defaultConfig).catch((error) => {
 
 async function main(args: typeof cliFlags, config: Config) {
 	setProcessAndTermTitle('md-to-pdf');
+	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 	if (!validateNodeVersion()) {
 		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');
@@ -125,25 +127,28 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	if (stdin) {
-		await convertMdToPdf({ content: stdin }, config, args)
+		const stdContext = await browser.createIncognitoBrowserContext();
+		await convertMdToPdf({ content: stdin }, config, args, stdContext)
 			.then(async () => closeServer(server))
 			.catch(async (error: Error) => {
 				await closeServer(server);
-
 				throw error;
 			});
+
+		await browser.close();
 
 		return;
 	}
 
+	const listrContext = await browser.createIncognitoBrowserContext();
 	const getListrTask = (file: string) => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-		task: async () => convertMdToPdf({ path: file }, config, args),
+		task: async () => convertMdToPdf({ path: file }, config, args, listrContext),
 	});
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
 		.run()
-		.then(() => {
+		.then(async () => {
 			if (args['--watch']) {
 				console.log(chalk.bgBlue('\n watching for changes \n'));
 
@@ -155,6 +160,7 @@ async function main(args: typeof cliFlags, config: Config) {
 					new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error),
 				);
 			} else {
+				await browser.close();
 				server.close();
 			}
 		})

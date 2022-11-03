@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import grayMatter from 'gray-matter';
 import { dirname, resolve } from 'path';
+import puppeteer from 'puppeteer';
 import { Config } from './config';
 import { generateOutput } from './generate-output';
 import { getHtml } from './get-html';
@@ -17,6 +18,7 @@ export const convertMdToPdf = async (
 	input: { path: string } | { content: string },
 	config: Config,
 	args: CliArgs = {} as CliArgs,
+	browser: puppeteer.BrowserContext,
 ) => {
 	const mdFileContent =
 		'content' in input
@@ -87,7 +89,7 @@ export const convertMdToPdf = async (
 
 	const relativePath = 'path' in input ? resolve(input.path).replace(config.basedir, '') : '/';
 
-	const output = await generateOutput(html, relativePath, config);
+	const output = await generateOutput({ html, relativePath, config, browser });
 
 	if (!output) {
 		if (config.devtools) {

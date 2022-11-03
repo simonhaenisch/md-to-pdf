@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import getPort from 'get-port';
+import puppeteer from 'puppeteer';
 import { Config, defaultConfig, HtmlConfig, PdfConfig } from './lib/config';
 import { HtmlOutput, Output, PdfOutput } from './lib/generate-output';
 import { getDir } from './lib/helpers';
@@ -50,7 +51,9 @@ export async function mdToPdf(input: Input, config: Partial<Config> = {}): Promi
 
 	const server = await serveDirectory(mergedConfig);
 
-	const pdf = await convertMdToPdf(input, mergedConfig);
+	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
+	const md2pdfContext = await browser.createIncognitoBrowserContext();
+	const pdf = await convertMdToPdf(input, mergedConfig, undefined, md2pdfContext);
 
 	server.close();
 

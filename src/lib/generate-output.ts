@@ -16,15 +16,16 @@ interface BasicOutput {
 	filename: string | undefined;
 }
 
+interface GenerateOutputProps {
+	html: string;
+	relativePath: string;
+	config: PdfConfig | HtmlConfig | Config;
+	browser: puppeteer.BrowserContext;
+}
 /**
  * Generate the output (either PDF or HTML).
  */
-export async function generateOutput(html: string, relativePath: string, config: PdfConfig): Promise<PdfOutput>;
-export async function generateOutput(html: string, relativePath: string, config: HtmlConfig): Promise<HtmlOutput>;
-export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output>;
-export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output> {
-	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
-
+export async function generateOutput({ html, relativePath, config, browser }: GenerateOutputProps): Promise<Output> {
 	const page = await browser.newPage();
 
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -64,8 +65,6 @@ export async function generateOutput(html: string, relativePath: string, config:
 		await page.emulateMediaType(config.page_media_type);
 		outputFileContent = await page.pdf(config.pdf_options);
 	}
-
-	await browser.close();
 
 	return config.devtools ? (undefined as any) : { filename: config.dest, content: outputFileContent };
 }
