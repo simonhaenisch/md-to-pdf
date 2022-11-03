@@ -77,7 +77,7 @@ export const convertMdToPdf = async (
 
         // Add emoji extension
         if (config.emoji) {
-          config.marked_extensions.push(emojiExtension);
+                config.marked_extensions.push(emojiExtension);
         }
 
 	const highlightStylesheet = resolve(

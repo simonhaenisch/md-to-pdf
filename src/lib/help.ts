@@ -25,7 +25,7 @@ const helpText = `
     --stylesheet-encoding ${chalk.dim('....')} Set the file encoding for the stylesheet
     --as-html ${chalk.dim('................')} Output as HTML instead
     --config-file ${chalk.dim('............')} Path to a JSON or JS configuration file
-    --devtools ${chalk.dim('...............')} Open the browser with devtools instead of creating PDF PROOT
+    --devtools ${chalk.dim('...............')} Open the browser with devtools instead of creating PDF
 
   ${chalk.dim.underline.bold('Examples:')}
 
