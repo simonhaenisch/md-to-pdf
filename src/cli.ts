@@ -45,6 +45,7 @@ export const cliFlags = arg({
 	'--as-html': Boolean,
 	'--config-file': String,
 	'--devtools': Boolean,
+        '--emoji': Boolean,
 
 	// aliases
 	'-h': '--help',

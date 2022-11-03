@@ -130,3 +130,11 @@ table tr {
 table tr:nth-child(2n) {
 	background-color: whitesmoke;
 }
+
+.emoji {
+        background: transparent;
+        height: 1em;
+        margin: 0 0.05em 0 0.1em !important;
+        vertical-align: -0.1em;
+        width: 1em;
+}
