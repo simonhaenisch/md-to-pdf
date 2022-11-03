@@ -128,7 +128,7 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	if (stdin) {
 		const stdContext = await browser.createIncognitoBrowserContext();
-		await convertMdToPdf({ content: stdin }, config, args, stdContext)
+		await convertMdToPdf({ content: stdin }, config, stdContext, args)
 			.then(async () => closeServer(server))
 			.catch(async (error: Error) => {
 				await closeServer(server);
@@ -143,7 +143,7 @@ async function main(args: typeof cliFlags, config: Config) {
 	const listrContext = await browser.createIncognitoBrowserContext();
 	const getListrTask = (file: string) => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-		task: async () => convertMdToPdf({ path: file }, config, args, listrContext),
+		task: async () => convertMdToPdf({ path: file }, config, listrContext, args),
 	});
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })

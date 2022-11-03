@@ -17,8 +17,8 @@ type CliArgs = typeof import('../cli').cliFlags;
 export const convertMdToPdf = async (
 	input: { path: string } | { content: string },
 	config: Config,
-	args: CliArgs = {} as CliArgs,
 	browser: puppeteer.BrowserContext,
+	args: CliArgs = {} as CliArgs,
 ) => {
 	const mdFileContent =
 		'content' in input
