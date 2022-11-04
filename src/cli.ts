@@ -65,7 +65,6 @@ main(cliFlags, defaultConfig).catch((error) => {
 
 async function main(args: typeof cliFlags, config: Config) {
 	setProcessAndTermTitle('md-to-pdf');
-	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 	if (!validateNodeVersion()) {
 		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');
@@ -125,6 +124,7 @@ async function main(args: typeof cliFlags, config: Config) {
 	/**
 	 * 4. Either process stdin or create a Listr task for each file.
 	 */
+	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 	if (stdin) {
 		const stdContext = await browser.createIncognitoBrowserContext();
