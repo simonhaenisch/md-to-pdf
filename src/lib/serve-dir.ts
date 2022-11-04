@@ -17,4 +17,5 @@ export const serveDirectory = async ({ basedir, port }: Config) =>
 /**
  * Close the given server instance asynchronously.
  */
-export const closeServer = async (server: Server) => new Promise((resolve) => server.close(resolve));
+export const closeServer = async (server: Server) =>
+	new Promise<void>((resolve, reject) => server.close((err) => (err ? reject(err) : resolve())));
