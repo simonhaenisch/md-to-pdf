@@ -12,6 +12,7 @@ import Listr from 'listr';
 import path from 'path';
 import { PackageJson } from '.';
 import { Config, defaultConfig } from './lib/config';
+import { closeBrowser } from './lib/generate-output';
 import { help } from './lib/help';
 import { setProcessAndTermTitle } from './lib/helpers';
 import { convertMdToPdf } from './lib/md-to-pdf';
@@ -126,10 +127,11 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	if (stdin) {
 		await convertMdToPdf({ content: stdin }, config, args)
-			.then(async () => closeServer(server))
-			.catch(async (error: Error) => {
+			.finally(async () => {
+				await closeBrowser();
 				await closeServer(server);
-
+			})
+			.catch((error: Error) => {
 				throw error;
 			});
 
@@ -143,7 +145,7 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
 		.run()
-		.then(() => {
+		.then(async () => {
 			if (args['--watch']) {
 				console.log(chalk.bgBlue('\n watching for changes \n'));
 
@@ -155,7 +157,16 @@ async function main(args: typeof cliFlags, config: Config) {
 					new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error),
 				);
 			} else {
-				server.close();
+				await closeBrowser();
+				await closeServer(server);
+				/**
+				 * @todo why are there still open connections to the server even after closing the browser :/
+				 *
+				 * Can be inspected with `console.log((process as any)._getActiveHandles());`
+				 *
+				 * Maybe https://github.com/isaacs/server-destroy would fix it.
+				 */
+				process.exit();
 			}
 		})
 		.catch((error: Error) => {

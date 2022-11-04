@@ -17,13 +17,25 @@ interface BasicOutput {
 }
 
 /**
+ * Store a single browser instance reference so that we can re-use it.
+ */
+let browser: puppeteer.Browser | undefined;
+
+/**
+ * Close the browser instance.
+ */
+export const closeBrowser = () => browser?.close();
+
+/**
  * Generate the output (either PDF or HTML).
  */
 export async function generateOutput(html: string, relativePath: string, config: PdfConfig): Promise<PdfOutput>;
 export async function generateOutput(html: string, relativePath: string, config: HtmlConfig): Promise<HtmlOutput>;
 export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output>;
 export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output> {
-	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
+	if (!browser) {
+		browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
+	}
 
 	const page = await browser.newPage();
 
@@ -65,7 +77,7 @@ export async function generateOutput(html: string, relativePath: string, config:
 		outputFileContent = await page.pdf(config.pdf_options);
 	}
 
-	await browser.close();
+	await page.close();
 
 	return config.devtools ? (undefined as any) : { filename: config.dest, content: outputFileContent };
 }
