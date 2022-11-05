@@ -159,14 +159,6 @@ async function main(args: typeof cliFlags, config: Config) {
 			} else {
 				await closeBrowser();
 				await closeServer(server);
-				/**
-				 * @todo why are there still open connections to the server even after closing the browser :/
-				 *
-				 * Can be inspected with `console.log((process as any)._getActiveHandles());`
-				 *
-				 * Maybe https://github.com/isaacs/server-destroy would fix it.
-				 */
-				process.exit();
 			}
 		})
 		.catch((error: Error) => {

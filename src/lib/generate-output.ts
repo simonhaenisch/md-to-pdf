@@ -19,12 +19,12 @@ interface BasicOutput {
 /**
  * Store a single browser instance reference so that we can re-use it.
  */
-let browser: puppeteer.Browser | undefined;
+let browserPromise: Promise<puppeteer.Browser> | undefined;
 
 /**
  * Close the browser instance.
  */
-export const closeBrowser = () => browser?.close();
+export const closeBrowser = async () => (await browserPromise)?.close();
 
 /**
  * Generate the output (either PDF or HTML).
@@ -33,9 +33,11 @@ export async function generateOutput(html: string, relativePath: string, config:
 export async function generateOutput(html: string, relativePath: string, config: HtmlConfig): Promise<HtmlOutput>;
 export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output>;
 export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output> {
-	if (!browser) {
-		browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
+	if (!browserPromise) {
+		browserPromise = puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 	}
+
+	const browser = await browserPromise;
 
 	const page = await browser.newPage();
 
