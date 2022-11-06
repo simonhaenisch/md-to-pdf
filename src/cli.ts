@@ -143,7 +143,7 @@ async function main(args: typeof cliFlags, config: Config) {
 		task: async () => convertMdToPdf({ path: file }, config, args),
 	});
 
-	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
+	await new Listr(files.map(getListrTask), { concurrent: config.concurrency, exitOnError: false })
 		.run()
 		.then(async () => {
 			if (args['--watch']) {
