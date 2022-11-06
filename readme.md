@@ -6,7 +6,7 @@
 
 ![Screenshot of markdown file and resulting PDF](https://files-iiiuxybjc.now.sh)
 
-**A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is ~only \~250 lines of JS~ ~400 lines of Typescript and ~100 lines of CSS, so it is easy to clone and customize.
+**A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is ~only \~250 lines of JS~ ~500 lines of Typescript and ~100 lines of CSS, so it is easy to clone and customize.
 
 **Highlights:**
 
