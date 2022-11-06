@@ -27,7 +27,7 @@
     "start": "tsc -p tsconfig.build.json --watch",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rm -rf dist",
-    "prepare": "npm run clean && npm run build",
+    "prepack": "npm run clean && npm run build",
     "lint": "xo",
     "test": "xo && tsc -p tsconfig.type-test.json && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts --timeout=1m",
     "release": "npm test && npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish",
