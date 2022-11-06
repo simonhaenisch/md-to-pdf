@@ -84,7 +84,8 @@
     ],
     "require": [
       "ts-node/register"
-    ]
+    ],
+    "verbose": true
   },
   "prettier": {
     "printWidth": 120,
