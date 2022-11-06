@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.2.0](https://github.com/simonhaenisch/md-to-pdf/compare/v5.1.0...v5.2.0) (2022-11-06)
+
+
+### Features
+
+* allow passing custom extensions to marked ([#127](https://github.com/simonhaenisch/md-to-pdf/issues/127)) ([d790b2b](https://github.com/simonhaenisch/md-to-pdf/commit/d790b2ba9ddaf37f4d915f3877c8cbec2d20540d))
+
+
+### Bug Fixes
+
+* closeServer rejects when server.close has an error ([7a4a142](https://github.com/simonhaenisch/md-to-pdf/commit/7a4a142813ea543ecae585412383b09b1faaa064))
+
 ## [5.1.0](https://github.com/simonhaenisch/md-to-pdf/compare/v5.0.2...v5.1.0) (2022-01-28)
 
 
