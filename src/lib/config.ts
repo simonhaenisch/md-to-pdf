@@ -1,9 +1,51 @@
+import arg from 'arg';
 import { WatchOptions } from 'chokidar';
 import { GrayMatterOption } from 'gray-matter';
 import { marked } from 'marked';
 import { resolve } from 'path';
 import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
 
+// --
+// Configure CLI Arguments
+export const cliFlags = arg({
+	'--help': Boolean,
+	'--version': Boolean,
+	'--basedir': String,
+	'--watch': Boolean,
+	'--watch-options': String,
+	'--watch-timeout': Number,
+	'--stylesheet': [String],
+	'--css': String,
+	'--document-title': String,
+	'--body-class': [String],
+	'--page-media-type': String,
+	'--highlight-style': String,
+	'--marked-options': String,
+	'--html-pdf-options': String,
+	'--pdf-options': String,
+	'--launch-options': String,
+	'--gray-matter-options': String,
+	'--port': Number,
+	'--md-file-encoding': String,
+	'--stylesheet-encoding': String,
+	'--as-html': Boolean,
+	'--config-file': String,
+	'--devtools': Boolean,
+
+	// aliases
+	'-h': '--help',
+	'-v': '--version',
+	'-w': '--watch',
+});
+
+/**
+ * Possible cliFlags
+ */
+export type CliArgs = typeof cliFlags;
+
+/*
+ * default Config that can be overwritten.
+ */
 export const defaultConfig: Config = {
 	basedir: process.cwd(),
 	stylesheet: [resolve(__dirname, '..', '..', 'markdown.css')],
@@ -38,6 +80,7 @@ export const defaultConfig: Config = {
 	as_html: false,
 	devtools: false,
 	marked_extensions: [],
+	watch_timeout: 250,
 };
 
 /**
@@ -173,6 +216,16 @@ interface BasicConfig {
 	 * @see https://marked.js.org/using_pro#extensions
 	 */
 	marked_extensions: marked.MarkedExtension[];
+
+	/**
+	 * Timeout (in ms) for delaying the change and add handler in watch mode.
+	 * Adjusts the timeout of the watcher events. If multiple 'add' or 'change' events are fired, before the timout exceeds,
+	 * the timeout gets resetted with each event.
+	 * The watcher collects all events, reduces them to unique events, and passes the tasks to the converter after timeout.
+	 * Shorter timeout could mean higher CPU and Memory load on big amount of events.
+	 * Default: 250 (ms)
+	 */
+	watch_timeout: number;
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
