@@ -1,4 +1,4 @@
-const extensions = /\.(md|mkd|mdown|markdown)(\.txt)?$/i;
+const extensions = /\.(md|mkd|mdown|markdown)$/i;
 
 /**
  * Check whether a path is a markdown file.

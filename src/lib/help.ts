@@ -8,7 +8,8 @@ const helpText = `
     -h, --help ${chalk.dim('...............')} Output usage information
     -v, --version ${chalk.dim('............')} Output version
     -w, --watch ${chalk.dim('..............')} Watch the current file(s) for changes
-		--watch-options ${chalk.dim('..........')} Options for Chokidar's watch call
+    --watch-options ${chalk.dim('..........')} Options for Chokidar's watch call
+    --watch-timeout ${chalk.dim('..........')} Duration to buffer events for watcher in ms (default: 250)
     --basedir ${chalk.dim('................')} Base directory to be served by the file server
     --stylesheet ${chalk.dim('.............')} Path to a local or remote stylesheet (can be passed multiple times)
     --css ${chalk.dim('....................')} String of styles
@@ -19,7 +20,7 @@ const helpText = `
     --marked-options ${chalk.dim('.........')} Set custom options for marked (as a JSON string)
     --pdf-options ${chalk.dim('............')} Set custom options for the generated PDF (as a JSON string)
     --launch-options ${chalk.dim('.........')} Set custom launch options for Puppeteer
-		--gray-matter-options ${chalk.dim('....')} Set custom options for gray-matter
+    --gray-matter-options ${chalk.dim('....')} Set custom options for gray-matter
     --port ${chalk.dim('...................')} Set the port to run the http server on
     --md-file-encoding ${chalk.dim('.......')} Set the file encoding for the markdown file
     --stylesheet-encoding ${chalk.dim('....')} Set the file encoding for the stylesheet
@@ -33,21 +34,26 @@ const helpText = `
 
     ${chalk.cyan('$ md-to-pdf file.md')}
 
-  ${chalk.gray('–')} Convert all markdown files in current directory
+  ${chalk.gray('–')} Convert all markdown files in directory and recursive in all subdirectories 
+
+    ${chalk.cyan('$ md-to-pdf /path/to/folder')}
+    ${chalk.cyan('$ md-to-pdf .')}
+
+  ${chalk.gray('–')} Convert all markdown files in current directory 
 
     ${chalk.cyan('$ md-to-pdf ./*.md')}
 
-  ${chalk.gray('–')} Convert all markdown files in current directory recursively
+  ${chalk.gray('–')} Convert all markdown files in current directory recursively 
 
     ${chalk.cyan('$ md-to-pdf ./**/*.md')}
 
   ${chalk.gray('–')} Convert and enable watch mode
 
-    ${chalk.cyan('$ md-to-pdf ./*.md -w')}
+    ${chalk.cyan('$ md-to-pdf . -w')}
 
   ${chalk.gray('–')} Convert and enable watch mode with custom options
 
-    ${chalk.cyan('$ md-to-pdf ./*.md --watch --watch-options \'{ "atomic": true }\'')}
+    ${chalk.cyan('$ md-to-pdf . --watch --watch-options \'{ "atomic": true }\'')}
 
   ${chalk.gray('–')} Convert path/to/file.md with a different base directory
 

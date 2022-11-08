@@ -1,14 +1,12 @@
 import { promises as fs } from 'fs';
 import grayMatter from 'gray-matter';
 import { dirname, resolve } from 'path';
-import { Config } from './config';
+import { CliArgs, Config } from './config';
 import { generateOutput } from './generate-output';
 import { getHtml } from './get-html';
 import { getOutputFilePath } from './get-output-file-path';
 import { getMarginObject } from './helpers';
 import { readFile } from './read-file';
-
-type CliArgs = typeof import('../cli').cliFlags;
 
 /**
  * Convert markdown to pdf.
