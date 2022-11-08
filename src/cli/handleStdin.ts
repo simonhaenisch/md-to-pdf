@@ -1,7 +1,8 @@
-import { ConvertFactory } from '../lib/md-to-pdf';
+import { CliArgs, Config } from '../lib/config';
+import { convertMdToPdf } from '../lib/md-to-pdf';
 
-export default async function handleStdin(content: string, convertFactory: ConvertFactory) {
-	await convertFactory({ content }).catch((error: Error) => {
+export default async function handleStdin(stdin: string, config: Config, args: CliArgs) {
+	await convertMdToPdf({ content: stdin }, config, args).catch((error: Error) => {
 		throw error;
 	});
 }

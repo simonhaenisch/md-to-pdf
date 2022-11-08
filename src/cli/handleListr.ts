@@ -3,43 +3,36 @@ import { FSWatcher, watch, WatchOptions } from 'chokidar';
 import Listr from 'listr';
 import { CliArgs, Config } from '../lib/config';
 import { isMdFile } from '../lib/is-md-file';
-import { ConvertFactory } from '../lib/md-to-pdf';
+import { convertMdToPdf } from '../lib/md-to-pdf';
 
-export default async function handleListr(
-	watchPath: string[],
-	convertFactory: ConvertFactory,
-	args: CliArgs,
-	config: Config,
-): Promise<void> {
+type OutputFileType = 'HTML' | 'PDF';
+
+export default async function handleListr(watchPath: string[], config: Config, args: CliArgs): Promise<void> {
 	const withWatch = args['--watch'];
 	const watchOptions = args['--watch-options']
 		? (JSON.parse(args['--watch-options']) as WatchOptions)
 		: config.watch_options;
-	const outputType = args['--as-html'] ? 'HTML' : 'PDF';
+	const outputType: OutputFileType = args['--as-html'] ? 'HTML' : 'PDF';
 
 	const watcher = watch(watchPath, watchOptions);
 	if (watchPath.length > 1) {
-		await legacyListrHandler(watchPath, outputType, convertFactory, watcher, withWatch);
+		await legacyListrHandler(watchPath, outputType, watcher, config, args, withWatch);
 	} else {
-		await handleSinglePath(watcher, convertFactory, outputType, config, withWatch);
+		await handleSinglePath(watcher, outputType, config, args, withWatch);
 	}
 	await watcher.close();
 	return;
 }
 
-const createListrTask = (
-	file: string,
-	outputType: 'HTML' | 'PDF',
-	convertFactory: ConvertFactory,
-): Listr.ListrTask => ({
+const createListrTask = (file: string, outputType: OutputFileType, config: Config, args: CliArgs): Listr.ListrTask => ({
 	title: `generating ${outputType} from ${chalk.underline(file)}`,
-	task: () => convertFactory({ path: file }),
+	task: () => convertMdToPdf({ path: file }, config, args),
 });
 
-const createAndRunListr = async (pathSet: Set<string>, convertFactory: ConvertFactory, outputType: 'HTML' | 'PDF') => {
+const createAndRunListr = async (pathSet: Set<string>, outputType: OutputFileType, config: Config, args: CliArgs) => {
 	try {
 		await new Listr(
-			Array.from(pathSet).map((path) => createListrTask(path, outputType, convertFactory)),
+			Array.from(pathSet).map((path) => createListrTask(path, outputType, config, args)),
 			{ concurrent: true, exitOnError: false },
 		).run();
 	} catch (error) {
@@ -49,9 +42,9 @@ const createAndRunListr = async (pathSet: Set<string>, convertFactory: ConvertFa
 
 const handleSinglePath = async (
 	watcher: FSWatcher,
-	convertFactory: ConvertFactory,
-	outputType: 'HTML' | 'PDF',
+	outputType: OutputFileType,
 	config: Config,
+	args: CliArgs,
 	withWatch = false,
 ) => {
 	/*
@@ -64,7 +57,7 @@ const handleSinglePath = async (
 			pathSet.add(path);
 		});
 		watcher.on('ready', async () => {
-			await createAndRunListr(pathSet, convertFactory, outputType);
+			await createAndRunListr(pathSet, outputType, config, args);
 			resolve();
 		});
 	});
@@ -78,7 +71,7 @@ const handleSinglePath = async (
 	 */
 	const pathSet: Set<string> = new Set<string>();
 	const timeOut = setTimeout(() => {
-		createAndRunListr(pathSet, convertFactory, outputType);
+		createAndRunListr(pathSet, outputType, config, args);
 		pathSet.clear();
 	}, config.watch_timeout);
 
@@ -104,13 +97,14 @@ const handleSinglePath = async (
 
 const legacyListrHandler = async (
 	files: string[],
-	outputType: 'HTML' | 'PDF',
-	convertFactory: ConvertFactory,
+	outputType: OutputFileType,
 	watcher: FSWatcher,
+	config: Config,
+	args: CliArgs,
 	withWatch = false,
 ) => {
 	return await new Listr(
-		files.map((path) => createListrTask(path, outputType, convertFactory)),
+		files.map((path) => createListrTask(path, outputType, config, args)),
 		{ concurrent: true, exitOnError: false },
 	)
 		.run()
@@ -119,7 +113,7 @@ const legacyListrHandler = async (
 				console.log(chalk.bgBlue('\n watching for changes \n'));
 
 				watcher.on('change', async (file) =>
-					new Listr([createListrTask(file, outputType, convertFactory)], { exitOnError: false })
+					new Listr([createListrTask(file, outputType, config, args)], { exitOnError: false })
 						.run()
 						.catch(console.error),
 				);

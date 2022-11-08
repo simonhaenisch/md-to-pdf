@@ -13,7 +13,6 @@ import { CliArgs, cliFlags, Config, defaultConfig } from './lib/config';
 import { closeBrowser } from './lib/generate-output';
 import { help } from './lib/help';
 import { setProcessAndTermTitle } from './lib/helpers';
-import { getConvertFactory } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
 
@@ -92,11 +91,10 @@ async function main(args: CliArgs, config: Config) {
 	 * 4. Either process stdin or create a Listr task for each file.
 	 */
 
-	const convertFactory = getConvertFactory(config, args);
 	if (stdin) {
-		await handleStdin(stdin, convertFactory);
+		await handleStdin(stdin, config, args);
 	} else {
-		await handleListr(files, convertFactory, args, config);
+		await handleListr(files, config, args);
 	}
 
 	console.log('Exit.');

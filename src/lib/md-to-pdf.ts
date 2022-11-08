@@ -2,24 +2,11 @@ import { promises as fs } from 'fs';
 import grayMatter from 'gray-matter';
 import { dirname, resolve } from 'path';
 import { CliArgs, Config } from './config';
-import { generateOutput, Output } from './generate-output';
+import { generateOutput } from './generate-output';
 import { getHtml } from './get-html';
 import { getOutputFilePath } from './get-output-file-path';
 import { getMarginObject } from './helpers';
 import { readFile } from './read-file';
-
-/**
- * ConvertFactory is a factoryFunction which can be reused with config and args.
- */
-export type ConvertFactory = (input: { path: string } | { content: string }) => Promise<Output>;
-
-/**
- * Get a convertFactory function with config and args which are reuseable.
- */
-export const getConvertFactory =
-	(config: Config, args: CliArgs): ConvertFactory =>
-	(input: { path: string } | { content: string }) =>
-		convertMdToPdf(input, config, args);
 
 /**
  * Convert markdown to pdf.
