@@ -2,7 +2,6 @@ import { promises as fs } from 'fs';
 import grayMatter from 'gray-matter';
 import { dirname, resolve } from 'path';
 import { Config } from './config';
-import { emojiExtension } from './emoji';
 import { generateOutput } from './generate-output';
 import { getHtml } from './get-html';
 import { getOutputFilePath } from './get-output-file-path';
@@ -74,11 +73,6 @@ export const convertMdToPdf = async (
 	if (config.dest === undefined) {
 		config.dest = 'path' in input ? getOutputFilePath(input.path, config.as_html ? 'html' : 'pdf') : 'stdout';
 	}
-
-        // Add emoji extension
-        if (config.emoji) {
-                config.marked_extensions.push(emojiExtension);
-        }
 
 	const highlightStylesheet = resolve(
 		dirname(require.resolve('highlight.js')),

@@ -3,6 +3,7 @@ import { GrayMatterOption } from 'gray-matter';
 import { marked } from 'marked';
 import { resolve } from 'path';
 import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
+const markedEmoji = require('marked-emoji');
 
 export const defaultConfig: Config = {
 	basedir: process.cwd(),
@@ -37,8 +38,8 @@ export const defaultConfig: Config = {
 	stylesheet_encoding: 'utf-8',
 	as_html: false,
 	devtools: false,
-        emoji: false,
 	marked_extensions: [],
+	marked_tokenizer_extensions: [markedEmoji.markedEmoji],
 };
 
 /**
@@ -156,12 +157,6 @@ interface BasicConfig {
 	 */
 	devtools: boolean;
 
-        /**
-         * If true, add a custom emoji extension to convert emoji like :unicorn: into 
-         * an svg image
-         */
-        emoji: boolean;
-
 	/**
 	 * Port to run the local server on.
 	 */
@@ -179,8 +174,16 @@ interface BasicConfig {
 	 *
 	 * @see https://marked.js.org/using_pro#extensions
 	 */
-	// marked_extensions: marked.MarkedExtension[]; // TODO: Find how to manage type
-        marked_extensions: any[];
+	// marked_extensions: marked.MarkedExtension[];
+	marked_extensions: any[];
+
+	/**
+	 * Custm Tokenizer Extensions to be passed to marked.
+	 *
+	 * @see https://marked.js.org/using_pro#extensions
+	 */
+	// marked_tokenizer_extensions: marked.TokenizerExtension[];
+	marked_tokenizer_extensions: any[];
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
