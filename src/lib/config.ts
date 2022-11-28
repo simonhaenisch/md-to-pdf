@@ -3,7 +3,7 @@ import { GrayMatterOption } from 'gray-matter';
 import { marked } from 'marked';
 import { resolve } from 'path';
 import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
-const { markedEmoji } = require('marked-emoji');
+const { markedEmoji } = require('marked-twemoji');
 
 export const defaultConfig: Config = {
 	basedir: process.cwd(),
