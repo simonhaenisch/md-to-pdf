@@ -1,11 +1,7 @@
 import hljs from 'highlight.js';
 import { marked } from 'marked';
 
-export const getMarked = (
-	options: marked.MarkedOptions,
-	extensions: marked.MarkedExtension[],
-	tokenizerExtensions: marked.TokenizerExtension[],
-) => {
+export const getMarked = (options: marked.MarkedOptions, extensions: (marked.TokenizerExtension | marked.RendererExtension | (marked.TokenizerExtension & marked.RendererExtension))[]) => {
 	marked.setOptions({
 		highlight: (code, languageName) => {
 			const language = hljs.getLanguage(languageName) ? languageName : 'plaintext';
@@ -15,7 +11,6 @@ export const getMarked = (
 		langPrefix: 'hljs ',
 		...options,
 	});
-	marked.use(...extensions);
-	marked.use({ extensions: tokenizerExtensions });
+	marked.use({ extensions });
 	return marked;
 };
