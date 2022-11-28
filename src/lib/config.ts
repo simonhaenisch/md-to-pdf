@@ -173,7 +173,6 @@ interface BasicConfig {
 	 *
 	 * @see https://marked.js.org/using_pro#extensions
 	 */
-	// marked_extensions: (marked.TokenizerExtension | marked.RendererExtension | (marked.TokenizerExtension & marked.RendererExtension))[];
 	marked_extensions: (marked.TokenizerExtension | marked.RendererExtension | (marked.TokenizerExtension & marked.RendererExtension))[];
 }
 
