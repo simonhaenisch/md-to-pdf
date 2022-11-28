@@ -38,7 +38,7 @@ export const defaultConfig: Config = {
 	stylesheet_encoding: 'utf-8',
 	as_html: false,
 	devtools: false,
-	marked_extensions: [markedEmoji],
+	marked_extensions: { extensions: [markedEmoji] },
 };
 
 /**
@@ -173,7 +173,7 @@ interface BasicConfig {
 	 *
 	 * @see https://marked.js.org/using_pro#extensions
 	 */
-	marked_extensions: (marked.TokenizerExtension | marked.RendererExtension | (marked.TokenizerExtension & marked.RendererExtension))[];
+	marked_extensions: marked.MarkedExtension;
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
