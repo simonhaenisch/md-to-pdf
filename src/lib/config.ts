@@ -3,7 +3,7 @@ import { GrayMatterOption } from 'gray-matter';
 import { marked } from 'marked';
 import { resolve } from 'path';
 import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
-const { markedEmoji } = require('marked-twemoji');
+import { markedTwemoji } from 'marked-twemoji';
 
 export const defaultConfig: Config = {
 	basedir: process.cwd(),
@@ -38,7 +38,7 @@ export const defaultConfig: Config = {
 	stylesheet_encoding: 'utf-8',
 	as_html: false,
 	devtools: false,
-	marked_extensions: { extensions: [markedEmoji] },
+	marked_extensions: [markedTwemoji],
 };
 
 /**
@@ -173,7 +173,7 @@ interface BasicConfig {
 	 *
 	 * @see https://marked.js.org/using_pro#extensions
 	 */
-	marked_extensions: marked.MarkedExtension;
+	marked_extensions: marked.MarkedExtension['extensions'];
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
