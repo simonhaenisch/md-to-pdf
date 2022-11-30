@@ -3,7 +3,6 @@ import { GrayMatterOption } from 'gray-matter';
 import { marked } from 'marked';
 import { resolve } from 'path';
 import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
-import { markedTwemoji } from 'marked-twemoji';
 
 export const defaultConfig: Config = {
 	basedir: process.cwd(),
@@ -38,7 +37,7 @@ export const defaultConfig: Config = {
 	stylesheet_encoding: 'utf-8',
 	as_html: false,
 	devtools: false,
-	marked_extensions: [markedTwemoji],
+	marked_extensions: [],
 };
 
 /**
