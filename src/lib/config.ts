@@ -14,6 +14,7 @@ export const defaultConfig: Config = {
 	page_media_type: 'screen',
 	highlight_style: 'github',
 	marked_options: {},
+	marked_extensions: [],
 	pdf_options: {
 		printBackground: true,
 		format: 'a4',
@@ -37,7 +38,6 @@ export const defaultConfig: Config = {
 	stylesheet_encoding: 'utf-8',
 	as_html: false,
 	devtools: false,
-	marked_extensions: [],
 };
 
 /**
@@ -119,6 +119,13 @@ interface BasicConfig {
 	marked_options: marked.MarkedOptions;
 
 	/**
+	 * Custom tokenizer/renderer extensions to be passed to Marked via the `extensions` option.
+	 *
+	 * @see https://marked.js.org/using_pro#extensions
+	 */
+	 marked_extensions: marked.MarkedExtension['extensions'];
+
+	/**
 	 * PDF options for Puppeteer.
 	 *
 	 * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions
@@ -166,13 +173,6 @@ interface BasicConfig {
 	 * This is specifically useful when running into issues when editor plugins trigger additional saves after the initial save.
 	 */
 	watch_options?: WatchOptions;
-
-	/**
-	 * Custm Extensions to be passed to marked.
-	 *
-	 * @see https://marked.js.org/using_pro#extensions
-	 */
-	marked_extensions: marked.MarkedExtension['extensions'];
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
