@@ -126,21 +126,14 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	if (stdin) {
-		await convertMdToPdf({ content: stdin }, config, args)
-			.finally(async () => {
-				await closeBrowser();
-				await closeServer(server);
-			})
-			.catch((error: Error) => {
-				throw error;
-			});
+		await convertMdToPdf({ content: stdin }, config, { args, server });
 
 		return;
 	}
 
 	const getListrTask = (file: string) => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-		task: async () => convertMdToPdf({ path: file }, config, args),
+		task: async () => convertMdToPdf({ path: file }, config, { args, autoCloseBrowser: false }),
 	});
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })

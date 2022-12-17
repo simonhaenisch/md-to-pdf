@@ -2,7 +2,7 @@
 
 import getPort from 'get-port';
 import { Config, defaultConfig, HtmlConfig, PdfConfig } from './lib/config';
-import { HtmlOutput, Output, PdfOutput } from './lib/generate-output';
+import { HtmlOutput, incrementActiveConversions, Output, PdfOutput } from './lib/generate-output';
 import { getDir } from './lib/helpers';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { serveDirectory } from './lib/serve-dir';
@@ -30,6 +30,8 @@ export async function mdToPdf(input: Input, config: Partial<Config> = {}): Promi
 		throw new Error('The input is missing one of the properties "content" or "path".');
 	}
 
+	incrementActiveConversions();
+
 	if (!config.port) {
 		config.port = await getPort();
 	}
@@ -50,9 +52,7 @@ export async function mdToPdf(input: Input, config: Partial<Config> = {}): Promi
 
 	const server = await serveDirectory(mergedConfig);
 
-	const pdf = await convertMdToPdf(input, mergedConfig);
-
-	server.close();
+	const pdf = await convertMdToPdf(input, mergedConfig, { server });
 
 	return pdf;
 }

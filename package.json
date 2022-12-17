@@ -121,6 +121,8 @@
       "no-await-in-loop": "off",
       "no-promise-executor-return": "off",
       "no-redeclare": "off",
+      "no-unmodified-loop-condition": "off",
+      "no-useless-catch": "off",
       "node/no-unsupported-features/es-syntax": "off",
       "unicorn/no-array-callback-reference": "off",
       "unicorn/no-fn-reference-in-iterator": "off",

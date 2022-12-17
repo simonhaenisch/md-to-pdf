@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 import { Config, HtmlConfig, PdfConfig } from './config';
 import { isHttpUrl } from './is-http-url';
 
@@ -19,12 +19,33 @@ interface BasicOutput {
 /**
  * Store a single browser instance reference so that we can re-use it.
  */
-let browserPromise: Promise<puppeteer.Browser> | undefined;
+let browserPromise: Promise<Browser> | undefined;
+
+/**
+ * Tracker for the active conversions so the same browser instance can be shared when doing multiple programmatic conversions simultaneously.
+ *
+ * @todo this is a bad idea but doing this properly would require a breaking change
+ */
+let activeConversionsTracker = 0;
+
+export const incrementActiveConversions = () => ++activeConversionsTracker;
+export const decrementActiveConversions = () => --activeConversionsTracker;
 
 /**
  * Close the browser instance.
  */
-export const closeBrowser = async () => (await browserPromise)?.close();
+export const closeBrowser = async () => {
+	while (activeConversionsTracker !== 0) {
+		await new Promise((resolve) => setTimeout(resolve, 10)); // wait 10 ms
+	}
+
+	const browser = await browserPromise;
+
+	if (browser) {
+		browserPromise = undefined;
+		await browser.close();
+	}
+};
 
 /**
  * Generate the output (either PDF or HTML).
