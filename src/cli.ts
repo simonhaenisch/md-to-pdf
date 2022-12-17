@@ -126,7 +126,7 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	if (stdin) {
-		await convertMdToPdf({ content: stdin }, config, args)
+		await convertMdToPdf({ content: stdin }, config, { args })
 			.finally(async () => {
 				await closeBrowser();
 				await closeServer(server);
@@ -140,7 +140,7 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	const getListrTask = (file: string) => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-		task: async () => convertMdToPdf({ path: file }, config, args),
+		task: async () => convertMdToPdf({ path: file }, config, { args }),
 	});
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
