@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 import getPort from 'get-port';
+import puppeteer from 'puppeteer';
 import { Config, defaultConfig, HtmlConfig, PdfConfig } from './lib/config';
 import { HtmlOutput, Output, PdfOutput } from './lib/generate-output';
 import { getDir } from './lib/helpers';
 import { convertMdToPdf } from './lib/md-to-pdf';
-import { serveDirectory } from './lib/serve-dir';
+import { closeServer, serveDirectory } from './lib/serve-dir';
 
 type Input = ContentInput | PathInput;
 
@@ -50,9 +51,12 @@ export async function mdToPdf(input: Input, config: Partial<Config> = {}): Promi
 
 	const server = await serveDirectory(mergedConfig);
 
-	const pdf = await convertMdToPdf(input, mergedConfig);
+	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
-	server.close();
+	const pdf = await convertMdToPdf(input, mergedConfig, { browser });
+
+	await browser.close();
+	await closeServer(server);
 
 	return pdf;
 }
