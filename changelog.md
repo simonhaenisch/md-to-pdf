@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.1](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.0...v5.2.1) (2022-12-18)
+
+
+### Bug Fixes
+
+* create one browser instance per programmatic API call ([eb86ef0](https://github.com/simonhaenisch/md-to-pdf/commit/eb86ef06bd87895e295cc1335589a30358377931)), closes [#146](https://github.com/simonhaenisch/md-to-pdf/issues/146)
+
 ## [5.2.0](https://github.com/simonhaenisch/md-to-pdf/compare/v5.1.0...v5.2.0) (2022-11-06)
 
 
