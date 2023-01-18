@@ -43,7 +43,7 @@
   "homepage": "https://github.com/simonhaenisch/md-to-pdf#readme",
   "dependencies": {
     "arg": "^5.0.2",
-    "chalk": "^4.1.2",
+    "chalk": "^5.2.0",
     "chokidar": "^3.5.2",
     "get-port": "^5.1.1",
     "get-stdin": "^8.0.0",
