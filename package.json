@@ -62,7 +62,7 @@
     "@types/semver": "7.3.13",
     "@types/serve-handler": "6.1.1",
     "ava": "3.15.0",
-    "husky": "4.3.8",
+    "husky": "8.0.3",
     "nyc": "15.1.0",
     "pdfjs-dist": "2.16.105",
     "prettier": "2.8.1",
