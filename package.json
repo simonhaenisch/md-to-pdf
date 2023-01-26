@@ -61,7 +61,7 @@
     "@types/marked": "4.0.8",
     "@types/semver": "7.3.13",
     "@types/serve-handler": "6.1.1",
-    "ava": "3.15.0",
+    "ava": "4.3.3",
     "husky": "4.3.8",
     "nyc": "15.1.0",
     "pdfjs-dist": "3.2.146",
