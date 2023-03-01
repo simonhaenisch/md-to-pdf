@@ -65,7 +65,7 @@
     "husky": "4.3.8",
     "nyc": "15.1.0",
     "pdfjs-dist": "3.3.122",
-    "prettier": "2.8.3",
+    "prettier": "2.8.4",
     "prettier-plugin-organize-imports": "3.2.2",
     "tap-xunit": "2.4.1",
     "ts-node": "10.9.1",
