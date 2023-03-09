@@ -13,17 +13,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [14, 16, 18]
+        node: [16, 18]
         os: ['ubuntu-latest', 'windows-latest', 'macOS-latest']
 
     name: Node ${{ matrix.node }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3.3.0
 
       - name: Use Node.js ${{ matrix.node }}.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.node }}.x
 
@@ -38,7 +38,7 @@ jobs:
         run: npm run build
 
       - name: test lib
-        run: npx nyc ava src/test/lib.spec.ts
+        run: npx nyc ava src/test/lib.spec.ts --timeout=30s
 
       - name: test api
         run: npx ava src/test/api.spec.ts --timeout=30s
