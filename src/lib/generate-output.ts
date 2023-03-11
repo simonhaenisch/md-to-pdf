@@ -70,7 +70,7 @@ export async function generateOutput(
 
 	const page = await browser.newPage();
 
-	const urlPathname = join(relativePath, 'index.html').replaceAll(sep, posix.sep);
+	const urlPathname = join(relativePath, 'index.html').split(sep).join(posix.sep);
 
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	await page.goto(`http://localhost:${config.port!}/${urlPathname}`); // make sure relative paths work as expected
