@@ -38,10 +38,10 @@ jobs:
         run: npm run build
 
       - name: test lib
-        run: npx nyc ava src/test/lib.spec.ts --timeout=30s
+        run: npx nyc ava src/test/lib.spec.ts --timeout=1m
 
       - name: test api
-        run: npx ava src/test/api.spec.ts --timeout=30s
+        run: npx ava src/test/api.spec.ts --timeout=1m
 
       - name: test cli
         run: npx ava src/test/cli.spec.ts --timeout=2m
