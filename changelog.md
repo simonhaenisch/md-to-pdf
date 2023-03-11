@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.2](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.1...v5.2.2) (2023-03-11)
+
+
+### Bug Fixes
+
+* generation of relative pathname in the browser ([90a1aaa](https://github.com/simonhaenisch/md-to-pdf/commit/90a1aaaa94b7598feb4eb66e8502fe6be106e17f)), closes [#150](https://github.com/simonhaenisch/md-to-pdf/issues/150)
+
 ### [5.2.1](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.0...v5.2.1) (2022-12-18)
 
 
