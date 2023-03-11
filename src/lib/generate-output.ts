@@ -1,3 +1,4 @@
+import { join, posix, sep } from 'path';
 import puppeteer, { Browser } from 'puppeteer';
 import { Config, HtmlConfig, PdfConfig } from './config';
 import { isHttpUrl } from './is-http-url';
@@ -69,8 +70,10 @@ export async function generateOutput(
 
 	const page = await browser.newPage();
 
+	const urlPathname = join(relativePath, 'index.html').replaceAll(sep, posix.sep);
+
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	await page.goto(`http://localhost:${config.port!}${relativePath}`); // make sure relative paths work as expected
+	await page.goto(`http://localhost:${config.port!}/${urlPathname}`); // make sure relative paths work as expected
 	await page.setContent(html); // overwrite the page content with what was generated from the markdown
 
 	for (const stylesheet of config.stylesheet) {
