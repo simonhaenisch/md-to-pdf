@@ -19,6 +19,7 @@
 - Extend the options of the underlying tools
 - Programmatic API
 - Supports `stdio`
+- Convert HTML (or [inline HTML](https://daringfireball.net/projects/markdown/syntax#html)) to PDF
 
 ## Installation
 

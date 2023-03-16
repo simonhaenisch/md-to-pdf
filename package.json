@@ -12,7 +12,8 @@
     "markdown",
     "pdf",
     "puppeteer",
-    "headless-chrome"
+    "headless-chrome",
+    "html-to-pdf"
   ],
   "engines": {
     "node": ">=12.0"
