@@ -6,7 +6,7 @@ import { defaultConfig } from '../lib/config';
 import { getHtml } from '../lib/get-html';
 import { getMarked } from '../lib/get-marked-with-highlighter';
 import { getOutputFilePath } from '../lib/get-output-file-path';
-import { getDir, getMarginObject, setProcessAndTermTitle } from '../lib/helpers';
+import { getDir, getMarginObject, setProcessTitle } from '../lib/helpers';
 import { isHttpUrl } from '../lib/is-http-url';
 import { isMdFile } from '../lib/is-md-file';
 import { readFile } from '../lib/read-file';
@@ -22,8 +22,8 @@ test("gray-matter's js engine is disabled by default", (t) => {
 // --
 // helpers
 
-test('setProcessAndTermTitle should not throw', (t) => {
-	t.notThrows(() => setProcessAndTermTitle('md-to-pdf tests'));
+test('setProcessTitle should not throw', (t) => {
+	t.notThrows(() => setProcessTitle('md-to-pdf tests'));
 });
 
 test('getDir should get the directory the given file is in', (t) => {

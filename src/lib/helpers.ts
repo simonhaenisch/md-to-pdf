@@ -31,7 +31,6 @@ export const getMarginObject = (margin: string): PDFOptions['margin'] => {
 		: undefined;
 };
 
-export const setProcessAndTermTitle = (title: string) => {
+export const setProcessTitle = (title: string) => {
 	process.title = title;
-	process.stdout.write(`${String.fromCharCode(27)}]0;${title}${String.fromCharCode(7)}`);
 };
