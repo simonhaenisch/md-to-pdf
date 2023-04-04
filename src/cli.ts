@@ -14,7 +14,6 @@ import { PackageJson } from '.';
 import { Config, defaultConfig } from './lib/config';
 import { closeBrowser } from './lib/generate-output';
 import { help } from './lib/help';
-import { setProcessTitle } from './lib/helpers';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
@@ -64,7 +63,7 @@ main(cliFlags, defaultConfig).catch((error) => {
 // Define Main Function
 
 async function main(args: typeof cliFlags, config: Config) {
-	setProcessTitle('md-to-pdf');
+	process.title = 'md-to-pdf';
 
 	if (!validateNodeVersion()) {
 		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');
