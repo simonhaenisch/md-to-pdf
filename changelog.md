@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.4](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.3...v5.2.4) (2023-04-04)
+
+
+### Bug Fixes
+
+* do not emit process title to stdout ([#179](https://github.com/simonhaenisch/md-to-pdf/issues/179)) ([de05e99](https://github.com/simonhaenisch/md-to-pdf/commit/de05e996a7dd4a5636c2736471f0fc60cd52cca6))
+
 ### [5.2.3](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.2...v5.2.3) (2023-03-11)
 
 
