@@ -65,7 +65,7 @@
     "ava": "3.15.0",
     "nyc": "15.1.0",
     "pdfjs-dist": "3.4.120",
-    "prettier": "2.8.7",
+    "prettier": "2.8.8",
     "prettier-plugin-organize-imports": "3.2.2",
     "tap-xunit": "2.4.1",
     "ts-node": "10.9.1",
