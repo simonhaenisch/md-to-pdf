@@ -85,10 +85,9 @@
   "prettier": {
     "printWidth": 120,
     "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "all",
     "useTabs": true,
     "bracketSpacing": true,
+    "plugins": ["prettier-plugin-organize-imports"],
     "overrides": [
       {
         "files": [
