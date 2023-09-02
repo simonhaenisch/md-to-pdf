@@ -4,7 +4,6 @@ about: If it's a question not a bug, just open a regular issue.
 title: 'bug: '
 labels: bug
 assignees: ''
-
 ---
 
 **Context:**

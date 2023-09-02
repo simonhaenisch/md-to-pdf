@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.4](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.3...v5.2.4) (2023-04-04)
+
+
+### Bug Fixes
+
+* do not emit process title to stdout ([#179](https://github.com/simonhaenisch/md-to-pdf/issues/179)) ([de05e99](https://github.com/simonhaenisch/md-to-pdf/commit/de05e996a7dd4a5636c2736471f0fc60cd52cca6))
+
+### [5.2.3](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.2...v5.2.3) (2023-03-11)
+
+
+### Bug Fixes
+
+* regression from using `.replaceAll` which isn't available in Node 14 ([018b52e](https://github.com/simonhaenisch/md-to-pdf/commit/018b52e13e2f27418fb6812dee778079cd5e5383))
+
+### [5.2.2](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.1...v5.2.2) (2023-03-11)
+
+
+### Bug Fixes
+
+* generation of relative pathname in the browser ([90a1aaa](https://github.com/simonhaenisch/md-to-pdf/commit/90a1aaaa94b7598feb4eb66e8502fe6be106e17f)), closes [#150](https://github.com/simonhaenisch/md-to-pdf/issues/150)
+
+### [5.2.1](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.0...v5.2.1) (2022-12-18)
+
+
+### Bug Fixes
+
+* create one browser instance per programmatic API call ([eb86ef0](https://github.com/simonhaenisch/md-to-pdf/commit/eb86ef06bd87895e295cc1335589a30358377931)), closes [#146](https://github.com/simonhaenisch/md-to-pdf/issues/146)
+
 ## [5.2.0](https://github.com/simonhaenisch/md-to-pdf/compare/v5.1.0...v5.2.0) (2022-11-06)
 
 

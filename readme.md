@@ -2,7 +2,6 @@
 
 [![Github Actions Badge](https://github.com/simonhaenisch/md-to-pdf/workflows/Node%20CI/badge.svg)](https://github.com/simonhaenisch/md-to-pdf/actions)
 [![NPM version](https://img.shields.io/npm/v/md-to-pdf.svg)](https://www.npmjs.com/md-to-pdf)
-[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 
 ![Screenshot of markdown file and resulting PDF](https://files-iiiuxybjc.now.sh)
 
@@ -20,6 +19,7 @@
 - Extend the options of the underlying tools
 - Programmatic API
 - Supports `stdio`
+- Convert HTML (or [inline HTML](https://daringfireball.net/projects/markdown/syntax#html)) to PDF
 
 ## Installation
 
@@ -83,7 +83,7 @@ md-to-pdf ./**/*.md
 
 _(If you use bash, you might need to enable the `globstar` shell option to make recursive globbing work.)_
 
-Alternatively, you can pass the markdown in from `stdin` and pipe its `stdout` into a target file:
+Alternatively, you can pipe the markdown in from `stdin` and redirect its `stdout` into a target file:
 
 ```sh
 cat file.md | md-to-pdf > path/to/output.pdf
@@ -91,7 +91,7 @@ cat file.md | md-to-pdf > path/to/output.pdf
 
 _Tip: You can concatenate multiple files using `cat file1.md file2.md`._
 
-The current working directory (`process.cwd()`) serves as the base directory of the file server by default. This can be adjusted with the `--basedir` flag (or equivalent config option).
+The current working directory (`process.cwd()`) serves as the base directory of the file server by default. This can be adjusted with the `--basedir` flag (or equivalent config option). Note that because of the file server, if you convert a file that's outside the current folder, you'll have to move the base directory up as well (e. g. `md-to-pdf ../path/to/file.md --basedir ..`).
 
 #### Watch Mode
 
@@ -314,7 +314,7 @@ Ideas, feature requests and PRs are welcome. Just keep it simple! 🤓
 I want to thank the following people:
 
 - [imcvampire](https://github.com/imcvampire) for handing over the npm package name.
-- [Sindre Sorhus](https://github.com/sindresorhus) and [Vercel](https://github.com/vercel) (formerly _Zeit_) for inspiration on how to write cli tools.
+- [Sindre Sorhus](https://github.com/sindresorhus) and [Vercel](https://github.com/vercel) (formerly _Zeit_) for inspiration on how to write CLI tools.
 - [Josh Bruce](https://github.com/joshbruce) for [reviving Marked](https://github.com/markedjs/marked/issues/1106).
 
 ## License

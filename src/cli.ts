@@ -14,7 +14,6 @@ import { PackageJson } from '.';
 import { Config, defaultConfig } from './lib/config';
 import { closeBrowser } from './lib/generate-output';
 import { help } from './lib/help';
-import { setProcessAndTermTitle } from './lib/helpers';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
@@ -64,7 +63,7 @@ main(cliFlags, defaultConfig).catch((error) => {
 // Define Main Function
 
 async function main(args: typeof cliFlags, config: Config) {
-	setProcessAndTermTitle('md-to-pdf');
+	process.title = 'md-to-pdf';
 
 	if (!validateNodeVersion()) {
 		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');
@@ -126,7 +125,7 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	if (stdin) {
-		await convertMdToPdf({ content: stdin }, config, args)
+		await convertMdToPdf({ content: stdin }, config, { args })
 			.finally(async () => {
 				await closeBrowser();
 				await closeServer(server);
@@ -140,7 +139,7 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	const getListrTask = (file: string) => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-		task: async () => convertMdToPdf({ path: file }, config, args),
+		task: async () => convertMdToPdf({ path: file }, config, { args }),
 	});
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })

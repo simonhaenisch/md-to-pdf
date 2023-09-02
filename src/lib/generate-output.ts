@@ -1,4 +1,5 @@
-import puppeteer from 'puppeteer';
+import { join, posix, sep } from 'path';
+import puppeteer, { Browser } from 'puppeteer';
 import { Config, HtmlConfig, PdfConfig } from './config';
 import { isHttpUrl } from './is-http-url';
 
@@ -19,7 +20,7 @@ interface BasicOutput {
 /**
  * Store a single browser instance reference so that we can re-use it.
  */
-let browserPromise: Promise<puppeteer.Browser> | undefined;
+let browserPromise: Promise<Browser> | undefined;
 
 /**
  * Close the browser instance.
@@ -29,20 +30,50 @@ export const closeBrowser = async () => (await browserPromise)?.close();
 /**
  * Generate the output (either PDF or HTML).
  */
-export async function generateOutput(html: string, relativePath: string, config: PdfConfig): Promise<PdfOutput>;
-export async function generateOutput(html: string, relativePath: string, config: HtmlConfig): Promise<HtmlOutput>;
-export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output>;
-export async function generateOutput(html: string, relativePath: string, config: Config): Promise<Output> {
-	if (!browserPromise) {
-		browserPromise = puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
+export async function generateOutput(
+	html: string,
+	relativePath: string,
+	config: PdfConfig,
+	browserRef?: Browser,
+): Promise<PdfOutput>;
+export async function generateOutput(
+	html: string,
+	relativePath: string,
+	config: HtmlConfig,
+	browserRef?: Browser,
+): Promise<HtmlOutput>;
+export async function generateOutput(
+	html: string,
+	relativePath: string,
+	config: Config,
+	browserRef?: Browser,
+): Promise<Output>;
+export async function generateOutput(
+	html: string,
+	relativePath: string,
+	config: Config,
+	browserRef?: Browser,
+): Promise<Output> {
+	async function getBrowser() {
+		if (browserRef) {
+			return browserRef;
+		}
+
+		if (!browserPromise) {
+			browserPromise = puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
+		}
+
+		return browserPromise;
 	}
 
-	const browser = await browserPromise;
+	const browser = await getBrowser();
 
 	const page = await browser.newPage();
 
+	const urlPathname = join(relativePath, 'index.html').split(sep).join(posix.sep);
+
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	await page.goto(`http://localhost:${config.port!}${relativePath}`); // make sure relative paths work as expected
+	await page.goto(`http://localhost:${config.port!}/${urlPathname}`); // make sure relative paths work as expected
 	await page.setContent(html); // overwrite the page content with what was generated from the markdown
 
 	for (const stylesheet of config.stylesheet) {

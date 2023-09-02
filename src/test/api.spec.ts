@@ -57,6 +57,17 @@ test('compile some content to html', async (t) => {
 	t.truthy(html.content.includes('<h1 id="foo">Foo</h1>'));
 });
 
+test('compile the basic example to html and then to pdf', async (t) => {
+	const { content } = await mdToPdf({ path: resolve(__dirname, 'basic', 'test.md') }, { as_html: true });
+
+	await mdToPdf(
+		{ content },
+		{ dest: resolve(__dirname, 'basic', 'api-test-from-html.pdf'), basedir: resolve(__dirname, 'basic') },
+	);
+
+	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-test-from-html.pdf'), 'utf-8'));
+});
+
 test('compile the basic example to html and write to disk', async (t) => {
 	const html = await mdToPdf(
 		{ path: resolve(__dirname, 'basic', 'test.md') },
