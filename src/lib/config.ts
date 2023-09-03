@@ -24,7 +24,7 @@ export const defaultConfig: Config = {
 			left: '20mm',
 		},
 	},
-	launch_options: {},
+	launch_options: { headless: 'new' },
 	gray_matter_options: {
 		engines: {
 			js: () =>
