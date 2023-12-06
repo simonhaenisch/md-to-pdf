@@ -1,6 +1,6 @@
 # Markdown to PDF
 
-[![Github Actions Badge](https://github.com/simonhaenisch/md-to-pdf/workflows/Node%20CI/badge.svg)](https://github.com/simonhaenisch/md-to-pdf/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/simonhaenisch/md-to-pdf/main.yml?label=CI)](https://github.com/simonhaenisch/md-to-pdf/actions?query=branch%3Amaster)
 [![NPM version](https://img.shields.io/npm/v/md-to-pdf.svg)](https://www.npmjs.com/md-to-pdf)
 
 ![Screenshot of markdown file and resulting PDF](https://files-iiiuxybjc.now.sh)
