@@ -48,25 +48,21 @@ export const convertMdToPdf = async (
 
 	const { headerTemplate, footerTemplate, displayHeaderFooter } = config.pdf_options;
 
-	if ((headerTemplate || footerTemplate) && displayHeaderFooter === undefined) {
+	if ((headerTemplate ?? footerTemplate) && displayHeaderFooter === undefined) {
 		config.pdf_options.displayHeaderFooter = true;
 	}
 
 	const arrayOptions = ['body_class', 'script', 'stylesheet'] as const;
 
 	// sanitize frontmatter array options
-	for (const option of arrayOptions) {
-		if (!Array.isArray(config[option])) {
-			config[option] = [config[option]].filter(Boolean) as any;
-		}
-	}
+	sanitizeFrontmatterArrayOptions(arrayOptions, config);
 
 	const jsonArgs = new Set(['--marked-options', '--pdf-options', '--launch-options']);
 
 	// merge cli args into config
 	for (const arg of Object.entries(args)) {
 		const [argKey, argValue] = arg as [string, string];
-		const key = argKey.slice(2).replace(/-/g, '_');
+		const key = argKey.slice(2).replaceAll('-', '_');
 
 		(config as Record<string, any>)[key] = jsonArgs.has(argKey) ? JSON.parse(argValue) : argValue;
 	}
@@ -90,7 +86,7 @@ export const convertMdToPdf = async (
 
 	config.stylesheet = [...new Set([...config.stylesheet, highlightStylesheet])];
 
-	const html = getHtml(md, config);
+	const html = await getHtml(md, config);
 
 	const relativePath = 'path' in input ? relative(config.basedir, input.path) : '.';
 
@@ -106,7 +102,7 @@ export const convertMdToPdf = async (
 
 	if (output.filename) {
 		if (output.filename === 'stdout') {
-			process.stdout.write(output.content);
+			require('process').stdout.write(output.content);
 		} else {
 			await fs.writeFile(output.filename, output.content);
 		}
@@ -114,3 +110,14 @@ export const convertMdToPdf = async (
 
 	return output;
 };
+
+function sanitizeFrontmatterArrayOptions(
+	arrayOptions: readonly ['body_class', 'script', 'stylesheet'],
+	config: Config,
+) {
+	for (const option of arrayOptions) {
+		if (!Array.isArray(config[option])) {
+			config[option] = [config[option]].filter(Boolean) as any;
+		}
+	}
+}

@@ -59,9 +59,7 @@ export async function generateOutput(
 			return browserRef;
 		}
 
-		if (!browserPromise) {
-			browserPromise = puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
-		}
+		browserPromise ||= puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
 		return browserPromise;
 	}
@@ -72,7 +70,6 @@ export async function generateOutput(
 
 	const urlPathname = join(relativePath, 'index.html').split(sep).join(posix.sep);
 
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	await page.goto(`http://localhost:${config.port!}/${urlPathname}`); // make sure relative paths work as expected
 	await page.setContent(html); // overwrite the page content with what was generated from the markdown
 

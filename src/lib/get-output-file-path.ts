@@ -1,4 +1,4 @@
-import { join, parse } from 'path';
+import { join, parse } from 'node:path';
 
 /**
  * Derive the output file path from a source file.

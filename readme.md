@@ -91,7 +91,7 @@ cat file.md | md-to-pdf > path/to/output.pdf
 
 _Tip: You can concatenate multiple files using `cat file1.md file2.md`._
 
-The current working directory (`process.cwd()`) serves as the base directory of the file server by default. This can be adjusted with the `--basedir` flag (or equivalent config option). Note that because of the file server, if you convert a file that's outside the current folder, you'll have to move the base directory up as well (e. g. `md-to-pdf ../path/to/file.md --basedir ..`).
+The current working directory (`require("process").cwd()`) serves as the base directory of the file server by default. This can be adjusted with the `--basedir` flag (or equivalent config option). Note that because of the file server, if you convert a file that's outside the current folder, you'll have to move the base directory up as well (e. g. `md-to-pdf ../path/to/file.md --basedir ..`).
 
 #### Watch Mode
 

@@ -23,10 +23,10 @@ export const getMarginObject = (margin: string): PDFOptions['margin'] => {
 	return left
 		? { top, right, bottom, left }
 		: bottom
-		? { top, right, bottom, left: right }
-		: right
-		? { top, right, bottom: top, left: right }
-		: top
-		? { top, right: top, bottom: top, left: top }
-		: undefined;
+			? { top, right, bottom, left: right }
+			: right
+				? { top, right, bottom: top, left: right }
+				: top
+					? { top, right: top, bottom: top, left: top }
+					: undefined;
 };
