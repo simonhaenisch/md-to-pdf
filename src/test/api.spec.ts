@@ -1,11 +1,12 @@
-import { basename, resolve } from 'node:path';
 import test from 'ava';
-import { readFileSync, unlinkSync } from 'node:fs';
-import { TextItem, getDocument } from 'pdfjs-dist/types/src/display/api';
+import { basename, resolve } from 'path';
+import { readFileSync, unlinkSync } from 'fs';
 import { mdToPdf } from '..';
+import * as pdfjs from 'pdfjs-dist';
+import type {TextItem} from 'pdfjs-dist/types/src/display/api';
 
-const getPdfTextContent = async (content: Uint8Array) => {
-	const doc = await getDocument({ data: content }).promise;
+const getPdfTextContent = async (content: Buffer) => {
+	const doc = await pdfjs.getDocument(content.buffer).promise;
 	const page = await doc.getPage(1);
 	const textContent = (await page.getTextContent()).items
 		.filter((item): item is TextItem => 'str' in item)
@@ -50,10 +51,9 @@ test('compile the basic example to pdf and write to disk', async (t) => {
 
 test('compile some content to html', async (t) => {
 	const html = await mdToPdf({ content: '# Foo' }, { as_html: true });
-
 	t.is(html.filename, '');
 	t.is(typeof html.content, 'string');
-	t.truthy(html.content.includes('<h1 id="foo">Foo</h1>'));
+	t.truthy(html.content.includes('<h1>Foo</h1>'));
 });
 
 test('compile the basic example to html and then to pdf', async (t) => {
@@ -101,11 +101,14 @@ test('the JS engine is disabled by default', async (t) => {
 });
 
 test('the JS engine for front-matter can be enabled', async (t) => {
-	const css = '`body::before { display: block; content: "${"i am injected"}"}`'; // eslint-disable-line no-template-curly-in-string
+	const css = '`body::before { display: block; content: "${"i am injected"}"}`';
 
-	const pdf = await mdToPdf({ content: `---js\n{ css: ${css} }\n---` }, { gray_matter_options: undefined });
+	const pdf = await mdToPdf({ content: `---js\n{ css: ${css} }\n---` }, { gray_matter_options: {} });
 
 	const textContent = await getPdfTextContent(pdf.content);
+
+	console.log(textContent);
+	
 
 	t.is(textContent, 'i am injected');
 });

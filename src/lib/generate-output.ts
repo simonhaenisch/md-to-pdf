@@ -6,7 +6,7 @@ import { isHttpUrl } from './is-http-url';
 export type Output = PdfOutput | HtmlOutput;
 
 export interface PdfOutput extends BasicOutput {
-	content: Uint8Array;
+	content: Buffer;
 }
 
 export interface HtmlOutput extends BasicOutput {
@@ -96,7 +96,7 @@ export async function generateOutput(
 		page.evaluate(() => history.pushState(undefined, '', '#')) /* eslint no-undef: off */,
 	]);
 
-	let outputFileContent: string | Uint8Array = '';
+	let outputFileContent: string | Buffer = '';
 
 	if (config.devtools) {
 		await new Promise((resolve) => page.on('close', resolve));

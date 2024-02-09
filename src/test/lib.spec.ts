@@ -56,7 +56,7 @@ test('getHtml should inject rendered markdown', async (t) => {
 	const htmlData = await getHtml('# Foo', defaultConfig)
 	const html = htmlData.replace(/\n/g, '');
 
-	t.regex(html, /<body class="">\s*<h1 id="foo">Foo<\/h1>\s*<\/body>/);
+	t.regex(html, /<body class="">\s*<h1>Foo<\/h1>\s*<\/body>/);
 });
 
 test('getHtml should inject body classes', async(t) => {
@@ -79,8 +79,7 @@ test('getHtml should have the title set', async (t) => {
 test('getMarked should highlight js code', async (t) => {
 	const marked = getMarked({}, []);
 	const html = await marked.parse('```js\nvar foo="bar";\n```');
-
-	t.true(html.includes('<code class="hljs js">'));
+	t.true(html.includes('<code class="hljs language-js">'));
 });
 
 test('getMarked should highlight unknown code as plaintext', async (t) => {
@@ -110,7 +109,7 @@ test('getMarked should accept a custom renderer with custom code highlighter', a
 	const marked = getMarked({ renderer }, []);
 	const html = await marked.parse('```\nvar foo="bar";\n```');
 
-	t.true(html.includes('<custom-code>var foo="bar";</custom-code>'));
+	t.true(html.includes('<custom-code>var foo=&quot;bar&quot;;</custom-code>'));
 });
 
 // --

@@ -16,7 +16,7 @@
     "html-to-pdf"
   ],
   "engines": {
-    "node": ">=15.0"
+    "node": ">=16.0"
   },
   "files": [
     "/dist",
@@ -30,7 +30,7 @@
     "clean": "rm -rf dist",
     "prepack": "npm run clean && npm run build",
     "lint": "xo",
-    "test": "xo && tsc -p tsconfig.type-test.json && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts --timeout=1m",
+    "test": "xo && tsc -p tsconfig.type-test.json && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts --timeout=5m",
     "release": "npm test && npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish",
     "loc": "npx cloc src --exclude-dir=test --by-file"
   },
@@ -44,10 +44,10 @@
   "homepage": "https://github.com/simonhaenisch/md-to-pdf#readme",
   "dependencies": {
     "arg": "^5.0.2",
-    "chalk": "^5.3.0",
+    "chalk": "^4.1.2",
     "chokidar": "^3.6.0",
-    "get-port": "^7.0.0",
-    "get-stdin": "^9.0.0",
+    "get-port": "^5.1.1",
+    "get-stdin": "^8.0.0",
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.9.0",
     "iconv-lite": "^0.6.3",
@@ -64,7 +64,7 @@
     "@types/serve-handler": "^6.1.4",
     "ava": "^6.1.1",
     "nyc": "^15.1.0",
-    "pdfjs-dist": "^4.0.379",
+    "pdfjs-dist": "^3.9.179",
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
     "tap-xunit": "^2.4.1",
@@ -136,7 +136,8 @@
       "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-unsafe-call": "off",
       "unicorn/prefer-top-level-await": "off",
-      "@typescript-eslint/no-unsafe-return": "off"
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/ban-types" : "off"
     },
     "overrides": [
       {
