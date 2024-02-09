@@ -56,14 +56,14 @@ export const cliFlags = arg({
 
 main(cliFlags, defaultConfig).catch((error) => {
 	console.error(error);
-	process.exit(1);
+	require('process').exit(1);
 });
 
 // --
 // Define Main Function
 
 async function main(args: typeof cliFlags, config: Config) {
-	process.title = 'md-to-pdf';
+	require('process').title = 'md-to-pdf';
 
 	if (!validateNodeVersion()) {
 		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');

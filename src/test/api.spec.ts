@@ -1,11 +1,10 @@
-import test, { before } from 'ava';
-import { readFileSync, unlinkSync } from 'fs';
-import { basename, resolve } from 'path';
-import { getDocument } from 'pdfjs-dist/legacy/build/pdf';
-import { TextItem } from 'pdfjs-dist/types/src/display/api';
+import { basename, resolve } from 'node:path';
+import test from 'ava';
+import { readFileSync, unlinkSync } from 'node:fs';
+import { TextItem, getDocument } from 'pdfjs-dist/types/src/display/api';
 import { mdToPdf } from '..';
 
-const getPdfTextContent = async (content: Buffer) => {
+const getPdfTextContent = async (content: Uint8Array) => {
 	const doc = await getDocument({ data: content }).promise;
 	const page = await doc.getPage(1);
 	const textContent = (await page.getTextContent()).items
@@ -16,7 +15,7 @@ const getPdfTextContent = async (content: Buffer) => {
 	return textContent;
 };
 
-before(() => {
+test.before(() => {
 	const filesToDelete = [resolve(__dirname, 'basic', 'api-test.pdf'), resolve(__dirname, 'basic', 'api-test.html')];
 
 	for (const file of filesToDelete) {
@@ -46,7 +45,7 @@ test('compile the basic example to pdf and write to disk', async (t) => {
 
 	t.is(basename(pdf.filename!), 'api-test.pdf');
 
-	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-test.pdf'), 'utf-8'));
+	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-test.pdf'), 'utf8'));
 });
 
 test('compile some content to html', async (t) => {

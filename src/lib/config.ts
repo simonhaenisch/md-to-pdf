@@ -1,11 +1,11 @@
 import { WatchOptions } from 'chokidar';
 import { GrayMatterOption } from 'gray-matter';
-import { marked } from 'marked';
+import { MarkedExtension, MarkedOptions } from 'marked';
 import { resolve } from 'path';
 import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
 
 export const defaultConfig: Config = {
-	basedir: process.cwd(),
+	basedir: require('process').cwd() as string,
 	stylesheet: [resolve(__dirname, '..', '..', 'markdown.css')],
 	script: [],
 	css: '',
@@ -33,8 +33,8 @@ export const defaultConfig: Config = {
 				),
 		},
 	},
-	md_file_encoding: 'utf-8',
-	stylesheet_encoding: 'utf-8',
+	md_file_encoding: 'utf8',
+	stylesheet_encoding: 'utf8',
 	as_html: false,
 	devtools: false,
 	marked_extensions: [],
@@ -116,7 +116,7 @@ interface BasicConfig {
 	 *
 	 * @see https://marked.js.org/#/USING_ADVANCED.md
 	 */
-	marked_options: marked.MarkedOptions;
+	marked_options: MarkedOptions;
 
 	/**
 	 * PDF options for Puppeteer.
@@ -140,12 +140,12 @@ interface BasicConfig {
 	gray_matter_options: GrayMatterOption<string, any>;
 
 	/**
-	 * Markdown file encoding. Default: `utf-8`.
+	 * Markdown file encoding. Default: `utf8`.
 	 */
 	md_file_encoding: string;
 
 	/**
-	 * CSS stylesheet encoding. Default: `utf-8`.
+	 * CSS stylesheet encoding. Default: `utf8`.
 	 */
 	stylesheet_encoding: string;
 
@@ -172,7 +172,7 @@ interface BasicConfig {
 	 *
 	 * @see https://marked.js.org/using_pro#extensions
 	 */
-	marked_extensions: marked.MarkedExtension[];
+	marked_extensions: MarkedExtension[];
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];

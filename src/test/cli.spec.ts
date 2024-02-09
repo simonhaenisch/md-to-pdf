@@ -1,9 +1,9 @@
-import test, { before } from 'ava';
+import test from 'ava';
 import { execSync } from 'child_process';
 import { readFileSync, unlinkSync } from 'fs';
 import { join, resolve } from 'path';
 
-before(() => {
+test.before(() => {
 	const filesToDelete = [
 		resolve(__dirname, 'basic', 'test.pdf'),
 		resolve(__dirname, 'basic', 'test-stdio.pdf'),

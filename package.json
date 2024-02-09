@@ -16,7 +16,7 @@
     "html-to-pdf"
   ],
   "engines": {
-    "node": ">=12.0"
+    "node": ">=15.0"
   },
   "files": [
     "/dist",
@@ -44,34 +44,34 @@
   "homepage": "https://github.com/simonhaenisch/md-to-pdf#readme",
   "dependencies": {
     "arg": "^5.0.2",
-    "chalk": "^4.1.2",
-    "chokidar": "^3.5.2",
-    "get-port": "^5.1.1",
-    "get-stdin": "^8.0.0",
+    "chalk": "^5.3.0",
+    "chokidar": "^3.6.0",
+    "get-port": "^7.0.0",
+    "get-stdin": "^9.0.0",
     "gray-matter": "^4.0.3",
-    "highlight.js": "^11.7.0",
+    "highlight.js": "^11.9.0",
     "iconv-lite": "^0.6.3",
     "listr": "^0.14.3",
-    "marked": "^4.2.12",
-    "puppeteer": ">=8.0.0",
-    "semver": "^7.3.7",
-    "serve-handler": "^6.1.3"
+    "marked": "^12.0.0",
+    "marked-highlight": "^2.1.1",
+    "puppeteer": "^22.0.0",
+    "semver": "^7.6.0",
+    "serve-handler": "^6.1.5"
   },
   "devDependencies": {
-    "@types/listr": "0.14.5",
-    "@types/marked": "4.3.0",
-    "@types/semver": "7.5.4",
-    "@types/serve-handler": "6.1.3",
-    "ava": "3.15.0",
-    "nyc": "15.1.0",
-    "pdfjs-dist": "3.6.172",
-    "prettier": "2.8.8",
-    "prettier-plugin-organize-imports": "3.2.3",
-    "tap-xunit": "2.4.1",
-    "ts-node": "10.9.1",
-    "tsd": "0.29.0",
-    "typescript": "5.1.6",
-    "xo": "0.39.1"
+    "@types/listr": "^0.14.9",
+    "@types/semver": "^7.5.6",
+    "@types/serve-handler": "^6.1.4",
+    "ava": "^6.1.1",
+    "nyc": "^15.1.0",
+    "pdfjs-dist": "^4.0.379",
+    "prettier": "^3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "tap-xunit": "^2.4.1",
+    "ts-node": "^10.9.2",
+    "tsd": "^0.30.4",
+    "typescript": "^5.3.3",
+    "xo": "^0.57.0"
   },
   "ava": {
     "extensions": [
@@ -89,6 +89,7 @@
     "trailingComma": "all",
     "useTabs": true,
     "bracketSpacing": true,
+    "endOfLine": "auto",
     "overrides": [
       {
         "files": [
@@ -103,7 +104,8 @@
   "xo": {
     "prettier": true,
     "ignores": [
-      "src/test/mathjax"
+      "src/test/mathjax",
+      "src/test/*"
     ],
     "rules": {
       "@typescript-eslint/explicit-function-return-type": "off",
@@ -119,7 +121,22 @@
       "node/no-unsupported-features/es-syntax": "off",
       "unicorn/no-array-callback-reference": "off",
       "unicorn/no-fn-reference-in-iterator": "off",
-      "unicorn/string-content": "off"
+      "unicorn/string-content": "off",
+      "unicorn/prefer-node-protocol": "off",
+      "import/extensions": "off",
+      "unicorn/prefer-module": "off",
+      "import/order": "off",
+      "@typescript-eslint/consistent-type-imports": "off",
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/consistent-type-definitions": "off",
+      "unicorn/prevent-abbreviations": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "import/no-named-as-default": "off",
+      "unicorn/no-await-expression-member": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "unicorn/prefer-top-level-await": "off",
+      "@typescript-eslint/no-unsafe-return": "off"
     },
     "overrides": [
       {

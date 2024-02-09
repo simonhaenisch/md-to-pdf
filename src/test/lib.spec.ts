@@ -45,26 +45,30 @@ test('getMarginObject should be able to handle all valid CSS margin inputs', (t)
 // --
 // get-html
 
-test('getHtml should return a valid html document', (t) => {
-	const html = getHtml('', defaultConfig).replace(/\n/g, '');
+test('getHtml should return a valid html document', async (t) => {
+	const htmlData = await getHtml('', defaultConfig);
+	const html = htmlData.replace(/\n/g, '');
 
 	t.regex(html, /<!DOCTYPE html>.*<html>.*<head>.*<body class="">.*<\/body>.*<\/html>/);
 });
 
-test('getHtml should inject rendered markdown', (t) => {
-	const html = getHtml('# Foo', defaultConfig).replace(/\n/g, '');
+test('getHtml should inject rendered markdown', async (t) => {
+	const htmlData = await getHtml('# Foo', defaultConfig)
+	const html = htmlData.replace(/\n/g, '');
 
 	t.regex(html, /<body class="">\s*<h1 id="foo">Foo<\/h1>\s*<\/body>/);
 });
 
-test('getHtml should inject body classes', (t) => {
-	const html = getHtml('', { ...defaultConfig, body_class: ['foo', 'bar'] }).replace(/\n/g, '');
+test('getHtml should inject body classes', async(t) => {
+	const htmlData = await getHtml('', { ...defaultConfig, body_class: ['foo', 'bar'] });
+	const html = htmlData.replace(/\n/g, '');
 
 	t.regex(html, /<body class="foo bar">/);
 });
 
-test('getHtml should have the title set', (t) => {
-	const html = getHtml('', { ...defaultConfig, document_title: 'Foo' }).replace(/\n/g, '');
+test('getHtml should have the title set', async (t) => {
+	const htmlData = await getHtml('', { ...defaultConfig, document_title: 'Foo' });
+	const html = htmlData.replace(/\n/g, '');
 
 	t.regex(html, /<title>Foo<\/title>/);
 });
@@ -72,39 +76,39 @@ test('getHtml should have the title set', (t) => {
 // --
 // get-marked
 
-test('getMarked should highlight js code', (t) => {
+test('getMarked should highlight js code', async (t) => {
 	const marked = getMarked({}, []);
-	const html = marked('```js\nvar foo="bar";\n```');
+	const html = await marked.parse('```js\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code class="hljs js">'));
 });
 
-test('getMarked should highlight unknown code as plaintext', (t) => {
+test('getMarked should highlight unknown code as plaintext', async (t) => {
 	const marked = getMarked({}, []);
-	const html = marked('```\nvar foo="bar";\n```');
+	const html = await marked.parse('```\nvar foo="bar";\n```');
 
 	t.true(html.includes('<code>'));
 });
 
-test('getMarked should accept a custom renderer', (t) => {
+test('getMarked should accept a custom renderer', async (t) => {
 	const renderer = new Renderer();
 
 	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 	renderer.link = (href, _, text) => `<a class="custom" href="${href}">${text}</a>`;
 
 	const marked = getMarked({ renderer }, []);
-	const html = marked('[Foo](/bar)');
+	const html = await marked.parse('[Foo](/bar)');
 
 	t.true(html.includes('<a class="custom" href="/bar">Foo</a>'));
 });
 
-test('getMarked should accept a custom renderer with custom code highlighter', (t) => {
+test('getMarked should accept a custom renderer with custom code highlighter', async (t) => {
 	const renderer = new Renderer();
 
 	renderer.code = (code) => `<custom-code>${code}</custom-code>`;
 
 	const marked = getMarked({ renderer }, []);
-	const html = marked('```\nvar foo="bar";\n```');
+	const html = await marked.parse('```\nvar foo="bar";\n```');
 
 	t.true(html.includes('<custom-code>var foo="bar";</custom-code>'));
 });
