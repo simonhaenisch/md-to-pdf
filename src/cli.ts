@@ -44,6 +44,8 @@ export const cliFlags = arg({
 	'--as-html': Boolean,
 	'--config-file': String,
 	'--devtools': Boolean,
+	
+	'--book': String,
 
 	// aliases
 	'-h': '--help',
@@ -69,7 +71,12 @@ async function main(args: typeof cliFlags, config: Config) {
 		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');
 	}
 
+	if (args['--book']) {
+		return console.log("wod");
+	}
+
 	if (args['--version']) {
+		console.log("lollolll");
 		return console.log((require('../package.json') as PackageJson).version);
 	}
 
@@ -119,6 +126,7 @@ async function main(args: typeof cliFlags, config: Config) {
 	config.port = args['--port'] ?? (await getPort());
 
 	const server = await serveDirectory(config);
+
 
 	/**
 	 * 4. Either process stdin or create a Listr task for each file.
