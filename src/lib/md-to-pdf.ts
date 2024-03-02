@@ -25,6 +25,7 @@ export const convertMdToPdf = async (
 		browser?: Browser;
 	} = {},
 ) => {
+	// console.log('convertMdToPdf', input, config, args, browser);
 	const mdFileContent =
 		'content' in input
 			? input.content
@@ -108,6 +109,7 @@ export const convertMdToPdf = async (
 		if (output.filename === 'stdout') {
 			process.stdout.write(output.content);
 		} else {
+			// await fs.writeFile(output.filename + "test", output.content);
 			await fs.writeFile(output.filename, output.content);
 		}
 	}

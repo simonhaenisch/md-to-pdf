@@ -17,6 +17,9 @@ import { help } from './lib/help';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
+const { exec } = require('child_process');
+// import * as fs from 'fs/promises';
+
 
 // --
 // Configure CLI Arguments
@@ -66,14 +69,10 @@ main(cliFlags, defaultConfig).catch((error) => {
 
 async function main(args: typeof cliFlags, config: Config) {
 	process.title = 'md-to-pdf';
-	console.log(process.argv);
+	// console.log(process.argv);
 
 	if (!validateNodeVersion()) {
 		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');
-	}
-
-	if (args['--book']) {
-		return console.log("wod");
 	}
 
 	if (args['--version']) {
@@ -90,13 +89,44 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	const files = args._;
+	// console.log(files);
+	// if (args['--book']) {
+	// 	console.log("book file");
+	// 	async function findMarkdownFiles(dirPath: string): Promise<string[]> {
+	// 		let mdFiles: string[] = [];
+	
+	// 		async function recurse(currentPath: string): Promise<void> {
+	// 			const entries = await fs.readdir(currentPath, { withFileTypes: true });
+	
+	// 			for (let entry of entries) {
+	// 				const entryPath = path.join(currentPath, entry.name);
+	// 				if (entry.isDirectory()) {
+	// 					await recurse(entryPath);
+	// 				} else if (entry.isFile() && entry.name.endsWith('.md')) {
+	// 					mdFiles.push(entryPath);
+	// 				}
+	// 			}
+	// 		}
+	
+	// 		await recurse(dirPath);
+	// 		return mdFiles;
+	// 	}
+	
+	// 	// Example usage
+	// 	const directoryPath: string = args['--book']; // Make sure 'args' is defined and has the correct type
+	// 	console.log("found files:")
+	// 	findMarkdownFiles(directoryPath)
+	// 		.then(files => console.log(files))
+	// 		.catch(error => console.error(error));
+	// 	console.log("END FILES")
+	// }
 
 	// const stdin = await getStdin();
 	const stdin = false;
 
-	if (files.length === 0 && !stdin) {
-		return help();
-	}
+	// if (files.length === 0 && !stdin) {
+	// 	return help();
+	// }
 
 	/**
 	 * 2. Read config file and merge it into the config object.
@@ -152,6 +182,47 @@ async function main(args: typeof cliFlags, config: Config) {
 		task: async () => convertMdToPdf({ path: file }, config, { args }),
 	});
 
+	const runPdfUnite = () => {
+		console.log(files)
+		const command = 'pdfunite one.pdf two.pdf root.pdf out2.pdf';
+		let directory: string = "src/test/output/"
+		// let directory: string = "/Users/log/Github/md-to-pdf/src/test/output/"
+		const options = {
+			cwd: directory // Specify the directory here
+		};
+		
+		exec(command, options, (error: Error | null, stderr: string) => {
+			if (error) {
+				console.error(`exec error: ${error.message}`);
+				return;
+			}
+			if (stderr) {
+				console.error(`stderr: ${stderr}`);
+				return;
+			}
+		});
+	};
+
+	if (args['--book']) {
+		console.log("entered book")
+		await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
+			.run()
+			.then(async () => {
+				await closeBrowser();
+				await closeServer(server);
+				runPdfUnite();
+			})
+			.catch((error: Error) => {
+				/**
+				 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
+				*
+				* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
+				*/
+				throw error;
+			});
+			// return;
+		}
+
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
 		.run()
 		.then(async () => {
@@ -173,13 +244,14 @@ async function main(args: typeof cliFlags, config: Config) {
 		.catch((error: Error) => {
 			/**
 			 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
-			 *
-			 * @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
-			 */
+			*
+			* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
+			*/
 			if (args['--watch']) {
 				return console.error(error);
 			}
-
+			
 			throw error;
 		});
-}
+
+	}
