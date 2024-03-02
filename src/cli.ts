@@ -17,7 +17,7 @@ import { help } from './lib/help';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
-const { exec } = require('child_process');
+// const { exec } = require('child_process');
 import * as fs from 'fs/promises';
 
 
@@ -89,39 +89,68 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	const files = args._;
-	// console.log(files);
+
+	console.log("Normal Files:");
+	console.log(files);
 	let bookFiles: string[] = [];
 	if (args['--book']) {
 		// console.log("book file");
+
 		async function findMarkdownFiles(dirPath: string): Promise<string[]> {
 			let mdFiles: string[] = [];
-	
+		
 			async function recurse(currentPath: string): Promise<void> {
 				const entries = await fs.readdir(currentPath, { withFileTypes: true });
-	
+		
 				for (let entry of entries) {
 					const entryPath = path.join(currentPath, entry.name);
 					if (entry.isDirectory()) {
 						await recurse(entryPath);
 					} else if (entry.isFile() && entry.name.endsWith('.md')) {
-						mdFiles.push(entryPath);
+						// Keep the path relative to the initial directory provided
+						const relativePath = path.relative(dirPath, entryPath);
+						mdFiles.push(relativePath);
 					}
 				}
 			}
-	
+		
 			await recurse(dirPath);
-			return mdFiles;
+			// Prepend the initial directory to each path to maintain the full path from the initial directory
+			return mdFiles.map(file => path.join(dirPath, file));
 		}
+		
+		// Example usage
+		const dirPath = '/Users/log/Github/md-to-pdf/src/test/nested';
+		findMarkdownFiles(dirPath).then(files => console.log(files));
 	
 		const directoryPath: string = args['--book']; 
-		bookFiles = await findMarkdownFiles(directoryPath);
+		bookFiles = await findMarkdownFiles(directoryPath); // Assign the result of findMarkdownFiles to bookFiles
+		console.log("Book Files:");
+		console.log(bookFiles);
 
 		const getListrTask = (file: string) => ({
 			title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
 			task: async () => convertMdToPdf({ path: file }, config, { args }),
 		});
+
+		await new Listr(bookFiles.map(getListrTask), { concurrent: true, exitOnError: false })
+			.run()
+			.then(async () => {
+				await closeBrowser();
+				await closeServer(server);
+				// runPdfUnite();
+			})
+			.catch((error: Error) => {
+				/**
+				 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
+				*
+				* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
+				*/
+				throw error;
+			});
+
+		return;
 	}
-	console.log(bookFiles);
 
 	// const stdin = await getStdin();
 	const stdin = false;
@@ -184,46 +213,27 @@ async function main(args: typeof cliFlags, config: Config) {
 		task: async () => convertMdToPdf({ path: file }, config, { args }),
 	});
 
-	const runPdfUnite = () => {
-		console.log(files)
-		const command = 'pdfunite one.pdf two.pdf root.pdf out2.pdf';
-		let directory: string = "src/test/output/"
-		// let directory: string = "/Users/log/Github/md-to-pdf/src/test/output/"
-		const options = {
-			cwd: directory // Specify the directory here
-		};
+	// const runPdfUnite = () => {
+	// 	console.log(files)
+	// 	const command = 'pdfunite one.pdf two.pdf root.pdf out2.pdf';
+	// 	let directory: string = "src/test/output/"
+	// 	// let directory: string = "/Users/log/Github/md-to-pdf/src/test/output/"
+	// 	const options = {
+	// 		cwd: directory // Specify the directory here
+	// 	};
 		
-		exec(command, options, (error: Error | null, stderr: string) => {
-			if (error) {
-				console.error(`exec error: ${error.message}`);
-				return;
-			}
-			if (stderr) {
-				console.error(`stderr: ${stderr}`);
-				return;
-			}
-		});
-	};
+	// 	exec(command, options, (error: Error | null, stderr: string) => {
+	// 		if (error) {
+	// 			console.error(`exec error: ${error.message}`);
+	// 			return;
+	// 		}
+	// 		if (stderr) {
+	// 			console.error(`stderr: ${stderr}`);
+	// 			return;
+	// 		}
+	// 	});
+	// };
 
-	if (args['--book']) {
-		console.log("entered book")
-		await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
-			.run()
-			.then(async () => {
-				// await closeBrowser();
-				// await closeServer(server);
-				runPdfUnite();
-			})
-			.catch((error: Error) => {
-				/**
-				 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
-				*
-				* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
-				*/
-				throw error;
-			});
-			// return;
-		}
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
 		.run()
