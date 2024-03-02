@@ -26,7 +26,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "tsc -p tsconfig.build.json --watch",
-    "serve": "nodemon dist/main.js", 
+    "serve": "nodemon dist/main.js",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rm -rf dist",
     "prepack": "npm run clean && npm run build",
@@ -34,9 +34,9 @@
     "test": "xo && tsc -p tsconfig.type-test.json && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts --timeout=1m",
     "release": "npm test && npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish",
     "loc": "npx cloc src --exclude-dir=test --by-file",
-    "dev": "concurrently \"npm:start\" \"npm:serve\""
+    "dev": "concurrently \"npm:start\" \"npm:serve\"",
+    "debug": "node src/debugRunner.js"
   },
-  
   "bin": {
     "md-to-pdf": "dist/cli.js",
     "md2pdf": "dist/cli.js"
@@ -51,6 +51,7 @@
     "chokidar": "^3.5.2",
     "get-port": "^5.1.1",
     "get-stdin": "^8.0.0",
+    "glob": "^10.3.10",
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.7.0",
     "iconv-lite": "^0.6.3",

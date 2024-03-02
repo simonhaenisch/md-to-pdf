@@ -7,7 +7,7 @@ import arg from 'arg';
 import chalk from 'chalk';
 import { watch, WatchOptions } from 'chokidar';
 import getPort from 'get-port';
-import getStdin from 'get-stdin';
+// import getStdin from 'get-stdin';
 import Listr from 'listr';
 import path from 'path';
 import { PackageJson } from '.';
@@ -66,6 +66,7 @@ main(cliFlags, defaultConfig).catch((error) => {
 
 async function main(args: typeof cliFlags, config: Config) {
 	process.title = 'md-to-pdf';
+	console.log(process.argv);
 
 	if (!validateNodeVersion()) {
 		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');
@@ -90,7 +91,8 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	const files = args._;
 
-	const stdin = await getStdin();
+	// const stdin = await getStdin();
+	const stdin = false;
 
 	if (files.length === 0 && !stdin) {
 		return help();
