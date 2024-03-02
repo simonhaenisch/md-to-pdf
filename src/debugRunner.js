@@ -1,16 +1,14 @@
-// debugRunner.js
-const { glob } = require('glob');
+// debugger
 const { execSync } = require('child_process');
 
-const pattern = 'readme.md';
+const fileOrDirectory = 'src/test/nested'; // Direct path to your Markdown file or directory
 
-const files = glob.sync(pattern);
-if (files.length === 0) {
-    console.error('No Markdown files found.');
-    return;
+console.log(`Processing ${fileOrDirectory}...`);
+
+try {
+    execSync(`ts-node src/cli.ts --book "${fileOrDirectory}"`, { stdio: 'inherit', shell: true });
+} catch (error) {
+    console.error('Error executing md-to-pdf:', error);
+    console.error('Stderr:', error.stderr?.toString());
+    process.exit(1); // Exit with an error code to signal failure
 }
-console.log("test2");
-files.forEach(file => {
-    console.log(`Processing ${file}...`);
-    execSync(`ts-node src/cli.ts "${file}"`, { stdio: 'inherit' });
-});

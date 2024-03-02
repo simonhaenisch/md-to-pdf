@@ -94,7 +94,7 @@ export const convertMdToPdf = async (
 	const html = getHtml(md, config);
 	// console.log('html', html);
 	const relativePath = 'path' in input ? relative(config.basedir, input.path) : '.';
-
+	console.log('relativePath', relativePath);
 	const output = await generateOutput(html, relativePath, config, browser);
 	
 	if (!output) {

@@ -65,17 +65,22 @@ export async function generateOutput(
 
 		return browserPromise;
 	}
-
 	const browser = await getBrowser();
-
+	
 	const page = await browser.newPage();
-
+	
+	// console.log("test");
+	// it looks like the URL pathname is lining up?
 	const urlPathname = join(relativePath, 'index.html').split(sep).join(posix.sep);
-
+	// console.log('urlPathname: ', urlPathname);
+	console.log("config.port: ", config.port);
+	console.log("----");
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	await page.goto(`http://localhost:${config.port!}/${urlPathname}`); // make sure relative paths work as expected
+	console.log("went to page");
 	await page.setContent(html); // overwrite the page content with what was generated from the markdown
-
+	
+	console.log("hello");
 	for (const stylesheet of config.stylesheet) {
 		await page.addStyleTag(isHttpUrl(stylesheet) ? { url: stylesheet } : { path: stylesheet });
 	}

@@ -92,113 +92,114 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	console.log("Normal Files:");
 	console.log(files);
-	let bookFiles: string[] = [];
-	if (args['--book']) {
-		// console.log("book file");
-
-		async function findMarkdownFiles(dirPath: string): Promise<string[]> {
-			let mdFiles: string[] = [];
-		
-			async function recurse(currentPath: string): Promise<void> {
-				const entries = await fs.readdir(currentPath, { withFileTypes: true });
-		
-				for (let entry of entries) {
-					const entryPath = path.join(currentPath, entry.name);
-					if (entry.isDirectory()) {
-						await recurse(entryPath);
-					} else if (entry.isFile() && entry.name.endsWith('.md')) {
-						// Keep the path relative to the initial directory provided
-						const relativePath = path.relative(dirPath, entryPath);
-						mdFiles.push(relativePath);
-					}
-				}
-			}
-		
-			await recurse(dirPath);
-			// Prepend the initial directory to each path to maintain the full path from the initial directory
-			return mdFiles.map(file => path.join(dirPath, file));
-		}
-		
-		// Example usage
-		const dirPath = '/Users/log/Github/md-to-pdf/src/test/nested';
-		findMarkdownFiles(dirPath);
 	
-		const directoryPath: string = args['--book']; 
-		bookFiles = await findMarkdownFiles(directoryPath); // Assign the result of findMarkdownFiles to bookFiles
-		console.log("Book Files:");
-		bookFiles = bookFiles.slice(-1);
-		console.log(bookFiles);
-		
-
-		const getListrTask = (file: string) => ({
-			title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-			task: async () => convertMdToPdf({ path: file }, config, { args }),
-		});
-
-		await new Listr(bookFiles.map(getListrTask), { concurrent: true, exitOnError: false })
-			.run()
-			.then(async () => {
-				await closeBrowser();
-				await closeServer(server);
-				// runPdfUnite();
-			})
-			.catch((error: Error) => {
-				/**
-				 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
-				*
-				* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
-				*/
-				throw error;
-			});
-
-		return;
-	}
-
 	// const stdin = await getStdin();
 	const stdin = false;
-
+	
 	// if (files.length === 0 && !stdin) {
-	// 	return help();
-	// }
-
-	/**
-	 * 2. Read config file and merge it into the config object.
-	 */
-
-	if (args['--config-file']) {
-		try {
-			const configFile: Partial<Config> = require(path.resolve(args['--config-file']));
-
-			config = {
-				...config,
-				...configFile,
-				pdf_options: { ...config.pdf_options, ...configFile.pdf_options },
-			};
-		} catch (error) {
-			console.warn(chalk.red(`Warning: couldn't read config file: ${path.resolve(args['--config-file'])}`));
-			console.warn(error instanceof SyntaxError ? error.message : error);
+		// 	return help();
+		// }
+		
+		/**
+		 * 2. Read config file and merge it into the config object.
+		*/
+		
+		if (args['--config-file']) {
+			try {
+				const configFile: Partial<Config> = require(path.resolve(args['--config-file']));
+				
+				config = {
+					...config,
+					...configFile,
+					pdf_options: { ...config.pdf_options, ...configFile.pdf_options },
+				};
+			} catch (error) {
+				console.warn(chalk.red(`Warning: couldn't read config file: ${path.resolve(args['--config-file'])}`));
+				console.warn(error instanceof SyntaxError ? error.message : error);
+			}
 		}
-	}
+		
+		/**
+		 * 3. Start the file server.
+		*/
+		
+		if (args['--basedir']) {
+			config.basedir = args['--basedir'];
+		}
+		
+		config.port = args['--port'] ?? (await getPort());
+		
+		const server = await serveDirectory(config);
+		
+		
+		/**
+		 * 4. Either process stdin or create a Listr task for each file.
+		*/
+		
+		let bookFiles: string[] = [];
+		if (args['--book']) {
+			// console.log("book file");
+	
+			async function findMarkdownFiles(dirPath: string): Promise<string[]> {
+				let mdFiles: string[] = [];
+			
+				async function recurse(currentPath: string): Promise<void> {
+					const entries = await fs.readdir(currentPath, { withFileTypes: true });
+			
+					for (let entry of entries) {
+						const entryPath = path.join(currentPath, entry.name);
+						if (entry.isDirectory()) {
+							await recurse(entryPath);
+						} else if (entry.isFile() && entry.name.endsWith('.md')) {
+							// Keep the path relative to the initial directory provided
+							const relativePath = path.relative(dirPath, entryPath);
+							mdFiles.push(relativePath);
+						}
+					}
+				}
+			
+				await recurse(dirPath);
+				// Prepend the initial directory to each path to maintain the full path from the initial directory
+				return mdFiles.map(file => path.join(dirPath, file));
+			}
+			
+			// Example usage
+			const dirPath = '/Users/log/Github/md-to-pdf/src/test/nested';
+			findMarkdownFiles(dirPath);
+		
+			const directoryPath: string = args['--book']; 
+			bookFiles = await findMarkdownFiles(directoryPath); // Assign the result of findMarkdownFiles to bookFiles
+			console.log("Book Files:");
+			// bookFiles = bookFiles.slice(-1);
+			console.log(bookFiles);
+			
+	
+			const getListrTask = (file: string) => ({
+				title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
+				task: async () => convertMdToPdf({ path: file }, config, { args }),
+			});
+	
+			await new Listr(bookFiles.map(getListrTask), { concurrent: true, exitOnError: false })
+				.run()
+				.then(async () => {
+					await closeBrowser();
+					await closeServer(server);
+					// runPdfUnite();
+				})
+				.catch((error: Error) => {
+					/**
+					 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
+					*
+					* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
+					*/
+					throw error;
+				});
+	
+			return;
+		}
 
-	/**
-	 * 3. Start the file server.
-	 */
-
-	if (args['--basedir']) {
-		config.basedir = args['--basedir'];
-	}
-
-	config.port = args['--port'] ?? (await getPort());
-
-	const server = await serveDirectory(config);
-
-
-	/**
-	 * 4. Either process stdin or create a Listr task for each file.
-	 */
-
-	if (stdin) {
-		await convertMdToPdf({ content: stdin }, config, { args })
+		if (stdin) {
+			await convertMdToPdf({ content: stdin }, config, { args })
 			.finally(async () => {
 				await closeBrowser();
 				await closeServer(server);
