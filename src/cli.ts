@@ -18,7 +18,7 @@ import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
 const { exec } = require('child_process');
-// import * as fs from 'fs/promises';
+import * as fs from 'fs/promises';
 
 
 // --
@@ -89,37 +89,34 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	const files = args._;
-	// console.log(files);
-	// if (args['--book']) {
-	// 	console.log("book file");
-	// 	async function findMarkdownFiles(dirPath: string): Promise<string[]> {
-	// 		let mdFiles: string[] = [];
+	console.log(files);
+	if (args['--book']) {
+		console.log("book file");
+		async function findMarkdownFiles(dirPath: string): Promise<string[]> {
+			let mdFiles: string[] = [];
 	
-	// 		async function recurse(currentPath: string): Promise<void> {
-	// 			const entries = await fs.readdir(currentPath, { withFileTypes: true });
+			async function recurse(currentPath: string): Promise<void> {
+				const entries = await fs.readdir(currentPath, { withFileTypes: true });
 	
-	// 			for (let entry of entries) {
-	// 				const entryPath = path.join(currentPath, entry.name);
-	// 				if (entry.isDirectory()) {
-	// 					await recurse(entryPath);
-	// 				} else if (entry.isFile() && entry.name.endsWith('.md')) {
-	// 					mdFiles.push(entryPath);
-	// 				}
-	// 			}
-	// 		}
+				for (let entry of entries) {
+					const entryPath = path.join(currentPath, entry.name);
+					if (entry.isDirectory()) {
+						await recurse(entryPath);
+					} else if (entry.isFile() && entry.name.endsWith('.md')) {
+						mdFiles.push(entryPath);
+					}
+				}
+			}
 	
-	// 		await recurse(dirPath);
-	// 		return mdFiles;
-	// 	}
+			await recurse(dirPath);
+			return mdFiles;
+		}
 	
-	// 	// Example usage
-	// 	const directoryPath: string = args['--book']; // Make sure 'args' is defined and has the correct type
-	// 	console.log("found files:")
-	// 	findMarkdownFiles(directoryPath)
-	// 		.then(files => console.log(files))
-	// 		.catch(error => console.error(error));
-	// 	console.log("END FILES")
-	// }
+		// Example usage
+		const directoryPath: string = args['--book']; // Make sure 'args' is defined and has the correct type
+		const foundFiles = await findMarkdownFiles(directoryPath);
+		console.log(foundFiles);
+	}
 
 	// const stdin = await getStdin();
 	const stdin = false;
@@ -203,25 +200,25 @@ async function main(args: typeof cliFlags, config: Config) {
 		});
 	};
 
-	if (args['--book']) {
-		console.log("entered book")
-		await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
-			.run()
-			.then(async () => {
-				await closeBrowser();
-				await closeServer(server);
-				runPdfUnite();
-			})
-			.catch((error: Error) => {
-				/**
-				 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
-				*
-				* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
-				*/
-				throw error;
-			});
-			// return;
-		}
+	// if (args['--book']) {
+	// 	console.log("entered book")
+	// 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
+	// 		.run()
+	// 		.then(async () => {
+	// 			await closeBrowser();
+	// 			await closeServer(server);
+	// 			runPdfUnite();
+	// 		})
+	// 		.catch((error: Error) => {
+	// 			/**
+	// 			 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
+	// 			*
+	// 			* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
+	// 			*/
+	// 			throw error;
+	// 		});
+	// 		// return;
+	// 	}
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
 		.run()
