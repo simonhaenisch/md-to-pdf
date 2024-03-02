@@ -92,11 +92,11 @@ export const convertMdToPdf = async (
 	config.stylesheet = [...new Set([...config.stylesheet, highlightStylesheet])];
 
 	const html = getHtml(md, config);
-
+	// console.log('html', html);
 	const relativePath = 'path' in input ? relative(config.basedir, input.path) : '.';
 
 	const output = await generateOutput(html, relativePath, config, browser);
-
+	
 	if (!output) {
 		if (config.devtools) {
 			throw new Error('No file is generated with --devtools.');

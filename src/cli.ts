@@ -121,12 +121,14 @@ async function main(args: typeof cliFlags, config: Config) {
 		
 		// Example usage
 		const dirPath = '/Users/log/Github/md-to-pdf/src/test/nested';
-		findMarkdownFiles(dirPath).then(files => console.log(files));
+		findMarkdownFiles(dirPath);
 	
 		const directoryPath: string = args['--book']; 
 		bookFiles = await findMarkdownFiles(directoryPath); // Assign the result of findMarkdownFiles to bookFiles
 		console.log("Book Files:");
+		bookFiles = bookFiles.slice(-1);
 		console.log(bookFiles);
+		
 
 		const getListrTask = (file: string) => ({
 			title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,

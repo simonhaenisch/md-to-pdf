@@ -2,7 +2,7 @@
 const { glob } = require('glob');
 const { execSync } = require('child_process');
 
-const pattern = 'src/test/nested/**/*.md';
+const pattern = 'readme.md';
 
 const files = glob.sync(pattern);
 if (files.length === 0) {
