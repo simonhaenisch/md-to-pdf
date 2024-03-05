@@ -9,6 +9,9 @@
 // Possible appproaches
 // 1: WINNER!!
 // Make pdf at each file location, then go through and specify each location to pdfunite
+// Generate all the chapter's pdfs
+// Unite chapter pdfs
+// Delete indivdual pdfs (maybe see if pdfunite can do this for us)
 // Pros:
 // Follows the generate-output logic
 // Cons:
@@ -107,7 +110,7 @@ async function main(args: typeof cliFlags, config: Config) {
 	 * 1. Get input.
 	 */
 
-	// const files = args._;
+	const files = args._;
 
 	// console.log("Normal Files:");
 	// console.log(files);
@@ -252,8 +255,8 @@ async function main(args: typeof cliFlags, config: Config) {
 		const bookFilesDictionary = await findMarkdownFilesByDirectory(rootDirectory);
 		// console.log(bookFilesDictionary);
 
-		// let chapterFiles: string[] = bookFilesDictionary['img'] || [];
-		let chapterFiles: string [] = ['/Users/log/Github/md-to-pdf/src/test/nested/img/random.md']
+		let chapterFiles: string[] = bookFilesDictionary['img'] || [];
+		// let chapterFiles: string [] = ['/Users/log/Github/md-to-pdf/src/test/nested/img/random.md']
 		console.log("chapter: " + chapterFiles);
 		await generatePdfs(chapterFiles);
 
