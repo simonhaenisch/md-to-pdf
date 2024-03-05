@@ -3,6 +3,17 @@
 // --
 // Packages
 
+// Done
+// recursively find all the markdown files in a directory and make each pdf
+// It puts each of these pdfs into the output directory
+
+// Next 
+// Merge the pdfs into one pdf
+// Place union pdf into the original directory
+
+// Eventually
+// 
+
 import arg from 'arg';
 import chalk from 'chalk';
 import { watch, WatchOptions } from 'chokidar';
@@ -90,8 +101,8 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	const files = args._;
 
-	console.log("Normal Files:");
-	console.log(files);
+	// console.log("Normal Files:");
+	// console.log(files);
 	
 	// const stdin = await getStdin();
 	const stdin = false;
@@ -136,65 +147,50 @@ async function main(args: typeof cliFlags, config: Config) {
 		 * 4. Either process stdin or create a Listr task for each file.
 		*/
 		
-		let bookFiles: string[] = [];
 		if (args['--book']) {
 			// console.log("book file");
 	
-			async function findMarkdownFiles(dirPath: string): Promise<string[]> {
-				let mdFiles: string[] = [];
+			interface MarkdownFilesDictionary {
+				[directory: string]: string[];
+			}
 			
-				async function recurse(currentPath: string): Promise<void> {
+			async function findMarkdownFilesByDirectory(dirPath: string): Promise<MarkdownFilesDictionary> {
+				let mdFilesDictionary: MarkdownFilesDictionary = {};
+				const rootDirectoryName = path.basename(dirPath);
+			
+				async function recurse(currentPath: string, relativePath: string = rootDirectoryName): Promise<void> { // Default relativePath to rootDirectoryName
 					const entries = await fs.readdir(currentPath, { withFileTypes: true });
 			
 					for (let entry of entries) {
 						const entryPath = path.join(currentPath, entry.name);
+						// if current directory not in dict, add it
+						if (!mdFilesDictionary[relativePath]) {
+							mdFilesDictionary[relativePath] = [];
+						}
+						
 						if (entry.isDirectory()) {
-							await recurse(entryPath);
+							const newRelativePath = currentPath === dirPath ? entry.name : path.join(relativePath, entry.name);
+							await recurse(entryPath, newRelativePath);
 						} else if (entry.isFile() && entry.name.endsWith('.md')) {
-							// Keep the path relative to the initial directory provided
-							const relativePath = path.relative(dirPath, entryPath);
-							mdFiles.push(relativePath);
+							mdFilesDictionary[relativePath]?.push(entryPath);
 						}
 					}
 				}
 			
 				await recurse(dirPath);
-				// Prepend the initial directory to each path to maintain the full path from the initial directory
-				return mdFiles.map(file => path.join(dirPath, file));
+				return mdFilesDictionary;
 			}
 			
-			// Example usage
-			const dirPath = '/Users/log/Github/md-to-pdf/src/test/nested';
-			findMarkdownFiles(dirPath);
-		
+			// Usage example:
 			const directoryPath: string = args['--book']; 
-			bookFiles = await findMarkdownFiles(directoryPath); // Assign the result of findMarkdownFiles to bookFiles
-			console.log("Book Files:");
-			// bookFiles = bookFiles.slice(-1);
-			console.log(bookFiles);
-			
-	
-			const getListrTask = (file: string) => ({
-				title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-				task: async () => convertMdToPdf({ path: file }, config, { args }),
-			});
-	
-			await new Listr(bookFiles.map(getListrTask), { concurrent: true, exitOnError: false })
-				.run()
-				.then(async () => {
-					await closeBrowser();
-					await closeServer(server);
-					// runPdfUnite();
+			console.log("book files");
+			findMarkdownFilesByDirectory(directoryPath)
+				.then((bookFilesDictionary) => {
+					console.log(bookFilesDictionary);
 				})
-				.catch((error: Error) => {
-					/**
-					 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
-					*
-					* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
-					*/
-					throw error;
+				.catch((error) => {
+					console.error("Error finding markdown files:", error);
 				});
-	
 			return;
 		}
 
