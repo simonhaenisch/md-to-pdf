@@ -73,8 +73,8 @@ export async function generateOutput(
 	// it looks like the URL pathname is lining up?
 	const urlPathname = join(relativePath, 'index.html').split(sep).join(posix.sep);
 	// console.log('urlPathname: ', urlPathname);
-	console.log("config.port: ", config.port);
-	console.log("----");
+	// console.log("config.port: ", config.port);
+	// console.log("----");
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	await page.goto(`http://localhost:${config.port!}/${urlPathname}`); // make sure relative paths work as expected
 	console.log("went to page");
