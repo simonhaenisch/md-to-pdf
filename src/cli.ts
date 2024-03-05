@@ -218,48 +218,48 @@ async function main(args: typeof cliFlags, config: Config) {
 	// generatePdfs(files);
 	// return;
 	
-	if (args['--book']) {
-		// console.log("book file");
+	// if (args['--book']) {
+	// 	// console.log("book file");
 
 		
-		async function findMarkdownFilesByDirectory(dirPath: string): Promise<MarkdownFilesDictionary> {
-			let mdFilesDictionary: MarkdownFilesDictionary = {};
-			const rootDirectoryName = path.basename(dirPath);
+	// 	async function findMarkdownFilesByDirectory(dirPath: string): Promise<MarkdownFilesDictionary> {
+	// 		let mdFilesDictionary: MarkdownFilesDictionary = {};
+	// 		const rootDirectoryName = path.basename(dirPath);
 		
-			async function recurse(currentPath: string, relativePath: string = rootDirectoryName): Promise<void> { // Default relativePath to rootDirectoryName
-				const entries = await fs.readdir(currentPath, { withFileTypes: true });
-				for (let entry of entries) {
-					const entryPath = path.join(currentPath, entry.name);
-					// if current directory not in dict, add it
-					const dirName = path.basename(relativePath)
-					if (!mdFilesDictionary[relativePath]) {
-						mdFilesDictionary[dirName] = [];
-					}
+	// 		async function recurse(currentPath: string, relativePath: string = rootDirectoryName): Promise<void> { // Default relativePath to rootDirectoryName
+	// 			const entries = await fs.readdir(currentPath, { withFileTypes: true });
+	// 			for (let entry of entries) {
+	// 				const entryPath = path.join(currentPath, entry.name);
+	// 				// if current directory not in dict, add it
+	// 				const dirName = path.basename(relativePath)
+	// 				if (!mdFilesDictionary[relativePath]) {
+	// 					mdFilesDictionary[dirName] = [];
+	// 				}
 					
-					if (entry.isDirectory()) {
-						const newRelativePath = currentPath === dirPath ? entry.name : path.join(relativePath, entry.name);
-						await recurse(entryPath, newRelativePath);
-					} else if (entry.isFile() && entry.name.endsWith('.md')) {
-						mdFilesDictionary[dirName]?.push(entryPath);
-					}
-				}
-			}
+	// 				if (entry.isDirectory()) {
+	// 					const newRelativePath = currentPath === dirPath ? entry.name : path.join(relativePath, entry.name);
+	// 					await recurse(entryPath, newRelativePath);
+	// 				} else if (entry.isFile() && entry.name.endsWith('.md')) {
+	// 					mdFilesDictionary[dirName]?.push(entryPath);
+	// 				}
+	// 			}
+	// 		}
 		
-			await recurse(dirPath);
-			return mdFilesDictionary;
-		}
+	// 		await recurse(dirPath);
+	// 		return mdFilesDictionary;
+	// 	}
 		
-		const directoryPath: string = args['--book']; 
-		console.log("book files");
-		const bookFilesDictionary = await findMarkdownFilesByDirectory(directoryPath);
-		console.log(bookFilesDictionary);
+	// 	const directoryPath: string = args['--book']; 
+	// 	console.log("book files");
+	// 	const bookFilesDictionary = await findMarkdownFilesByDirectory(directoryPath);
+	// 	console.log(bookFilesDictionary);
 
-		// pdfUnite(bookFilesDictionary);
+	// 	// pdfUnite(bookFilesDictionary);
 
-		await closeBrowser();
-		await closeServer(server);
-		return;
-	}
+	// 	await closeBrowser();
+	// 	await closeServer(server);
+	// 	return;
+	// }
 
 	if (stdin) {
 		await convertMdToPdf({ content: stdin }, config, { args })
