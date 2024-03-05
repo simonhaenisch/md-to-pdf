@@ -147,12 +147,40 @@ async function main(args: typeof cliFlags, config: Config) {
 		 * 4. Either process stdin or create a Listr task for each file.
 		*/
 		
+		// const runPdfUnite = () => {
+		// 	console.log(files)
+		// 	const command = 'pdfunite one.pdf two.pdf root.pdf out2.pdf';
+		// 	let directory: string = "src/test/output/"
+		// 	// let directory: string = "/Users/log/Github/md-to-pdf/src/test/output/"
+		// 	const options = {
+		// 		cwd: directory // Specify the directory here
+		// 	};
+			
+		// 	exec(command, options, (error: Error | null, stderr: string) => {
+		// 		if (error) {
+		// 			console.error(`exec error: ${error.message}`);
+		// 			return;
+		// 		}
+		// 		if (stderr) {
+		// 			console.error(`stderr: ${stderr}`);
+		// 			return;
+		// 		}
+		// 	});
+		// };
+		interface MarkdownFilesDictionary {
+			[directory: string]: string[];
+		}
+
+		function pdfUnite(files: MarkdownFilesDictionary): void{
+			let rootDir: string = process.cwd();
+			Object.keys(files).forEach(key => {
+				console.log(`Key: ${key}`);
+			});
+		}
+		
 		if (args['--book']) {
 			// console.log("book file");
 	
-			interface MarkdownFilesDictionary {
-				[directory: string]: string[];
-			}
 			
 			async function findMarkdownFilesByDirectory(dirPath: string): Promise<MarkdownFilesDictionary> {
 				let mdFilesDictionary: MarkdownFilesDictionary = {};
@@ -160,19 +188,19 @@ async function main(args: typeof cliFlags, config: Config) {
 			
 				async function recurse(currentPath: string, relativePath: string = rootDirectoryName): Promise<void> { // Default relativePath to rootDirectoryName
 					const entries = await fs.readdir(currentPath, { withFileTypes: true });
-			
 					for (let entry of entries) {
 						const entryPath = path.join(currentPath, entry.name);
 						// if current directory not in dict, add it
+						const dirName = path.basename(relativePath)
 						if (!mdFilesDictionary[relativePath]) {
-							mdFilesDictionary[relativePath] = [];
+							mdFilesDictionary[dirName] = [];
 						}
 						
 						if (entry.isDirectory()) {
 							const newRelativePath = currentPath === dirPath ? entry.name : path.join(relativePath, entry.name);
 							await recurse(entryPath, newRelativePath);
 						} else if (entry.isFile() && entry.name.endsWith('.md')) {
-							mdFilesDictionary[relativePath]?.push(entryPath);
+							mdFilesDictionary[dirName]?.push(entryPath);
 						}
 					}
 				}
@@ -181,16 +209,15 @@ async function main(args: typeof cliFlags, config: Config) {
 				return mdFilesDictionary;
 			}
 			
-			// Usage example:
 			const directoryPath: string = args['--book']; 
 			console.log("book files");
-			findMarkdownFilesByDirectory(directoryPath)
-				.then((bookFilesDictionary) => {
-					console.log(bookFilesDictionary);
-				})
-				.catch((error) => {
-					console.error("Error finding markdown files:", error);
-				});
+			const bookFilesDictionary = await findMarkdownFilesByDirectory(directoryPath);
+			console.log(bookFilesDictionary);
+
+			pdfUnite(bookFilesDictionary);
+
+			await closeBrowser();
+			await closeServer(server);
 			return;
 		}
 
@@ -212,26 +239,6 @@ async function main(args: typeof cliFlags, config: Config) {
 		task: async () => convertMdToPdf({ path: file }, config, { args }),
 	});
 
-	// const runPdfUnite = () => {
-	// 	console.log(files)
-	// 	const command = 'pdfunite one.pdf two.pdf root.pdf out2.pdf';
-	// 	let directory: string = "src/test/output/"
-	// 	// let directory: string = "/Users/log/Github/md-to-pdf/src/test/output/"
-	// 	const options = {
-	// 		cwd: directory // Specify the directory here
-	// 	};
-		
-	// 	exec(command, options, (error: Error | null, stderr: string) => {
-	// 		if (error) {
-	// 			console.error(`exec error: ${error.message}`);
-	// 			return;
-	// 		}
-	// 		if (stderr) {
-	// 			console.error(`stderr: ${stderr}`);
-	// 			return;
-	// 		}
-	// 	});
-	// };
 
 
 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
