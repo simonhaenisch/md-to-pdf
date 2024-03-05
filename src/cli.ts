@@ -5,6 +5,10 @@
 
 // Done
 // Makes dictionary of each chapter's md files
+// Have a function that turns an array of md files into a pdfs in that dir
+
+// To do
+// Have each chapter's pdfs created
 
 // Possible appproaches
 // 1: WINNER!!
@@ -183,82 +187,65 @@ async function main(args: typeof cliFlags, config: Config) {
 	}
 
 	const generatePdfs = async (files: string[]) => {
-		const getListrTask = (file: string) => ({
-			title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-			task: async () => convertMdToPdf({ path: file }, config, { args }),
-		});
-	
-		await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
-			.run()
-			.then(async () => {
-				if (args['--watch']) {
-					console.log(chalk.bgBlue('\n watching for changes \n'));
-	
-					const watchOptions = args['--watch-options']
-						? (JSON.parse(args['--watch-options']) as WatchOptions)
-						: config.watch_options;
-	
-					watch(files, watchOptions).on('change', async (file) =>
-						new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error),
-					);
-				} else {
-					await closeBrowser();
-					await closeServer(server);
+		for (const file of files) {
+			// Create a new Listr task for each file individually and await its completion
+			await new Listr([
+				{
+					title: `Generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
+					task: () => convertMdToPdf({ path: file }, config, { args }),
 				}
-			})
-			.catch((error: Error) => {
-				/**
-				 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
-				*
-				* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
-				*/
-				if (args['--watch']) {
-					return console.error(error);
-				}
-				
-				throw error;
-			});
+			], { exitOnError: false }).run().catch(console.error);
+		}
 	};
 	
+	async function findMarkdownFiles(dirPath: string): Promise<MarkdownFilesDictionary> {
+		let mdFilesDictionary: MarkdownFilesDictionary = {};
+		const rootDirectoryName = path.basename(dirPath);
+	
+		async function recurse(currentPath: string, relativePath: string = rootDirectoryName): Promise<void> { // Default relativePath to rootDirectoryName
+			const entries = await fs.readdir(currentPath, { withFileTypes: true });
+			for (let entry of entries) {
+				const entryPath = path.join(currentPath, entry.name);
+				// if current directory not in dict, add it
+				const dirName = path.basename(relativePath)
+				if (!mdFilesDictionary[relativePath]) {
+					mdFilesDictionary[dirName] = [];
+				}
+				
+				if (entry.isDirectory()) {
+					const newRelativePath = currentPath === dirPath ? entry.name : path.join(relativePath, entry.name);
+					await recurse(entryPath, newRelativePath);
+				} else if (entry.isFile() && entry.name.endsWith('.md')) {
+					mdFilesDictionary[dirName]?.push(entryPath);
+				}
+			}
+		}
+	
+		await recurse(dirPath);
+		return mdFilesDictionary;
+	}
 	
 	if (args['--book']) {
 		// console.log("book file");
-		async function findMarkdownFilesByDirectory(dirPath: string): Promise<MarkdownFilesDictionary> {
-			let mdFilesDictionary: MarkdownFilesDictionary = {};
-			const rootDirectoryName = path.basename(dirPath);
-		
-			async function recurse(currentPath: string, relativePath: string = rootDirectoryName): Promise<void> { // Default relativePath to rootDirectoryName
-				const entries = await fs.readdir(currentPath, { withFileTypes: true });
-				for (let entry of entries) {
-					const entryPath = path.join(currentPath, entry.name);
-					// if current directory not in dict, add it
-					const dirName = path.basename(relativePath)
-					if (!mdFilesDictionary[relativePath]) {
-						mdFilesDictionary[dirName] = [];
-					}
-					
-					if (entry.isDirectory()) {
-						const newRelativePath = currentPath === dirPath ? entry.name : path.join(relativePath, entry.name);
-						await recurse(entryPath, newRelativePath);
-					} else if (entry.isFile() && entry.name.endsWith('.md')) {
-						mdFilesDictionary[dirName]?.push(entryPath);
-					}
-				}
-			}
-		
-			await recurse(dirPath);
-			return mdFilesDictionary;
-		}
 		
 		const rootDirectory: string = args['--book']; 
 		// console.log("book files");
-		const bookFilesDictionary = await findMarkdownFilesByDirectory(rootDirectory);
+		const bookFilesDictionary = await findMarkdownFiles(rootDirectory);
 		// console.log(bookFilesDictionary);
 
-		let chapterFiles: string[] = bookFilesDictionary['img'] || [];
+		
+		// let chapterFiles: string[] = bookFilesDictionary['img'] || [];
 		// let chapterFiles: string [] = ['/Users/log/Github/md-to-pdf/src/test/nested/img/random.md']
-		console.log("chapter: " + chapterFiles);
-		await generatePdfs(chapterFiles);
+		// console.log("chapter: " + chapterFiles);
+		// await generatePdfs(chapterFiles);
+		Object.keys(bookFilesDictionary).forEach(async key => {
+			let chapterFiles: string[] = bookFilesDictionary[key] || [];
+			console.log("chapter: " + chapterFiles);
+			await generatePdfs(chapterFiles);
+
+		});
+		// await closeBrowser();
+		// await closeServer(server);
 
 		return;
 	}
