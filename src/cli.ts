@@ -4,14 +4,22 @@
 // Packages
 
 // Done
-// recursively find all the markdown files in a directory and make each pdf
-// It puts each of these pdfs into the output directory
+// Makes dictionary of each chapter's md files
 
-// Next 
-// Merge the pdfs into one pdf
-// Place union pdf into the original directory
+// Possible appproaches
+// 1: WINNER!!
+// Make pdf at each file location, then go through and specify each location to pdfunite
+// Pros:
+// Follows the generate-output logic
+// Cons:
+// Puts files everywhere
 
-// Eventually
+// 2
+// Put all pdfs in root dir
+// Pros:
+// Easy to implement pdfunite
+// Cons:
+// Have to change generate-output logic
 // 
 
 import arg from 'arg';
