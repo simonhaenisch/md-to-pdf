@@ -178,45 +178,45 @@ async function main(args: typeof cliFlags, config: Config) {
 	// 	});
 	// }
 
-	// const generatePdfs = async (files: string[]) => {
-	// 	const getListrTask = (file: string) => ({
-	// 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-	// 		task: async () => convertMdToPdf({ path: file }, config, { args }),
-	// 	});
+	const generatePdfs = async (files: string[]) => {
+		const getListrTask = (file: string) => ({
+			title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
+			task: async () => convertMdToPdf({ path: file }, config, { args }),
+		});
 	
-	// 	await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
-	// 		.run()
-	// 		.then(async () => {
-	// 			if (args['--watch']) {
-	// 				console.log(chalk.bgBlue('\n watching for changes \n'));
+		await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false })
+			.run()
+			.then(async () => {
+				if (args['--watch']) {
+					console.log(chalk.bgBlue('\n watching for changes \n'));
 	
-	// 				const watchOptions = args['--watch-options']
-	// 					? (JSON.parse(args['--watch-options']) as WatchOptions)
-	// 					: config.watch_options;
+					const watchOptions = args['--watch-options']
+						? (JSON.parse(args['--watch-options']) as WatchOptions)
+						: config.watch_options;
 	
-	// 				watch(files, watchOptions).on('change', async (file) =>
-	// 					new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error),
-	// 				);
-	// 			} else {
-	// 				await closeBrowser();
-	// 				await closeServer(server);
-	// 			}
-	// 		})
-	// 		.catch((error: Error) => {
-	// 			/**
-	// 			 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
-	// 			*
-	// 			* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
-	// 			*/
-	// 			if (args['--watch']) {
-	// 				return console.error(error);
-	// 			}
+					watch(files, watchOptions).on('change', async (file) =>
+						new Listr([getListrTask(file)], { exitOnError: false }).run().catch(console.error),
+					);
+				} else {
+					await closeBrowser();
+					await closeServer(server);
+				}
+			})
+			.catch((error: Error) => {
+				/**
+				 * In watch mode the error needs to be shown immediately because the `main` function's catch handler will never execute.
+				*
+				* @todo is this correct or does `main` actually finish and the process is just kept alive because of the file server?
+				*/
+				if (args['--watch']) {
+					return console.error(error);
+				}
 				
-	// 			throw error;
-	// 		});
-	// };
-	// generatePdfs(files);
-	// return;
+				throw error;
+			});
+	};
+	generatePdfs(files);
+	return;
 	
 	// if (args['--book']) {
 	// 	// console.log("book file");
