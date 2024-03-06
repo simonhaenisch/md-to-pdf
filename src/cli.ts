@@ -162,30 +162,30 @@ async function main(args: typeof cliFlags, config: Config) {
 	 * 4. Either process stdin or create a Listr task for each file.
 	*/
 	
-	// const runPdfUnite = () => {
-	// 	console.log(files)
-	// 	const command = 'pdfunite one.pdf two.pdf root.pdf out2.pdf';
-	// 	let directory: string = "src/test/output/"
-	// 	// let directory: string = "/Users/log/Github/md-to-pdf/src/test/output/"
-	// 	const options = {
-	// 		cwd: directory // Specify the directory here
-	// 	};
+	const mergeDirectoryPdfs = async (files: string[]) => {
+		const command = 'pdfunite one.pdf two.pdf root.pdf out2.pdf';
+		let directory: string = "src/test/output/"
+		// let directory: string = "/Users/log/Github/md-to-pdf/src/test/output/"
+		const options = {
+			cwd: directory // Specify the directory here
+		};
 		
-	// 	exec(command, options, (error: Error | null, stderr: string) => {
-	// 		if (error) {
-	// 			console.error(`exec error: ${error.message}`);
-	// 			return;
-	// 		}
-	// 		if (stderr) {
-	// 			console.error(`stderr: ${stderr}`);
-	// 			return;
-	// 		}
-	// 	});
-	// };
+		exec(command, options, (error: Error | null, stderr: string) => {
+			if (error) {
+				console.error(`exec error: ${error.message}`);
+				return;
+			}
+			if (stderr) {
+				console.error(`stderr: ${stderr}`);
+				return;
+			}
+		});
+	};
 	interface MarkdownFilesDictionary {
 		[directory: string]: string[];
 	}
 
+	// Given a list of .md files, convert them to pdfs
 	const generatePdfs = async (files: string[]) => {
 		for (const file of files) {
 			// Create a new Listr task for each file individually and await its completion
@@ -198,6 +198,8 @@ async function main(args: typeof cliFlags, config: Config) {
 		}
 	};
 	
+	// Given a directory, find all .md files in it and its subdirectories
+	// returns a dict in the form of { directory: string: mdFiles: string[] }
 	async function findMarkdownFiles(dirPath: string): Promise<MarkdownFilesDictionary> {
 		let mdFilesDictionary: MarkdownFilesDictionary = {};
 		const rootDirectoryName = path.basename(dirPath);
@@ -225,6 +227,7 @@ async function main(args: typeof cliFlags, config: Config) {
 		return mdFilesDictionary;
 	}
 	
+	// Given a list of .md files, find their corresponding .pdf files and delete them
 	async function deleteFiles(files: string[]) {
 
 		for (const filePath of files) {
@@ -255,16 +258,22 @@ async function main(args: typeof cliFlags, config: Config) {
 		// await generatePdfs(chapterFiles);
 
 		// Makes the pdfs for each directory aka chapter
-		Object.keys(bookFilesDictionary).forEach(async key => {
-			let chapterFiles: string[] = bookFilesDictionary[key] || [];
-			// console.log("chapter: " + chapterFiles);
-			await generatePdfs(chapterFiles);
-
+		const pdfGenerationPromises = Object.keys(bookFilesDictionary).map(async (key) => {
+			let directoryFiles = bookFilesDictionary[key] || [];
+			await generatePdfs(directoryFiles);
+			
 		});
+	
+		await Promise.all(pdfGenerationPromises);
+	
 
-		deleteFiles(bookFilesDictionary['nested'] || []);		
-		// await closeBrowser();
-		// await closeServer(server);
+		// After all PDFs have been processsed, delete all unneccesary pdfs
+		Object.keys(bookFilesDictionary).map(async (key) => {
+			deleteFiles(bookFilesDictionary[key] || []);
+			console.log(key + "'s files successfully deleted");		
+		});
+		await closeBrowser();
+		await closeServer(server);
 
 		return;
 	}
