@@ -225,6 +225,21 @@ async function main(args: typeof cliFlags, config: Config) {
 		return mdFilesDictionary;
 	}
 	
+	async function deleteFiles(files: string[]) {
+
+		for (const filePath of files) {
+			// We pass in an array of md files, so we need to change the file extension to pdf
+			const pdfPath: string = filePath.replace(/\.md$/, '.pdf');
+			
+			try {
+				await fs.unlink(pdfPath);
+				console.log(pdfPath + ' deleted successfully');
+			} catch (err) {
+				console.error('Error deleting the file:', err);
+			}
+		}
+	}
+
 	if (args['--book']) {
 		// console.log("book file");
 		
@@ -238,12 +253,16 @@ async function main(args: typeof cliFlags, config: Config) {
 		// let chapterFiles: string [] = ['/Users/log/Github/md-to-pdf/src/test/nested/img/random.md']
 		// console.log("chapter: " + chapterFiles);
 		// await generatePdfs(chapterFiles);
+
+		// Makes the pdfs for each directory aka chapter
 		Object.keys(bookFilesDictionary).forEach(async key => {
 			let chapterFiles: string[] = bookFilesDictionary[key] || [];
-			console.log("chapter: " + chapterFiles);
+			// console.log("chapter: " + chapterFiles);
 			await generatePdfs(chapterFiles);
 
 		});
+
+		deleteFiles(bookFilesDictionary['nested'] || []);		
 		// await closeBrowser();
 		// await closeServer(server);
 

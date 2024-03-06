@@ -9,3 +9,4 @@ node_modules
 /coverage
 /src/test/**/*.pdf
 /src/test/**/*.html
+src/test/nested/.DS_Store
