@@ -162,8 +162,12 @@ async function main(args: typeof cliFlags, config: Config) {
 	 * 4. Either process stdin or create a Listr task for each file.
 	*/
 	
-	const mergeDirectoryPdfs = async (files: string[]) => {
+
+	// TO DO, finish this
+	// i dont really like passing in key. Might be best to figure out name of dir from file path?
+	const mergeDirectoryPdfs = async (key: string, files: string[]) => {
 		const command = 'pdfunite one.pdf two.pdf root.pdf out2.pdf';
+		const mergedName: string = key + '_MERGED.pdf';
 		let directory: string = "src/test/output/"
 		// let directory: string = "/Users/log/Github/md-to-pdf/src/test/output/"
 		const options = {
@@ -264,8 +268,12 @@ async function main(args: typeof cliFlags, config: Config) {
 			
 		});
 	
+		// Wait to generate all pdfs before merging them
 		await Promise.all(pdfGenerationPromises);
 	
+		Object.keys(bookFilesDictionary).map(async (key) => {
+			mergeDirectoryPdfs(key, bookFilesDictionary[key] || [])
+		});
 
 		// After all PDFs have been processsed, delete all unneccesary pdfs
 		Object.keys(bookFilesDictionary).map(async (key) => {
@@ -330,4 +338,10 @@ async function main(args: typeof cliFlags, config: Config) {
 
 			throw error;
 		});
+}
+
+function exec(command: string, options: {
+	cwd: string; // Specify the directory here
+}, arg2: (error: Error | null, stderr: string) => void) {
+	throw new Error('Function not implemented.');
 }
