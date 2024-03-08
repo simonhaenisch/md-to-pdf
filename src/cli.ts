@@ -45,7 +45,6 @@ import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
 const { exec } = require('child_process');
 import * as fs from 'fs/promises';
-import { marked } from 'marked';
 
 
 // --
@@ -172,17 +171,18 @@ async function main(args: typeof cliFlags, config: Config) {
 		const pdfFiles = files.map(files => {
 			const directory = path.dirname(files);
 			const filename = path.basename(files, '.md') + '.pdf';
-			return path.join(directory, filename);
+			return `"${path.join(directory, filename)}"`;
 		});
 
 		const directoryPath: string = files[0] ? path.dirname(files[0]) : '/';
-		const mergedName: string = path.join(directoryPath, 'MERGED.pdf');
+		const parentDirectoryName = path.basename(directoryPath);
+		const mergedName: string = path.join(directoryPath, parentDirectoryName + '_MERGED.pdf');
 		
-		console.log(pdfFiles);
-		return;
+		// console.log(pdfFiles);
 		// Construct the command string
-		const command: string = `pdfunite ${files.join(' ')} "${mergedName}"`;
-
+		const command: string = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
+		// console.log(command);
+		// return;
 		// Execute the command
 		exec(command, { cwd: directoryPath }, (error: Error | null, stderr: string) => {
 			if (error) {
@@ -193,7 +193,7 @@ async function main(args: typeof cliFlags, config: Config) {
 				console.error(`stderr: ${stderr}`);
 				return;
 			}
-			console.log(`PDFs merged successfully into ${mergedName}`);
+			return true;
 		});
 	};
 
@@ -278,21 +278,20 @@ async function main(args: typeof cliFlags, config: Config) {
 		// await generatePdfs(chapterFiles);
 
 		// Makes the pdfs for each directory aka chapter
-		const pdfGenerationPromises = Object.keys(bookFilesDictionary).map(async (key) => {
+		// Generate all PDFs before merging them
+		for (const key of Object.keys(bookFilesDictionary)) {
 			let directoryFiles = bookFilesDictionary[key] || [];
-			await generatePdfs(directoryFiles);
-			
-		});
-	
-		// Wait to generate all pdfs before merging them
-		await Promise.all(pdfGenerationPromises);
-	
-		Object.keys(bookFilesDictionary).map(async (key) => {
-			console.log("key: " + key);
-			console.log("chapterFiles: " + bookFilesDictionary[key] || [])
-			mergeDirectoryPdfs(bookFilesDictionary[key] || [])
-		});
+			await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
+		}
 
+		// Merge the PDFs in each directory and then delete the source PDFs
+		for (const key of Object.keys(bookFilesDictionary)) {
+			let directoryFiles = bookFilesDictionary[key] || [];
+			await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
+			// Only delete files after ensuring the merge was successful
+			await deleteFiles(directoryFiles.map(file => file.replace('.md', '.pdf')));
+			console.log(key + "'s files successfully deleted");
+		}
 		// After all PDFs have been processsed, delete all unneccesary pdfs
 		// Object.keys(bookFilesDictionary).map(async (key) => {
 		// 	deleteFiles(bookFilesDictionary[key] || []);
