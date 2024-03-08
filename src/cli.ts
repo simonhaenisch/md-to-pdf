@@ -179,7 +179,7 @@ async function main(args: typeof cliFlags, config: Config) {
 			return `"${path.join(directory, filename)}"`;
 		});
 	
-		const directoryPath: string = path.dirname(files[0]);
+		const directoryPath: string = path.dirname(files[0] || "");
 		const parentDirectoryName = path.basename(directoryPath);
 		const mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
 	
@@ -189,8 +189,12 @@ async function main(args: typeof cliFlags, config: Config) {
 			await exec(command, { cwd: directoryPath });
 			console.log(`PDFs merged successfully into ${mergedName}`);
 		} catch (error) {
-			console.error(`exec error: ${error.message}`);
+			console.error(`exec error: ${(error as Error).message}`);
 		}
+
+		console.log("Enterering " + mergedName + " DELETE")
+
+		deleteFiles(files);
 	};
 
 	interface MarkdownFilesDictionary {
@@ -246,18 +250,51 @@ async function main(args: typeof cliFlags, config: Config) {
 	// Given a list of .md files, find their corresponding .pdf files and delete them
 	async function deleteFiles(files: string[]) {
 
-		for (const filePath of files) {
+		for (let filePath of files) {
 			// We pass in an array of md files, so we need to change the file extension to pdf
-			const pdfPath: string = filePath.replace(/\.md$/, '.pdf');
+
+			if (filePath.endsWith('.md')) {
+				filePath = filePath.replace(/\.md$/, '.pdf');
+			}	
 			
 			try {
-				await fs.unlink(pdfPath);
-				console.log(pdfPath + ' deleted successfully');
+				await fs.unlink(filePath);
+				console.log(filePath + ' deleted successfully');
 			} catch (err) {
 				console.error('Error deleting the file:', err);
 			}
 		}
 	}
+
+
+	const mergeCombinedPdfs = async (files: string[]) => {
+		if (files.length === 0) {
+			return;
+		}
+	
+		const pdfFiles = files.map(file => {
+			const directory = path.dirname(file);
+			const filename = path.basename(file, '.md') + '.pdf';
+			return `"${path.join(directory, filename)}"`;
+		});
+	
+		const directoryPath: string = path.dirname(files[0] || "");
+		const parentDirectoryName = path.basename(directoryPath);
+		const mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
+	
+		const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
+	
+		try {
+			await exec(command, { cwd: directoryPath });
+			console.log(`PDFs merged successfully into ${mergedName}`);
+		} catch (error) {
+			console.error(`exec error: ${(error as Error).message}`);
+		}
+
+		console.log("Enterering " + mergedName + " DELETE")
+
+		deleteFiles(files);
+	};
 
 	if (args['--book']) {
 		// console.log("book file");
@@ -284,17 +321,8 @@ async function main(args: typeof cliFlags, config: Config) {
 		for (const key of Object.keys(bookFilesDictionary)) {
 			let directoryFiles = bookFilesDictionary[key] || [];
 			await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
-			// Only delete files after ensuring the merge was successful
-			// await deleteFiles(directoryFiles.map(file => file.replace('.md', '.pdf')));
-			// console.log(key + "'s files successfully deleted");
 		}
-		// After all PDFs have been processsed, delete all unneccesary pdfs
-		// Object.keys(bookFilesDictionary).map(async (key) => {
-		// 	deleteFiles(bookFilesDictionary[key] || []);
-		// 	console.log(key + "'s files successfully deleted");		
-		// });
-		console.log("TESTEEEEE");
-		deleteFiles(bookFilesDictionary['Organization'] || []);
+
 
 		await closeBrowser();
 		await closeServer(server);
