@@ -174,9 +174,12 @@ async function main(args: typeof cliFlags, config: Config) {
 		}
 	
 		const pdfFiles = files.map(file => {
-			const directory = path.dirname(file);
-			const filename = path.basename(file, '.md') + '.pdf';
-			return `"${path.join(directory, filename)}"`;
+			if (file.endsWith('.md')) {
+				const directory = path.dirname(file);
+				const filename = path.basename(file, '.md') + '.pdf';
+				return `"${path.join(directory, filename)}"`;
+			}
+			return file;
 		});
 	
 		const directoryPath: string = path.dirname(files[0] || "");
@@ -251,8 +254,8 @@ async function main(args: typeof cliFlags, config: Config) {
 	async function deleteFiles(files: string[]) {
 
 		for (let filePath of files) {
-			// We pass in an array of md files, so we need to change the file extension to pdf
 
+			// We pass in an array of md files, so we need to change the file extension to pdf
 			if (filePath.endsWith('.md')) {
 				filePath = filePath.replace(/\.md$/, '.pdf');
 			}	
@@ -265,36 +268,6 @@ async function main(args: typeof cliFlags, config: Config) {
 			}
 		}
 	}
-
-
-	const mergeCombinedPdfs = async (files: string[]) => {
-		if (files.length === 0) {
-			return;
-		}
-	
-		const pdfFiles = files.map(file => {
-			const directory = path.dirname(file);
-			const filename = path.basename(file, '.md') + '.pdf';
-			return `"${path.join(directory, filename)}"`;
-		});
-	
-		const directoryPath: string = path.dirname(files[0] || "");
-		const parentDirectoryName = path.basename(directoryPath);
-		const mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
-	
-		const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
-	
-		try {
-			await exec(command, { cwd: directoryPath });
-			console.log(`PDFs merged successfully into ${mergedName}`);
-		} catch (error) {
-			console.error(`exec error: ${(error as Error).message}`);
-		}
-
-		console.log("Enterering " + mergedName + " DELETE")
-
-		deleteFiles(files);
-	};
 
 	if (args['--book']) {
 		// console.log("book file");
@@ -309,24 +282,27 @@ async function main(args: typeof cliFlags, config: Config) {
 		// let chapterFiles: string [] = ['/Users/log/Github/md-to-pdf/src/test/nested/img/random.md']
 		// console.log("chapter: " + chapterFiles);
 		// await generatePdfs(chapterFiles);
-
+		
 		// Makes the pdfs for each directory aka chapter
 		// Generate all PDFs before merging them
 		for (const key of Object.keys(bookFilesDictionary)) {
 			let directoryFiles = bookFilesDictionary[key] || [];
 			await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
 		}
-
+		
 		// Merge the PDFs in each directory and then delete the source PDFs
 		for (const key of Object.keys(bookFilesDictionary)) {
 			let directoryFiles = bookFilesDictionary[key] || [];
 			await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
 		}
+		console.log("All PDFs merged successfully ----------------------\n");
 
-
+		// const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => path.join(rootDirectory, key + '_MERGED.pdf'));
+		// mergeDirectoryPdfs(keysWithRootDirectory);
+		
 		await closeBrowser();
 		await closeServer(server);
-
+		
 		return;
 	}
 
