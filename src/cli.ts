@@ -43,8 +43,12 @@ import { help } from './lib/help';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
-const { exec } = require('child_process');
+import { exec as execCallback } from 'child_process';
 import * as fs from 'fs/promises';
+import { promisify } from 'util';
+const exec = promisify(execCallback);
+
+
 
 
 // --
@@ -163,38 +167,30 @@ async function main(args: typeof cliFlags, config: Config) {
 	*/
 	
 
+
 	const mergeDirectoryPdfs = async (files: string[]) => {
-		if (files.length == 0) {
+		if (files.length === 0) {
 			return;
 		}
-
-		const pdfFiles = files.map(files => {
-			const directory = path.dirname(files);
-			const filename = path.basename(files, '.md') + '.pdf';
+	
+		const pdfFiles = files.map(file => {
+			const directory = path.dirname(file);
+			const filename = path.basename(file, '.md') + '.pdf';
 			return `"${path.join(directory, filename)}"`;
 		});
-
-		const directoryPath: string = files[0] ? path.dirname(files[0]) : '/';
+	
+		const directoryPath: string = path.dirname(files[0]);
 		const parentDirectoryName = path.basename(directoryPath);
-		const mergedName: string = path.join(directoryPath, parentDirectoryName + '_MERGED.pdf');
-		
-		// console.log(pdfFiles);
-		// Construct the command string
-		const command: string = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
-		// console.log(command);
-		// return;
-		// Execute the command
-		exec(command, { cwd: directoryPath }, (error: Error | null, stderr: string) => {
-			if (error) {
-				console.error(`exec error: ${error.message}`);
-				return;
-			}
-			if (stderr) {
-				console.error(`stderr: ${stderr}`);
-				return;
-			}
-			return true;
-		});
+		const mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
+	
+		const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
+	
+		try {
+			await exec(command, { cwd: directoryPath });
+			console.log(`PDFs merged successfully into ${mergedName}`);
+		} catch (error) {
+			console.error(`exec error: ${error.message}`);
+		}
 	};
 
 	interface MarkdownFilesDictionary {
@@ -289,14 +285,17 @@ async function main(args: typeof cliFlags, config: Config) {
 			let directoryFiles = bookFilesDictionary[key] || [];
 			await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
 			// Only delete files after ensuring the merge was successful
-			await deleteFiles(directoryFiles.map(file => file.replace('.md', '.pdf')));
-			console.log(key + "'s files successfully deleted");
+			// await deleteFiles(directoryFiles.map(file => file.replace('.md', '.pdf')));
+			// console.log(key + "'s files successfully deleted");
 		}
 		// After all PDFs have been processsed, delete all unneccesary pdfs
 		// Object.keys(bookFilesDictionary).map(async (key) => {
 		// 	deleteFiles(bookFilesDictionary[key] || []);
 		// 	console.log(key + "'s files successfully deleted");		
 		// });
+		console.log("TESTEEEEE");
+		deleteFiles(bookFilesDictionary['Organization'] || []);
+
 		await closeBrowser();
 		await closeServer(server);
 
