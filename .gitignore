@@ -10,3 +10,6 @@ node_modules
 /src/test/**/*.pdf
 /src/test/**/*.html
 src/test/nested/.DS_Store
+src/test/.DS_Store
+src/test/basic/.DS_Store
+src/test/nested/level-one/.DS_Store

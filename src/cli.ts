@@ -43,8 +43,9 @@ import { help } from './lib/help';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
-// const { exec } = require('child_process');
+const { exec } = require('child_process');
 import * as fs from 'fs/promises';
+import { marked } from 'marked';
 
 
 // --
@@ -163,18 +164,27 @@ async function main(args: typeof cliFlags, config: Config) {
 	*/
 	
 
-	// TO DO, finish this
-	// i dont really like passing in key. Might be best to figure out name of dir from file path?
-	const mergeDirectoryPdfs = async (key: string, files: string[]) => {
-		const command = 'pdfunite one.pdf two.pdf root.pdf out2.pdf';
-		const mergedName: string = key + '_MERGED.pdf';
-		let directory: string = "src/test/output/"
-		// let directory: string = "/Users/log/Github/md-to-pdf/src/test/output/"
-		const options = {
-			cwd: directory // Specify the directory here
-		};
+	const mergeDirectoryPdfs = async (files: string[]) => {
+		if (files.length == 0) {
+			return;
+		}
+
+		const pdfFiles = files.map(files => {
+			const directory = path.dirname(files);
+			const filename = path.basename(files, '.md') + '.pdf';
+			return path.join(directory, filename);
+		});
+
+		const directoryPath: string = files[0] ? path.dirname(files[0]) : '/';
+		const mergedName: string = path.join(directoryPath, 'MERGED.pdf');
 		
-		exec(command, options, (error: Error | null, stderr: string) => {
+		console.log(pdfFiles);
+		return;
+		// Construct the command string
+		const command: string = `pdfunite ${files.join(' ')} "${mergedName}"`;
+
+		// Execute the command
+		exec(command, { cwd: directoryPath }, (error: Error | null, stderr: string) => {
 			if (error) {
 				console.error(`exec error: ${error.message}`);
 				return;
@@ -183,8 +193,10 @@ async function main(args: typeof cliFlags, config: Config) {
 				console.error(`stderr: ${stderr}`);
 				return;
 			}
+			console.log(`PDFs merged successfully into ${mergedName}`);
 		});
 	};
+
 	interface MarkdownFilesDictionary {
 		[directory: string]: string[];
 	}
@@ -204,30 +216,34 @@ async function main(args: typeof cliFlags, config: Config) {
 	
 	// Given a directory, find all .md files in it and its subdirectories
 	// returns a dict in the form of { directory: string: mdFiles: string[] }
+	// there is a bug where the last dir wont find the md file in there if the pdf has already been generated
 	async function findMarkdownFiles(dirPath: string): Promise<MarkdownFilesDictionary> {
 		let mdFilesDictionary: MarkdownFilesDictionary = {};
-		const rootDirectoryName = path.basename(dirPath);
+		const rootDirName = path.basename(dirPath);
 	
-		async function recurse(currentPath: string, relativePath: string = rootDirectoryName): Promise<void> { // Default relativePath to rootDirectoryName
+		async function recurse(currentPath: string, relativeDirPath: string): Promise<void> {
 			const entries = await fs.readdir(currentPath, { withFileTypes: true });
-			for (let entry of entries) {
+	
+			for (const entry of entries) {
 				const entryPath = path.join(currentPath, entry.name);
-				// if current directory not in dict, add it
-				const dirName = path.basename(relativePath)
-				if (!mdFilesDictionary[relativePath]) {
-					mdFilesDictionary[dirName] = [];
-				}
-				
+	
 				if (entry.isDirectory()) {
-					const newRelativePath = currentPath === dirPath ? entry.name : path.join(relativePath, entry.name);
+					// Compute the new relative path or use the directory name if it's the root
+					const newRelativePath = relativeDirPath ? path.join(relativeDirPath, entry.name) : entry.name;
 					await recurse(entryPath, newRelativePath);
 				} else if (entry.isFile() && entry.name.endsWith('.md')) {
-					mdFilesDictionary[dirName]?.push(entryPath);
+					// Use the root directory name if the relative path is empty
+					const key = relativeDirPath || rootDirName;
+					if (!mdFilesDictionary[key]) {
+						mdFilesDictionary[key] = [];
+					}
+					mdFilesDictionary[key]?.push(entryPath);
 				}
 			}
 		}
 	
-		await recurse(dirPath);
+		// Start the recursion with an empty string as the initial relative path
+		await recurse(dirPath, '');
 		return mdFilesDictionary;
 	}
 	
@@ -272,14 +288,16 @@ async function main(args: typeof cliFlags, config: Config) {
 		await Promise.all(pdfGenerationPromises);
 	
 		Object.keys(bookFilesDictionary).map(async (key) => {
-			mergeDirectoryPdfs(key, bookFilesDictionary[key] || [])
+			console.log("key: " + key);
+			console.log("chapterFiles: " + bookFilesDictionary[key] || [])
+			mergeDirectoryPdfs(bookFilesDictionary[key] || [])
 		});
 
 		// After all PDFs have been processsed, delete all unneccesary pdfs
-		Object.keys(bookFilesDictionary).map(async (key) => {
-			deleteFiles(bookFilesDictionary[key] || []);
-			console.log(key + "'s files successfully deleted");		
-		});
+		// Object.keys(bookFilesDictionary).map(async (key) => {
+		// 	deleteFiles(bookFilesDictionary[key] || []);
+		// 	console.log(key + "'s files successfully deleted");		
+		// });
 		await closeBrowser();
 		await closeServer(server);
 
@@ -338,10 +356,4 @@ async function main(args: typeof cliFlags, config: Config) {
 
 			throw error;
 		});
-}
-
-function exec(command: string, options: {
-	cwd: string; // Specify the directory here
-}, arg2: (error: Error | null, stderr: string) => void) {
-	throw new Error('Function not implemented.');
 }
