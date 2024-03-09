@@ -92,6 +92,7 @@ export const convertMdToPdf = async (
 	config.stylesheet = [...new Set([...config.stylesheet, highlightStylesheet])];
 
 	const html = getHtml(md, config);
+	console.log('\nhtml: ', html);
 	// console.log('html', html);
 	const relativePath = 'path' in input ? relative(config.basedir, input.path) : '.';
 	// console.log('relativePath', relativePath);
