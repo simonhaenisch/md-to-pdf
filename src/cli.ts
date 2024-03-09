@@ -200,6 +200,38 @@ async function main(args: typeof cliFlags, config: Config) {
 		deleteFiles(files);
 	};
 
+	const manualMerge = async (files: string[]) => {
+		if (files.length === 0) {
+			return;
+		}
+	
+		const pdfFiles = files.map(file => {
+			if (file.endsWith('.md')) {
+				const directory = path.dirname(file);
+				const filename = path.basename(file, '.md') + '.pdf';
+				return `"${path.join(directory, filename)}"`;
+			}
+			return file;
+		});
+	
+		const directoryPath: string = path.dirname(files[0] || "");
+		const parentDirectoryName = path.basename(directoryPath);
+		const mergedName = path.join(directoryPath, `${parentDirectoryName}_FINAL.pdf`);
+	
+		const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
+	
+		try {
+			await exec(command, { cwd: directoryPath });
+			console.log(`PDFs merged successfully into ${mergedName}`);
+		} catch (error) {
+			console.error(`exec error: ${(error as Error).message}`);
+		}
+
+		console.log("Enterering " + mergedName + " DELETE")
+
+		deleteFiles(files);
+	};
+
 	interface MarkdownFilesDictionary {
 		[directory: string]: string[];
 	}
@@ -262,9 +294,27 @@ async function main(args: typeof cliFlags, config: Config) {
 			
 			try {
 				await fs.unlink(filePath);
-				console.log(filePath + ' deleted successfully');
+				// console.log(filePath + ' deleted successfully');
 			} catch (err) {
 				console.error('Error deleting the file:', err);
+			}
+		}
+	}
+
+	async function waitForFile(filePath: string, timeout: number = 10000) {
+		const startTime = Date.now();
+	
+		while (true) {
+			try {
+				await fs.access(filePath);
+				console.log("File exists: " + filePath);
+				return; // File exists, exit the loop
+			} catch (error) {
+				if (Date.now() - startTime > timeout) {
+					throw new Error(`Timeout waiting for file: ${filePath}`);
+				}
+				// Wait a bit before trying again
+				await new Promise(resolve => setTimeout(resolve, 500));
 			}
 		}
 	}
@@ -294,11 +344,18 @@ async function main(args: typeof cliFlags, config: Config) {
 		for (const key of Object.keys(bookFilesDictionary)) {
 			let directoryFiles = bookFilesDictionary[key] || [];
 			await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
+
+			const directoryPath: string = path.dirname(directoryFiles[0] || "");
+			const parentDirectoryName = path.basename(directoryPath);
+			const mergedFileName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
+			console.log("Waiting for \n" + mergedFileName);
+			await waitForFile(mergedFileName); // Wait for this merged file to exist
+
 		}
 		console.log("All PDFs merged successfully ----------------------\n");
 
-		// const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => path.join(rootDirectory, key + '_MERGED.pdf'));
-		// mergeDirectoryPdfs(keysWithRootDirectory);
+		const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => path.join(rootDirectory, key + '_MERGED.pdf'));
+		// manualMerge(keysWithRootDirectory);
 		
 		await closeBrowser();
 		await closeServer(server);
