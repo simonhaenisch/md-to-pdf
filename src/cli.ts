@@ -354,12 +354,31 @@ async function main(args: typeof cliFlags, config: Config) {
 		}
 		console.log("All PDFs merged successfully ----------------------\n");
 
-		const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => path.join(rootDirectory, key + '_MERGED.pdf'));
-		// manualMerge(keysWithRootDirectory);
-		
+		// the problem with this is that the keys with root dir does not have the correct path
+		const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => {
+			// Construct the full directory path for the key
+			const fullDirectoryPath = path.join(rootDirectory, key);
+		  
+			// Extract the base directory name from the key to use in the merged file name
+			const baseDirectoryName = path.basename(key);
+		  
+			// Check if the base directory name is the same as the root directory name
+			if (baseDirectoryName === path.basename(rootDirectory)) {
+			  // If it is, then we're dealing with the root directory case
+			  const mergedFilePath = fullDirectoryPath + '_MERGED.pdf';
+			  return mergedFilePath;
+			} else {
+			  // Otherwise, it's a subdirectory or file case
+			  const mergedFilePath = path.join(fullDirectoryPath, `${baseDirectoryName}_MERGED.pdf`);
+			  return mergedFilePath;
+			}
+		  });
+		console.log("keys with root directory: \n" + keysWithRootDirectory);
+
+		await mergeDirectoryPdfs(keysWithRootDirectory);  // Await here to ensure the final merge is completed before moving on
 		await closeBrowser();
 		await closeServer(server);
-		
+
 		return;
 	}
 
