@@ -184,8 +184,15 @@ async function main(args: typeof cliFlags, config: Config) {
 	
 		const directoryPath: string = path.dirname(files[0] || "");
 		const parentDirectoryName = path.basename(directoryPath);
-		const mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
+		let mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
 	
+		// Check if any input PDF file has the same name as the intended output merged PDF file
+		const conflictingFile = pdfFiles.find(file => file.includes(mergedName));
+
+		// If there is a conflict, change the output file name to use "_COMBINED.pdf" suffix
+		if (conflictingFile) {
+			mergedName = path.join(directoryPath, `${parentDirectoryName}_COMBINED.pdf`);
+		}
 		const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
 	
 		try {
