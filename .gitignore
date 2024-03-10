@@ -15,3 +15,5 @@ src/test/basic/.DS_Store
 src/test/nested/level-one/.DS_Store
 src/test/.DS_Store
 src/test/output/.DS_Store
+src/test/.DS_Store
+src/test/nested/.DS_Store

@@ -207,38 +207,6 @@ async function main(args: typeof cliFlags, config: Config) {
 		deleteFiles(files);
 	};
 
-	const manualMerge = async (files: string[]) => {
-		if (files.length === 0) {
-			return;
-		}
-	
-		const pdfFiles = files.map(file => {
-			if (file.endsWith('.md')) {
-				const directory = path.dirname(file);
-				const filename = path.basename(file, '.md') + '.pdf';
-				return `"${path.join(directory, filename)}"`;
-			}
-			return file;
-		});
-	
-		const directoryPath: string = path.dirname(files[0] || "");
-		const parentDirectoryName = path.basename(directoryPath);
-		const mergedName = path.join(directoryPath, `${parentDirectoryName}_FINAL.pdf`);
-	
-		const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
-	
-		try {
-			await exec(command, { cwd: directoryPath });
-			console.log(`PDFs merged successfully into ${mergedName}`);
-		} catch (error) {
-			console.error(`exec error: ${(error as Error).message}`);
-		}
-
-		console.log("Enterering " + mergedName + " DELETE")
-
-		deleteFiles(files);
-	};
-
 	interface MarkdownFilesDictionary {
 		[directory: string]: string[];
 	}
@@ -346,6 +314,7 @@ async function main(args: typeof cliFlags, config: Config) {
 			let directoryFiles = bookFilesDictionary[key] || [];
 			await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
 		}
+		return;
 		
 		// Merge the PDFs in each directory and then delete the source PDFs
 		for (const key of Object.keys(bookFilesDictionary)) {
