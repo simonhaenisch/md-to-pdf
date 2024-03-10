@@ -186,6 +186,11 @@ async function main(args: typeof cliFlags, config: Config) {
 		const parentDirectoryName = path.basename(directoryPath);
 		let mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
 	
+		//Make sure each file exists
+		for (const pdfFile of pdfFiles) {
+			await waitForFile(pdfFile);
+		}
+
 		// Check if any input PDF file has the same name as the intended output merged PDF file
 		const conflictingFile = pdfFiles.find(file => file.includes(mergedName));
 
@@ -202,9 +207,9 @@ async function main(args: typeof cliFlags, config: Config) {
 			console.error(`exec error: ${(error as Error).message}`);
 		}
 
-		console.log("Enterering " + mergedName + " DELETE")
+		// console.log("Enterering " + mergedName + " DELETE")
 
-		deleteFiles(files);
+		// deleteFiles(files);
 	};
 
 	interface MarkdownFilesDictionary {
@@ -295,40 +300,30 @@ async function main(args: typeof cliFlags, config: Config) {
 	}
 
 	if (args['--book']) {
-		// console.log("book file");
-		
 		const rootDirectory: string = args['--book']; 
-		// console.log("book files");
 		const bookFilesDictionary = await findMarkdownFiles(rootDirectory);
-		// console.log(bookFilesDictionary);
 
-		
-		// let chapterFiles: string[] = bookFilesDictionary['img'] || [];
-		// let chapterFiles: string [] = ['/Users/log/Github/md-to-pdf/src/test/nested/img/random.md']
-		// console.log("chapter: " + chapterFiles);
-		// await generatePdfs(chapterFiles);
-		
 		// Makes the pdfs for each directory aka chapter
 		// Generate all PDFs before merging them
 		for (const key of Object.keys(bookFilesDictionary)) {
 			let directoryFiles = bookFilesDictionary[key] || [];
 			await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
-		}
-		return;
-		
-		// Merge the PDFs in each directory and then delete the source PDFs
+		}		
+		console.log("generated all pdfs ----------------------\n");
+
 		for (const key of Object.keys(bookFilesDictionary)) {
 			let directoryFiles = bookFilesDictionary[key] || [];
+			console.log("attempting to merge: \n" + directoryFiles + "\n");
 			await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
 
 			const directoryPath: string = path.dirname(directoryFiles[0] || "");
 			const parentDirectoryName = path.basename(directoryPath);
 			const mergedFileName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
 			console.log("Waiting for \n" + mergedFileName);
-			await waitForFile(mergedFileName); // Wait for this merged file to exist
+			// await waitForFile(mergedFileName); // Wait for this merged file to exist
 
 		}
-		console.log("All PDFs merged successfully ----------------------\n");
+		console.log("Finished directory merging  ----------------------\n");
 
 		// the problem with this is that the keys with root dir does not have the correct path
 		const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => {
@@ -351,7 +346,7 @@ async function main(args: typeof cliFlags, config: Config) {
 		  });
 		console.log("keys with root directory: \n" + keysWithRootDirectory);
 
-		await mergeDirectoryPdfs(keysWithRootDirectory);  // Await here to ensure the final merge is completed before moving on
+		// await mergeDirectoryPdfs(keysWithRootDirectory);
 		await closeBrowser();
 		await closeServer(server);
 
