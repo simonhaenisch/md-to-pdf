@@ -8,6 +8,7 @@ import { getHtml } from './get-html';
 import { getOutputFilePath } from './get-output-file-path';
 import { getMarginObject } from './helpers';
 import { readFile } from './read-file';
+import path from 'path';
 
 type CliArgs = typeof import('../cli').cliFlags;
 
@@ -73,38 +74,44 @@ export const convertMdToPdf = async (
 				(config as Record<string, any>)[key] = jsonArgs.has(argKey) ? JSON.parse(argValue) : argValue;
 			}
 			
-	// hardcoded
-	const example:string = 'Hello, world!';
+			// sanitize the margin in pdf_options
+			if (typeof config.pdf_options.margin === 'string') {
+				config.pdf_options.margin = getMarginObject(config.pdf_options.margin);
+			}
+			
+			// set output destination
+			if (config.dest === undefined) {
+				config.dest = 'path' in input ? getOutputFilePath(input.path, config.as_html ? 'html' : 'pdf') : 'stdout';
+			}
+			
+			const highlightStylesheet = resolve(
+				dirname(require.resolve('highlight.js')),
+				'..',
+				'styles',
+				`${config.highlight_style}.css`,
+				);
+				
+				config.stylesheet = [...new Set([...config.stylesheet, highlightStylesheet])];
+				
+				const html = getHtml(md, config);
+				const relativePath = 'path' in input ? relative(config.basedir, input.path) : '.';
 
-	config.pdf_options.displayHeaderFooter = true;
-	// config.pdf_options.headerTemplate = '<h1>Hello world<h1/>'
-	config.pdf_options.footerTemplate = `<span style="font-size: 8px; width: 100%; text-align: center; padding: 5px;">Page <span class="pageNumber"></span> of ${example}< <span class="totalPages"></span> | <span class="url"></span></span>`;
-	// sanitize the margin in pdf_options
-	if (typeof config.pdf_options.margin === 'string') {
-		config.pdf_options.margin = getMarginObject(config.pdf_options.margin);
-	}
-
-	// set output destination
-	if (config.dest === undefined) {
-		config.dest = 'path' in input ? getOutputFilePath(input.path, config.as_html ? 'html' : 'pdf') : 'stdout';
-	}
-
-	const highlightStylesheet = resolve(
-		dirname(require.resolve('highlight.js')),
-		'..',
-		'styles',
-		`${config.highlight_style}.css`,
-	);
-
-	config.stylesheet = [...new Set([...config.stylesheet, highlightStylesheet])];
-
-	const html = getHtml(md, config);
-	// console.log('\nhtml: ', html);
-	// console.log('html', html);
-	const relativePath = 'path' in input ? relative(config.basedir, input.path) : '.';
-	// console.log('relativePath', relativePath);
-	const output = await generateOutput(html, relativePath, config, browser);
-	
+				console.log(relativePath);
+				const parentDirectoryName = path.basename(path.dirname(relativePath));
+				const fileNameWithoutExtension = path.basename(relativePath, path.extname(relativePath));
+				console.log(parentDirectoryName);
+			
+				config.pdf_options.displayHeaderFooter = true;
+				config.pdf_options.headerTemplate = `<span style="
+					font-size: 12px; 
+					width: 100%; 
+					text-align: center; 
+					padding: 5px;
+					font-family: 'Arial', sans-serif;"
+					>${parentDirectoryName} - "${fileNameWithoutExtension}"</span>`;
+				config.pdf_options.footerTemplate = `<span style="font-size: 8px; width: 100%; text-align: center; padding: 5px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span> - ${fileNameWithoutExtension}</span>`;
+				const output = await generateOutput(html, relativePath, config, browser);
+				
 	if (!output) {
 		if (config.devtools) {
 			throw new Error('No file is generated with --devtools.');
