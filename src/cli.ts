@@ -187,10 +187,11 @@ async function main(args: typeof cliFlags, config: Config) {
 		let mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
 	
 		//Make sure each file exists
-		for (const pdfFile of pdfFiles) {
-			await waitForFile(pdfFile);
-		}
+		// for (const pdfFile of pdfFiles) {
+		// 	await waitForFile(pdfFile);
+		// }
 
+		console.log("test!!");
 		// Check if any input PDF file has the same name as the intended output merged PDF file
 		const conflictingFile = pdfFiles.find(file => file.includes(mergedName));
 
@@ -199,7 +200,7 @@ async function main(args: typeof cliFlags, config: Config) {
 			mergedName = path.join(directoryPath, `${parentDirectoryName}_COMBINED.pdf`);
 		}
 		const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
-	
+		console.log(command + "\n");
 		try {
 			await exec(command, { cwd: directoryPath });
 			console.log(`PDFs merged successfully into ${mergedName}`);
@@ -263,41 +264,41 @@ async function main(args: typeof cliFlags, config: Config) {
 	}
 	
 	// Given a list of .md files, find their corresponding .pdf files and delete them
-	async function deleteFiles(files: string[]) {
+	// async function deleteFiles(files: string[]) {
 
-		for (let filePath of files) {
+	// 	for (let filePath of files) {
 
-			// We pass in an array of md files, so we need to change the file extension to pdf
-			if (filePath.endsWith('.md')) {
-				filePath = filePath.replace(/\.md$/, '.pdf');
-			}	
+	// 		// We pass in an array of md files, so we need to change the file extension to pdf
+	// 		if (filePath.endsWith('.md')) {
+	// 			filePath = filePath.replace(/\.md$/, '.pdf');
+	// 		}	
 			
-			try {
-				await fs.unlink(filePath);
-				// console.log(filePath + ' deleted successfully');
-			} catch (err) {
-				console.error('Error deleting the file:', err);
-			}
-		}
-	}
+	// 		try {
+	// 			await fs.unlink(filePath);
+	// 			// console.log(filePath + ' deleted successfully');
+	// 		} catch (err) {
+	// 			console.error('Error deleting the file:', err);
+	// 		}
+	// 	}
+	// }
 
-	async function waitForFile(filePath: string, timeout: number = 10000) {
-		const startTime = Date.now();
+	// async function waitForFile(filePath: string, timeout: number = 10000) {
+	// 	const startTime = Date.now();
 	
-		while (true) {
-			try {
-				await fs.access(filePath);
-				console.log("File exists: " + filePath);
-				return; // File exists, exit the loop
-			} catch (error) {
-				if (Date.now() - startTime > timeout) {
-					throw new Error(`Timeout waiting for file: ${filePath}`);
-				}
-				// Wait a bit before trying again
-				await new Promise(resolve => setTimeout(resolve, 500));
-			}
-		}
-	}
+	// 	while (true) {
+	// 		try {
+	// 			await fs.access(filePath);
+	// 			console.log("File exists: " + filePath);
+	// 			return; // File exists, exit the loop
+	// 		} catch (error) {
+	// 			if (Date.now() - startTime > timeout) {
+	// 				throw new Error(`Timeout waiting for file: ${filePath}`);
+	// 			}
+	// 			// Wait a bit before trying again
+	// 			await new Promise(resolve => setTimeout(resolve, 500));
+	// 		}
+	// 	}
+	// }
 
 	if (args['--book']) {
 		const rootDirectory: string = args['--book']; 
@@ -313,7 +314,7 @@ async function main(args: typeof cliFlags, config: Config) {
 
 		for (const key of Object.keys(bookFilesDictionary)) {
 			let directoryFiles = bookFilesDictionary[key] || [];
-			console.log("attempting to merge: \n" + directoryFiles + "\n");
+			console.log("attempting to ENTER: \n" + directoryFiles + "\n");
 			await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
 
 			const directoryPath: string = path.dirname(directoryFiles[0] || "");
