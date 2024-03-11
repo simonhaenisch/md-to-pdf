@@ -29,6 +29,9 @@
 // Have to change generate-output logic
 // 
 
+//TO DO 
+// pdfunite does not like it when there's spaces in the file name. It works for the other test cases so figure that out.
+
 import arg from 'arg';
 import chalk from 'chalk';
 import { watch, WatchOptions } from 'chokidar';
@@ -172,7 +175,7 @@ async function main(args: typeof cliFlags, config: Config) {
 		if (files.length === 0) {
 			return;
 		}
-	
+		
 		const pdfFiles = files.map(file => {
 			if (file.endsWith('.md')) {
 				const directory = path.dirname(file);
@@ -186,11 +189,6 @@ async function main(args: typeof cliFlags, config: Config) {
 		const parentDirectoryName = path.basename(directoryPath);
 		let mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
 	
-		//Make sure each file exists
-		// for (const pdfFile of pdfFiles) {
-		// 	await waitForFile(pdfFile);
-		// }
-
 		// Check if any input PDF file has the same name as the intended output merged PDF file
 		const conflictingFile = pdfFiles.find(file => file.includes(mergedName));
 
