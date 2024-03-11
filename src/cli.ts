@@ -102,7 +102,6 @@ main(cliFlags, defaultConfig).catch((error) => {
 
 async function main(args: typeof cliFlags, config: Config) {
 	process.title = 'md-to-pdf';
-	// console.log(process.argv);
 
 	if (!validateNodeVersion()) {
 		throw new Error('Please use a Node.js version that satisfies the version specified in the engines field.');
@@ -122,9 +121,6 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	const files = args._;
-
-	// console.log("Normal Files:");
-	// console.log(files);
 	
 	// const stdin = await getStdin();
 	const stdin = false;
@@ -175,7 +171,6 @@ async function main(args: typeof cliFlags, config: Config) {
 		if (files.length === 0) {
 			return;
 		}
-		console.log("attemting to merge files: " + files + "\n");
 		const pdfFiles = files.map(file => {
 			// Convert .md files to their corresponding .pdf files or use as is
 			const pdfPath = file.endsWith('.md') ?
@@ -275,25 +270,7 @@ async function main(args: typeof cliFlags, config: Config) {
 			}
 		}
 	}
-
-	async function waitForFile(filePath: string, timeout: number = 10000) {
-		const startTime = Date.now();
 	
-		while (true) {
-			try {
-				await fs.access(filePath);
-				console.log("File exists: " + filePath);
-				return; // File exists, exit the loop
-			} catch (error) {
-				if (Date.now() - startTime > timeout) {
-					throw new Error(`Timeout waiting for file: ${filePath}`);
-				}
-				// Wait a bit before trying again
-				await new Promise(resolve => setTimeout(resolve, 500));
-			}
-		}
-	}
-
 	if (args['--book']) {
 		const rootDirectory: string = args['--book']; 
 		const bookFilesDictionary = await findMarkdownFiles(rootDirectory);
@@ -328,7 +305,7 @@ async function main(args: typeof cliFlags, config: Config) {
 			  return mergedFilePath;
 			}
 		  });
-		console.log("keys with root directory: \n" + keysWithRootDirectory);
+		// console.log("keys with root directory: \n" + keysWithRootDirectory);
 
 		await mergeDirectoryPdfs(keysWithRootDirectory);
 		await closeBrowser();
