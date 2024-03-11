@@ -175,14 +175,14 @@ async function main(args: typeof cliFlags, config: Config) {
 		if (files.length === 0) {
 			return;
 		}
-		
+		console.log("attemting to merge files: " + files + "\n");
 		const pdfFiles = files.map(file => {
-			if (file.endsWith('.md')) {
-				const directory = path.dirname(file);
-				const filename = path.basename(file, '.md') + '.pdf';
-				return `"${path.join(directory, filename)}"`;
-			}
-			return file;
+			// Convert .md files to their corresponding .pdf files or use as is
+			const pdfPath = file.endsWith('.md') ?
+				path.join(path.dirname(file), path.basename(file, '.md') + '.pdf') : 
+				file;
+			// Wrap the file path in quotes to handle spaces
+			return `"${pdfPath}"`;
 		});
 	
 		const directoryPath: string = path.dirname(files[0] || "");
@@ -330,7 +330,7 @@ async function main(args: typeof cliFlags, config: Config) {
 		  });
 		console.log("keys with root directory: \n" + keysWithRootDirectory);
 
-		// await mergeDirectoryPdfs(keysWithRootDirectory);
+		await mergeDirectoryPdfs(keysWithRootDirectory);
 		await closeBrowser();
 		await closeServer(server);
 
