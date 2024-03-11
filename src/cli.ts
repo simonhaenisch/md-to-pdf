@@ -205,8 +205,6 @@ async function main(args: typeof cliFlags, config: Config) {
 			console.error(`exec error: ${(error as Error).message}`);
 		}
 
-		// console.log("Enterering " + mergedName + " DELETE")
-
 		deleteFiles(files);
 	};
 
@@ -272,7 +270,6 @@ async function main(args: typeof cliFlags, config: Config) {
 			
 			try {
 				await fs.unlink(filePath);
-				// console.log(filePath + ' deleted successfully');
 			} catch (err) {
 				console.error('Error deleting the file:', err);
 			}
@@ -307,25 +304,14 @@ async function main(args: typeof cliFlags, config: Config) {
 			let directoryFiles = bookFilesDictionary[key] || [];
 			await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
 		}		
-		console.log("generated all pdfs ----------------------\n");
 
 		for (const key of Object.keys(bookFilesDictionary)) {
 			let directoryFiles = bookFilesDictionary[key] || [];
-			console.log("attempting to merge: \n" + directoryFiles + "\n");
 			await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
-
-			const directoryPath: string = path.dirname(directoryFiles[0] || "");
-			const parentDirectoryName = path.basename(directoryPath);
-			const mergedFileName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
-			console.log("Waiting for \n" + mergedFileName);
-			// await waitForFile(mergedFileName); // Wait for this merged file to exist
-
 		}
 		console.log("Finished directory merging  ----------------------\n");
 
-		// the problem with this is that the keys with root dir does not have the correct path
 		const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => {
-			// Construct the full directory path for the key
 			const fullDirectoryPath = path.join(rootDirectory, key);
 		  
 			// Extract the base directory name from the key to use in the merged file name
