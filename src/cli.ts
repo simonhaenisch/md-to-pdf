@@ -187,9 +187,9 @@ async function main(args: typeof cliFlags, config: Config) {
 		let mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
 	
 		//Make sure each file exists
-		for (const pdfFile of pdfFiles) {
-			await waitForFile(pdfFile);
-		}
+		// for (const pdfFile of pdfFiles) {
+		// 	await waitForFile(pdfFile);
+		// }
 
 		// Check if any input PDF file has the same name as the intended output merged PDF file
 		const conflictingFile = pdfFiles.find(file => file.includes(mergedName));
@@ -201,7 +201,7 @@ async function main(args: typeof cliFlags, config: Config) {
 		const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
 	
 		try {
-			await exec(command, { cwd: directoryPath });
+			await exec(command);
 			console.log(`PDFs merged successfully into ${mergedName}`);
 		} catch (error) {
 			console.error(`exec error: ${(error as Error).message}`);
@@ -209,7 +209,7 @@ async function main(args: typeof cliFlags, config: Config) {
 
 		// console.log("Enterering " + mergedName + " DELETE")
 
-		// deleteFiles(files);
+		deleteFiles(files);
 	};
 
 	interface MarkdownFilesDictionary {
