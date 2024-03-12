@@ -29,14 +29,14 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     
         const directoryPath: string = path.dirname(files[0] || "");
         const parentDirectoryName = path.basename(directoryPath);
-        let mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
+        let mergedName = path.join(directoryPath, `${parentDirectoryName}_COMBINED.pdf`);
     
         // Check if any input PDF file has the same name as the intended output merged PDF file
         const conflictingFile = pdfFiles.find(file => file.includes(mergedName));
     
         // If there is a conflict, change the output file name to use "_COMBINED.pdf" suffix
         if (conflictingFile) {
-            mergedName = path.join(directoryPath, `${parentDirectoryName}_COMBINED.pdf`);
+            mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
         }
         const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
     
@@ -126,45 +126,41 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
         }
     }
     
-    if (args['--book']) {
-        const rootDirectory: string = args['--book']; 
-        const bookFilesDictionary = await findMarkdownFiles(rootDirectory);
-    
-        // Makes the pdfs for each directory aka chapter
-        // Generate all PDFs before merging them
-        for (const key of Object.keys(bookFilesDictionary)) {
-            let directoryFiles = bookFilesDictionary[key] || [];
-            await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
-        }		
-    
-        for (const key of Object.keys(bookFilesDictionary)) {
-            let directoryFiles = bookFilesDictionary[key] || [];
-            await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
-        }
-        console.log("Finished directory merging  ----------------------\n");
-    
-        const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => {
-            const fullDirectoryPath = path.join(rootDirectory, key);
-          
-            // Extract the base directory name from the key to use in the merged file name
-            const baseDirectoryName = path.basename(key);
-          
-            // Check if the base directory name is the same as the root directory name
-            if (baseDirectoryName === path.basename(rootDirectory)) {
-              // If it is, then we're dealing with the root directory case
-              const mergedFilePath = fullDirectoryPath + '_MERGED.pdf';
-              return mergedFilePath;
-            } else {
-              // Otherwise, it's a subdirectory or file case
-              const mergedFilePath = path.join(fullDirectoryPath, `${baseDirectoryName}_MERGED.pdf`);
-              return mergedFilePath;
-            }
-          });
-        console.log("keys with root directory: \n" + keysWithRootDirectory);
-    
-        await mergeDirectoryPdfs(keysWithRootDirectory);
-        
-        return;
+    const rootDirectory: string = args['--merge'] || ''; 
+    const bookFilesDictionary = await findMarkdownFiles(rootDirectory);
+
+    // Makes the pdfs for each md file
+    for (const key of Object.keys(bookFilesDictionary)) {
+        let directoryFiles = bookFilesDictionary[key] || [];
+        await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
+    }		
+
+    for (const key of Object.keys(bookFilesDictionary)) {
+        let directoryFiles = bookFilesDictionary[key] || [];
+        await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
     }
-    
+    console.log("Finished directory merging  ----------------------\n");
+
+    const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => {
+        const fullDirectoryPath = path.join(rootDirectory, key);
+        
+        // Extract the base directory name from the key to use in the merged file name
+        const baseDirectoryName = path.basename(key);
+        
+        // Check if the base directory name is the same as the root directory name
+        if (baseDirectoryName === path.basename(rootDirectory)) {
+            // If it is, then we're dealing with the root directory case
+            const mergedFilePath = fullDirectoryPath + '_COMBINED.pdf';
+            return mergedFilePath;
+        } else {
+            // Otherwise, it's a subdirectory or file case
+            const mergedFilePath = path.join(fullDirectoryPath, `${baseDirectoryName}_COMBINED.pdf`);
+            return mergedFilePath;
+        }
+        });
+    console.log("keys with root directory: \n" + keysWithRootDirectory);
+
+    await mergeDirectoryPdfs(keysWithRootDirectory);
+    return;
+
 }

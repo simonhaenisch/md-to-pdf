@@ -82,7 +82,7 @@ export const cliFlags = arg({
 	'--config-file': String,
 	'--devtools': Boolean,
 	
-	'--book': String,
+	'--merge': String,
 
 	// aliases
 	'-h': '--help',
@@ -113,7 +113,7 @@ async function main(args: typeof cliFlags, config: Config) {
 		return console.log((require('../package.json') as PackageJson).version);
 	}
 
-    if (args['--book']) {
+    if (args['--merge']) {
 
 		config.port = args['--port'] ?? (await getPort());
 		const server = await serveDirectory(config);
