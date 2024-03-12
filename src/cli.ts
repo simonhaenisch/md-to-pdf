@@ -46,10 +46,6 @@ import { help } from './lib/help';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
-import { exec as execCallback } from 'child_process';
-import * as fs from 'fs/promises';
-import { promisify } from 'util';
-const exec = promisify(execCallback);
 import {mergeFiles} from './lib/merge-files';
 
 
@@ -109,12 +105,10 @@ async function main(args: typeof cliFlags, config: Config) {
 	}
 
 	if (args['--version']) {
-		console.log("lollolll");
 		return console.log((require('../package.json') as PackageJson).version);
 	}
 
     if (args['--merge']) {
-
 		config.port = args['--port'] ?? (await getPort());
 		const server = await serveDirectory(config);
 

@@ -26,13 +26,11 @@ export const convertMdToPdf = async (
 		browser?: Browser;
 	} = {},
 	) => {
-		// console.log('convertMdToPdf', input, config, args, browser);
 		const mdFileContent =
 		'content' in input
 		? input.content
 		: await readFile(input.path, args['--md-file-encoding'] ?? config.md_file_encoding);
 		
-		// console.log('conent: ', config.gray_matter_options);
 		const { content: md, data: frontMatterConfig } = grayMatter(
 			mdFileContent,
 			args['--gray-matter-options'] ? JSON.parse(args['--gray-matter-options']) : config.gray_matter_options,
@@ -96,18 +94,18 @@ export const convertMdToPdf = async (
 				const html = getHtml(md, config);
 				const relativePath = 'path' in input ? relative(config.basedir, input.path) : '.';
 
-				const parentDirectoryName = path.basename(path.dirname(relativePath));
-				const fileNameWithoutExtension = path.basename(relativePath, path.extname(relativePath));
+				// const parentDirectoryName = path.basename(path.dirname(relativePath));
+				// const fileNameWithoutExtension = path.basename(relativePath, path.extname(relativePath));
 			
-				config.pdf_options.displayHeaderFooter = true;
-				config.pdf_options.headerTemplate = `<b style="
-					font-size: 12px; 
-					width: 100%; 
-					text-align: center; 
-					padding: 5px;
-					font-family: 'Arial', sans-serif;"
-					>${parentDirectoryName} - "${fileNameWithoutExtension}"</b>`;
-				config.pdf_options.footerTemplate = `<span style="font-size: 8px; width: 100%; text-align: center; padding: 5px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span> - ${fileNameWithoutExtension}</span>`;
+				// config.pdf_options.displayHeaderFooter = true;
+				// config.pdf_options.headerTemplate = `<b style="
+				// 	font-size: 12px; 
+				// 	width: 100%; 
+				// 	text-align: center; 
+				// 	padding: 5px;
+				// 	font-family: 'Arial', sans-serif;"
+				// 	>${parentDirectoryName} - "${fileNameWithoutExtension}"</b>`;
+				// config.pdf_options.footerTemplate = `<span style="font-size: 8px; width: 100%; text-align: center; padding: 5px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span> - ${fileNameWithoutExtension}</span>`;
 				const output = await generateOutput(html, relativePath, config, browser);
 				
 	if (!output) {

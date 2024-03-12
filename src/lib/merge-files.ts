@@ -1,19 +1,36 @@
+// --------------------------------------------------------------------------------------
+// This file allow users to find all markdown files in a directory and its subdirectories
+// and convert them all to into a singular pdf file.
+// --------------------------------------------------------------------------------------
+
+// This works by adding all the markdown files into a dictionary with the directory as the key and the markdown files in the directory as the value.
+// Then it converts each directory's markdown files into pdfs and then merges them together into a singular pdf file.
+// Finally, each of the directory's pdfs are merged together into a singular pdf file in the root folder.
+
 import chalk from 'chalk';
-import getPort from 'get-port';
 import Listr from 'listr';
 import path from 'path';
-import { Config, defaultConfig } from './config';
-import { closeBrowser } from './generate-output';
+import { Config} from './config';
 import { convertMdToPdf } from './md-to-pdf';
-import { closeServer, serveDirectory } from './serve-dir';
 import { exec as execCallback } from 'child_process';
 import * as fs from 'fs/promises';
 import { promisify } from 'util';
 const exec = promisify(execCallback);
 
-
 export async function mergeFiles(args: typeof import('../cli').cliFlags, config: Config) {
-
+    const rootDirectory: string = args['--merge'] || ''; 
+    const parentDirectoryName = path.basename(path.dirname(rootDirectory));
+    const fileNameWithoutExtension = path.basename(rootDirectory, path.extname(rootDirectory));
+    config.pdf_options.displayHeaderFooter = true;
+    config.pdf_options.headerTemplate = `<b style="
+        font-size: 12px; 
+        width: 100%; 
+        text-align: center; 
+        padding: 5px;
+        font-family: 'Arial', sans-serif;"
+        >${parentDirectoryName} - "${fileNameWithoutExtension}"</b>`;
+        config.pdf_options.footerTemplate = `<span style="font-size: 8px; width: 100%; text-align: center; padding: 5px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span> - ${fileNameWithoutExtension}</span>`;
+    
     const mergeDirectoryPdfs = async (files: string[]) => {
         if (files.length === 0) {
             return;
@@ -56,7 +73,20 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     
     // Given a list of .md files, convert them to pdfs
     const generatePdfs = async (files: string[]) => {
+        config.pdf_options.displayHeaderFooter = true;
+        
         for (const file of files) {
+            const parentDirectoryName = path.basename(path.dirname(file));
+            const fileNameWithoutExtension = path.basename(file, path.extname(file));
+            config.pdf_options.headerTemplate = `<b style="
+                font-size: 12px; 
+                width: 100%; 
+                text-align: center; 
+                padding: 5px;
+                font-family: 'Arial', sans-serif;"
+                >${parentDirectoryName} - "${fileNameWithoutExtension}"</b>`;
+                config.pdf_options.footerTemplate = `<span style="font-size: 8px; width: 100%; text-align: center; padding: 5px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span> - ${fileNameWithoutExtension}</span>`;
+            
             // Create a new Listr task for each file individually and await its completion
             await new Listr([
                 {
@@ -126,7 +156,6 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
         }
     }
     
-    const rootDirectory: string = args['--merge'] || ''; 
     const bookFilesDictionary = await findMarkdownFiles(rootDirectory);
 
     // Makes the pdfs for each md file
@@ -162,5 +191,4 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
 
     await mergeDirectoryPdfs(keysWithRootDirectory);
     return;
-
 }
