@@ -75,10 +75,15 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     async function findMarkdownFiles(dirPath: string): Promise<MarkdownFilesDictionary> {
         let mdFilesDictionary: MarkdownFilesDictionary = {};
         const rootDirName = path.basename(dirPath);
-    
+        
         async function recurse(currentPath: string, relativeDirPath: string): Promise<void> {
+            console.log("currentPath: " + currentPath + " relativeDirPath: " + relativeDirPath);
             const entries = await fs.readdir(currentPath, { withFileTypes: true });
-    
+            
+            // Make sure the root gets added first so that its the first key. 
+            // This makes it convenient to find later on in the code.
+            mdFilesDictionary[rootDirName] = [];
+
             for (const entry of entries) {
                 const entryPath = path.join(currentPath, entry.name);
     
@@ -99,6 +104,9 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     
         // Start the recursion with an empty string as the initial relative path
         await recurse(dirPath, '');
+        Object.entries(mdFilesDictionary).forEach(([key, value]) => {
+            console.log(`${key}: ${value.join(', ')}`);
+        });
         return mdFilesDictionary;
     }
     
@@ -154,7 +162,7 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
               return mergedFilePath;
             }
           });
-        // console.log("keys with root directory: \n" + keysWithRootDirectory);
+        console.log("keys with root directory: \n" + keysWithRootDirectory);
     
         await mergeDirectoryPdfs(keysWithRootDirectory);
         
@@ -163,5 +171,4 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     
     await closeBrowser();
     await closeServer(server);
-    return;
 }

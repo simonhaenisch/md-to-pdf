@@ -114,11 +114,11 @@ async function main(args: typeof cliFlags, config: Config) {
 	}
 
     if (args['--book']) {
-		config.port = args['--port'] ?? (await getPort());
-		const server = await serveDirectory(config);
 
         await mergeFiles(args, config);
+		console.log('test');
         return;
+		
     }		
 
 	if (args['--help']) {
