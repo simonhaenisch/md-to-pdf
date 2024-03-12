@@ -74,7 +74,8 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     // Given a list of .md files, convert them to pdfs
     const generatePdfs = async (files: string[]) => {
         config.pdf_options.displayHeaderFooter = true;
-        
+
+        // for each pdf we generate, change the config to have a header and footer
         for (const file of files) {
             const parentDirectoryName = path.basename(path.dirname(file));
             const fileNameWithoutExtension = path.basename(file, path.extname(file));
@@ -105,36 +106,34 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
         const rootDirName = path.basename(dirPath);
         
         async function recurse(currentPath: string, relativeDirPath: string): Promise<void> {
-            console.log("currentPath: " + currentPath + " relativeDirPath: " + relativeDirPath);
             const entries = await fs.readdir(currentPath, { withFileTypes: true });
-
-            // Make sure the root gets added first so that its the first key. 
-            // This makes it convenient to find later on in the code.
-            mdFilesDictionary[rootDirName] = [];
-
+    
+            // Use the root directory name if the relative path is empty
+            const dirKey = relativeDirPath || rootDirName;
+            if (!mdFilesDictionary[dirKey]) {
+                mdFilesDictionary[dirKey] = [];
+            }
+    
             for (const entry of entries) {
                 const entryPath = path.join(currentPath, entry.name);
     
                 if (entry.isDirectory()) {
-                    // Compute the new relative path or use the directory name if it's the root
                     const newRelativePath = relativeDirPath ? path.join(relativeDirPath, entry.name) : entry.name;
                     await recurse(entryPath, newRelativePath);
                 } else if (entry.isFile() && entry.name.endsWith('.md')) {
-                    // Use the root directory name if the relative path is empty
-                    const key = relativeDirPath || rootDirName;
-                    if (!mdFilesDictionary[key]) {
-                        mdFilesDictionary[key] = [];
-                    }
-                    mdFilesDictionary[key]?.push(entryPath);
+                    mdFilesDictionary[dirKey]?.push(entryPath);
                 }
             }
         }
     
-        // Start the recursion with an empty string as the initial relative path
         await recurse(dirPath, '');
+        
+        // Log the dictionary after it has been populated
+        console.log("Final mdFilesDictionary:");
         Object.entries(mdFilesDictionary).forEach(([key, value]) => {
             console.log(`${key}: ${value.join(', ')}`);
         });
+        
         return mdFilesDictionary;
     }
     
