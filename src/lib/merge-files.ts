@@ -13,8 +13,6 @@ const exec = promisify(execCallback);
 
 
 export async function mergeFiles(args: typeof import('../cli').cliFlags, config: Config) {
-    config.port = args['--port'] ?? (await getPort());
-	const server = await serveDirectory(config);
 
     const mergeDirectoryPdfs = async (files: string[]) => {
         if (files.length === 0) {
@@ -79,7 +77,7 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
         async function recurse(currentPath: string, relativeDirPath: string): Promise<void> {
             console.log("currentPath: " + currentPath + " relativeDirPath: " + relativeDirPath);
             const entries = await fs.readdir(currentPath, { withFileTypes: true });
-            
+
             // Make sure the root gets added first so that its the first key. 
             // This makes it convenient to find later on in the code.
             mdFilesDictionary[rootDirName] = [];
@@ -169,6 +167,4 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
         return;
     }
     
-    await closeBrowser();
-    await closeServer(server);
 }
