@@ -31,6 +31,7 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     const rootDirectory: string = args['--merge'] || ''; 
     const parentDirectoryName = path.basename(path.dirname(rootDirectory));
     const fileNameWithoutExtension = path.basename(rootDirectory, path.extname(rootDirectory));
+
     config.pdf_options.displayHeaderFooter = true;
     config.pdf_options.headerTemplate = `<b style="
         font-size: 12px; 
@@ -63,7 +64,6 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     
         // If there is a conflict, change the output file name to use "_COMBINED.pdf" suffix
         if (conflictingFile) {
-            // console.log("rootDirectory: " + rootDirectory);
             const rootPdfName:string = rootDirectory + "/" + path.basename(rootDirectory);
             mergedName = `${rootPdfName}_MERGED.pdf`;
         }
@@ -71,7 +71,9 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     
         try {
             await exec(command);
-            console.log(`PDFs merged successfully into ${mergedName}`);
+            if (conflictingFile) {
+                console.log(`\n  ✔ PDFs merged successfully into ${mergedName}\n`);
+            }
         } catch (error) {
             console.error(`exec error: ${(error as Error).message}`);
         }
@@ -130,7 +132,6 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
         let mdFilesDictionary: MarkdownFilesDictionary = {};
         const rootDirName = path.basename(dirPath);
         mdFilesDictionary[rootDirName] = [];
-        console.log("rootDirName: " + rootDirName);
         async function recurse(currentPath: string, relativeDirPath: string): Promise<void> {
             const entries = await fs.readdir(currentPath, { withFileTypes: true });
     
@@ -153,13 +154,6 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
         }
     
         await recurse(dirPath, '');
-        
-        // Log the dictionary after it has been populated
-        console.log("Final mdFilesDictionary:");
-        Object.entries(mdFilesDictionary).forEach(([key, value]) => {
-            console.log(`${key}: ${value.join(', ')}`);
-        });
-        
         return mdFilesDictionary;
     }
     
@@ -194,14 +188,12 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     await generateAllPdfs(bookFilesDictionary);
 
     for (const key of Object.keys(bookFilesDictionary)) {
-        console.log("\nkey: " + key);
         let directoryFiles = bookFilesDictionary[key] || [];
         if (directoryFiles.length === 0) {
             continue;
         }
         await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
     }
-    console.log("Finished directory merging  ----------------------\n");
 
     const keysWithRootDirectory = Object.keys(bookFilesDictionary).filter(key => (bookFilesDictionary[key]?.length ?? 0) > 0).map(key => {
         const fullDirectoryPath = path.join(rootDirectory, key);
@@ -221,8 +213,7 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
         }
     });
     
-    console.log("keys with root directory: \n" + keysWithRootDirectory);
-
     await mergeDirectoryPdfs(keysWithRootDirectory);
+
     return;
 }
