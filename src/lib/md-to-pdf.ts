@@ -94,18 +94,6 @@ export const convertMdToPdf = async (
 				const html = getHtml(md, config);
 				const relativePath = 'path' in input ? relative(config.basedir, input.path) : '.';
 
-				// const parentDirectoryName = path.basename(path.dirname(relativePath));
-				// const fileNameWithoutExtension = path.basename(relativePath, path.extname(relativePath));
-			
-				// config.pdf_options.displayHeaderFooter = true;
-				// config.pdf_options.headerTemplate = `<b style="
-				// 	font-size: 12px; 
-				// 	width: 100%; 
-				// 	text-align: center; 
-				// 	padding: 5px;
-				// 	font-family: 'Arial', sans-serif;"
-				// 	>${parentDirectoryName} - "${fileNameWithoutExtension}"</b>`;
-				// config.pdf_options.footerTemplate = `<span style="font-size: 8px; width: 100%; text-align: center; padding: 5px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span> - ${fileNameWithoutExtension}</span>`;
 				const output = await generateOutput(html, relativePath, config, browser);
 				
 	if (!output) {
