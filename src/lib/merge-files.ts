@@ -143,7 +143,7 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
             for (const entry of entries) {
                 const entryPath = path.join(currentPath, entry.name);
     
-                if (entry.isDirectory()) {
+                if (entry.isDirectory() && !entry.name.startsWith('.')) {
                     const newRelativePath = relativeDirPath ? path.join(relativeDirPath, entry.name) : entry.name;
                     await recurse(entryPath, newRelativePath);
                 } else if (entry.isFile() && entry.name.endsWith('.md')) {
@@ -167,7 +167,6 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     async function deleteFiles(files: string[]) {
     
         for (let filePath of files) {
-    
             // We pass in an array of md files, so we need to change the file extension to pdf
             if (filePath.endsWith('.md')) {
                 filePath = filePath.replace(/\.md$/, '.pdf');
@@ -201,11 +200,14 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     for (const key of Object.keys(bookFilesDictionary)) {
         console.log("\nkey: " + key);
         let directoryFiles = bookFilesDictionary[key] || [];
+        if (directoryFiles.length === 0) {
+            continue;
+        }
         await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
     }
     console.log("Finished directory merging  ----------------------\n");
 
-    const keysWithRootDirectory = Object.keys(bookFilesDictionary).map(key => {
+    const keysWithRootDirectory = Object.keys(bookFilesDictionary).filter(key => (bookFilesDictionary[key]?.length ?? 0) > 0).map(key => {
         const fullDirectoryPath = path.join(rootDirectory, key);
         
         // Extract the base directory name from the key to use in the merged file name
@@ -221,7 +223,8 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
             const mergedFilePath = path.join(fullDirectoryPath, `${baseDirectoryName}_COMBINED.pdf`);
             return mergedFilePath;
         }
-        });
+    });
+    
     console.log("keys with root directory: \n" + keysWithRootDirectory);
 
     await mergeDirectoryPdfs(keysWithRootDirectory);
