@@ -3,40 +3,11 @@
 // --
 // Packages
 
-// Done
-// Makes dictionary of each chapter's md files
-// Have a function that turns an array of md files into a pdfs in that dir
-
-// To do
-// Have each chapter's pdfs created
-
-// Possible appproaches
-// 1: WINNER!!
-// Make pdf at each file location, then go through and specify each location to pdfunite
-// Generate all the chapter's pdfs
-// Unite chapter pdfs
-// Delete indivdual pdfs (maybe see if pdfunite can do this for us)
-// Pros:
-// Follows the generate-output logic
-// Cons:
-// Puts files everywhere
-
-// 2
-// Put all pdfs in root dir
-// Pros:
-// Easy to implement pdfunite
-// Cons:
-// Have to change generate-output logic
-// 
-
-//TO DO 
-// pdfunite does not like it when there's spaces in the file name. It works for the other test cases so figure that out.
-
 import arg from 'arg';
 import chalk from 'chalk';
 import { watch, WatchOptions } from 'chokidar';
 import getPort from 'get-port';
-// import getStdin from 'get-stdin';
+import getStdin from 'get-stdin';
 import Listr from 'listr';
 import path from 'path';
 import { PackageJson } from '.';
@@ -47,9 +18,6 @@ import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
 import {mergeFiles} from './lib/merge-files';
-
-
-
 
 // --
 // Configure CLI Arguments
@@ -77,7 +45,6 @@ export const cliFlags = arg({
 	'--as-html': Boolean,
 	'--config-file': String,
 	'--devtools': Boolean,
-	
 	'--merge': String,
 
 	// aliases
@@ -129,12 +96,11 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	const files = args._;
 	
-	// const stdin = await getStdin();
-	const stdin = false;
+	const stdin = await getStdin();
 	
-	// if (files.length === 0 && !stdin) {
-	// 	return help();
-	// }
+	if (files.length === 0 && !stdin) {
+		return help();
+	}
 	
 	/**
 	 * 2. Read config file and merge it into the config object.
@@ -167,14 +133,9 @@ async function main(args: typeof cliFlags, config: Config) {
 	
 	const server = await serveDirectory(config);
 	
-	
 	/**
 	 * 4. Either process stdin or create a Listr task for each file.
 	*/
-	
-
-
-	
 
 	if (stdin) {
 		await convertMdToPdf({ content: stdin }, config, { args })
@@ -189,10 +150,6 @@ async function main(args: typeof cliFlags, config: Config) {
 		return;
 	}
 
-	//should be able to get rid of this with generatePdfs()
-	// TODO
-
-	// let files: string[] = ['/Users/log/Github/md-to-pdf/src/test/nested'];
 	const getListrTask = (file: string) => ({
 		title: `generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
 		task: async () => convertMdToPdf({ path: file }, config, { args }),
