@@ -86,28 +86,41 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     // Given a list of .md files, convert them to pdfs
     const generatePdfs = async (files: string[]) => {
         config.pdf_options.displayHeaderFooter = true;
-
-        // for each pdf we generate, change the config to have a header and footer
-        for (const file of files) {
+    
+        const pdfGenerationPromises = files.map(file => {
+            // Clone config object for each file so that we can modify the header and footer
+            let fileConfig = JSON.parse(JSON.stringify(config));
+    
             const parentDirectoryName = path.basename(path.dirname(file));
             const fileNameWithoutExtension = path.basename(file, path.extname(file));
-            config.pdf_options.headerTemplate = `<b style="
+            fileConfig.pdf_options.headerTemplate = 
+                `<b style="
                 font-size: 18px; 
                 width: 100%; 
                 text-align: center; 
                 padding: 5px;
                 font-family: 'Arial', sans-serif;"
                 >${parentDirectoryName} - ${fileNameWithoutExtension}</b>`;
-                config.pdf_options.footerTemplate = `<span style="font-size: 8px; width: 100%; text-align: center; padding: 5px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span> - ${fileNameWithoutExtension}</span>`;
-            
-            // Create a new Listr task for each file individually and await its completion
-            await new Listr([
+            fileConfig.pdf_options.footerTemplate = 
+                `<span style="
+                font-size: 8px; 
+                width: 100%; 
+                text-align: center; 
+                padding: 5px;
+                ">Page <span class="pageNumber"></span> of 
+                <span class="totalPages"></span> - ${fileNameWithoutExtension}</span>`;
+    
+            // Use the cloned and modified config for each PDF generation
+            return new Listr([
                 {
                     title: `Generating ${args['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-                    task: () => convertMdToPdf({ path: file }, config, { args }),
+                    task: () => convertMdToPdf({ path: file }, fileConfig, { args }),
                 }
             ], { exitOnError: false }).run().catch(console.error);
-        }
+        });
+    
+        // Wait for all PDF generation tasks to complete
+        await Promise.all(pdfGenerationPromises);
     };
     
     // Given a directory, find all .md files in it and its subdirectories
@@ -171,10 +184,19 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     const bookFilesDictionary = await findMarkdownFiles(rootDirectory);
 
     // Makes the pdfs for each md file
-    for (const key of Object.keys(bookFilesDictionary)) {
-        let directoryFiles = bookFilesDictionary[key] || [];
-        await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
-    }		
+    // for (const key of Object.keys(bookFilesDictionary)) {
+    //     let directoryFiles = bookFilesDictionary[key] || [];
+    //     await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
+    // }		
+    const generateAllPdfs = async (bookFilesDictionary:MarkdownFilesDictionary) => {
+        const pdfGenerationTasks = Object.keys(bookFilesDictionary).map(key => {
+            let directoryFiles = bookFilesDictionary[key] || [];
+            return generatePdfs(directoryFiles);
+        });
+        await Promise.all(pdfGenerationTasks);
+    };
+    
+    await generateAllPdfs(bookFilesDictionary);
 
     for (const key of Object.keys(bookFilesDictionary)) {
         console.log("\nkey: " + key);
