@@ -17,6 +17,7 @@ import { help } from './lib/help';
 import { convertMdToPdf } from './lib/md-to-pdf';
 import { closeServer, serveDirectory } from './lib/serve-dir';
 import { validateNodeVersion } from './lib/validate-node-version';
+import {mergeFiles} from './lib/merge-files';
 
 // --
 // Configure CLI Arguments
@@ -44,6 +45,7 @@ export const cliFlags = arg({
 	'--as-html': Boolean,
 	'--config-file': String,
 	'--devtools': Boolean,
+	'--merge': String,
 
 	// aliases
 	'-h': '--help',
@@ -72,6 +74,17 @@ async function main(args: typeof cliFlags, config: Config) {
 	if (args['--version']) {
 		return console.log((require('../package.json') as PackageJson).version);
 	}
+
+    if (args['--merge']) {
+		config.port = args['--port'] ?? (await getPort());
+		const server = await serveDirectory(config);
+
+        await mergeFiles(args, config);
+		
+		await closeBrowser();
+		await closeServer(server);
+        return;
+    }		
 
 	if (args['--help']) {
 		return help();
