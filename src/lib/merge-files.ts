@@ -7,16 +7,6 @@
 // Then it converts each directory's markdown files into pdfs and then merges them together into a singular pdf file.
 // Finally, each of the directory's pdfs are merged together into a singular pdf file in the root folder.
 
-
-// To Do
-// Make images render
-
-// Try to have every generated pdf be created ansynchronously
-// Await all pdfs being created first though 
-
-// Make title change
-//  if on page 2, make it say (continued) at the top
-
 import chalk from 'chalk';
 import Listr from 'listr';
 import path from 'path';
