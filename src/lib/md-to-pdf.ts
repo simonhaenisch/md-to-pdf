@@ -91,6 +91,7 @@ export const convertMdToPdf = async (
 				config.stylesheet = [...new Set([...config.stylesheet, highlightStylesheet])];
 				
 				const html = getHtml(md, config);
+				
 				const relativePath = 'path' in input ? relative(config.basedir, input.path) : '.';
 
 				const output = await generateOutput(html, relativePath, config, browser);
@@ -107,7 +108,6 @@ export const convertMdToPdf = async (
 		if (output.filename === 'stdout') {
 			process.stdout.write(output.content);
 		} else {
-			// await fs.writeFile(output.filename + "test", output.content);
 			await fs.writeFile(output.filename, output.content);
 		}
 	}
