@@ -95,21 +95,21 @@ async function main(args: typeof cliFlags, config: Config) {
 	 */
 
 	const files = args._;
-	
+
 	const stdin = await getStdin();
-	
+
 	if (files.length === 0 && !stdin) {
 		return help();
 	}
-	
+
 	/**
 	 * 2. Read config file and merge it into the config object.
-	*/
-	
+	 */
+
 	if (args['--config-file']) {
 		try {
 			const configFile: Partial<Config> = require(path.resolve(args['--config-file']));
-			
+
 			config = {
 				...config,
 				...configFile,
@@ -120,32 +120,32 @@ async function main(args: typeof cliFlags, config: Config) {
 			console.warn(error instanceof SyntaxError ? error.message : error);
 		}
 	}
-	
+
 	/**
 	 * 3. Start the file server.
-	*/
-	
+	 */
+
 	if (args['--basedir']) {
 		config.basedir = args['--basedir'];
 	}
-	
+
 	config.port = args['--port'] ?? (await getPort());
-	
+
 	const server = await serveDirectory(config);
-	
+
 	/**
 	 * 4. Either process stdin or create a Listr task for each file.
-	*/
+	 */
 
 	if (stdin) {
 		await convertMdToPdf({ content: stdin }, config, { args })
-		.finally(async () => {
-			await closeBrowser();
-			await closeServer(server);
-		})
-		.catch((error: Error) => {
-			throw error;
-		});
+			.finally(async () => {
+				await closeBrowser();
+				await closeServer(server);
+			})
+			.catch((error: Error) => {
+				throw error;
+			});
 
 		return;
 	}
