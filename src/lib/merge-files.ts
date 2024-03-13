@@ -7,6 +7,16 @@
 // Then it converts each directory's markdown files into pdfs and then merges them together into a singular pdf file.
 // Finally, each of the directory's pdfs are merged together into a singular pdf file in the root folder.
 
+
+// To Do
+// Make images render
+
+// Try to have every generated pdf be created ansynchronously
+// Await all pdfs being created first though 
+
+// Make title change
+//  if on page 2, make it say (continued) at the top
+
 import chalk from 'chalk';
 import Listr from 'listr';
 import path from 'path';
@@ -53,7 +63,9 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     
         // If there is a conflict, change the output file name to use "_COMBINED.pdf" suffix
         if (conflictingFile) {
-            mergedName = path.join(directoryPath, `${parentDirectoryName}_MERGED.pdf`);
+            // console.log("rootDirectory: " + rootDirectory);
+            const rootPdfName:string = rootDirectory + "/" + path.basename(rootDirectory);
+            mergedName = `${rootPdfName}_MERGED.pdf`;
         }
         const command = `pdfunite ${pdfFiles.join(' ')} "${mergedName}"`;
     
@@ -80,12 +92,12 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
             const parentDirectoryName = path.basename(path.dirname(file));
             const fileNameWithoutExtension = path.basename(file, path.extname(file));
             config.pdf_options.headerTemplate = `<b style="
-                font-size: 12px; 
+                font-size: 18px; 
                 width: 100%; 
                 text-align: center; 
                 padding: 5px;
                 font-family: 'Arial', sans-serif;"
-                >${parentDirectoryName} - "${fileNameWithoutExtension}"</b>`;
+                >${parentDirectoryName} - ${fileNameWithoutExtension}</b>`;
                 config.pdf_options.footerTemplate = `<span style="font-size: 8px; width: 100%; text-align: center; padding: 5px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span> - ${fileNameWithoutExtension}</span>`;
             
             // Create a new Listr task for each file individually and await its completion
@@ -104,7 +116,8 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     async function findMarkdownFiles(dirPath: string): Promise<MarkdownFilesDictionary> {
         let mdFilesDictionary: MarkdownFilesDictionary = {};
         const rootDirName = path.basename(dirPath);
-        
+        mdFilesDictionary[rootDirName] = [];
+        console.log("rootDirName: " + rootDirName);
         async function recurse(currentPath: string, relativeDirPath: string): Promise<void> {
             const entries = await fs.readdir(currentPath, { withFileTypes: true });
     
@@ -164,6 +177,7 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     }		
 
     for (const key of Object.keys(bookFilesDictionary)) {
+        console.log("\nkey: " + key);
         let directoryFiles = bookFilesDictionary[key] || [];
         await mergeDirectoryPdfs(directoryFiles);  // Await here to ensure each merge is completed before moving on
     }

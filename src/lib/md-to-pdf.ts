@@ -8,7 +8,6 @@ import { getHtml } from './get-html';
 import { getOutputFilePath } from './get-output-file-path';
 import { getMarginObject } from './helpers';
 import { readFile } from './read-file';
-import path from 'path';
 
 type CliArgs = typeof import('../cli').cliFlags;
 
