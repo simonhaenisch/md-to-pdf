@@ -103,7 +103,7 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
                 >${parentDirectoryName} - ${fileNameWithoutExtension}</b>`;
             fileConfig.pdf_options.footerTemplate = 
                 `<span style="
-                font-size: 8px; 
+                font-size: 10px; 
                 width: 100%; 
                 text-align: center; 
                 padding: 5px;
@@ -182,11 +182,7 @@ export async function mergeFiles(args: typeof import('../cli').cliFlags, config:
     
     const bookFilesDictionary = await findMarkdownFiles(rootDirectory);
 
-    // Makes the pdfs for each md file
-    // for (const key of Object.keys(bookFilesDictionary)) {
-    //     let directoryFiles = bookFilesDictionary[key] || [];
-    //     await generatePdfs(directoryFiles);  // Await here to ensure each set of PDFs is generated before moving on
-    // }		
+    // Makes the pdfs for each md file	
     const generateAllPdfs = async (bookFilesDictionary:MarkdownFilesDictionary) => {
         const pdfGenerationTasks = Object.keys(bookFilesDictionary).map(key => {
             let directoryFiles = bookFilesDictionary[key] || [];
