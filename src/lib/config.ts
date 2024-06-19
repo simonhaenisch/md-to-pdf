@@ -24,7 +24,7 @@ export const defaultConfig: Config = {
 			left: '20mm',
 		},
 	},
-	launch_options: {},
+	launch_options: {args: ['--no-sandbox', '--disable-setuid-sandbox'],},
 	gray_matter_options: {
 		engines: {
 			js: () =>
