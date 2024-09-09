@@ -44,6 +44,8 @@ export const cliFlags = arg({
 	'--as-html': Boolean,
 	'--config-file': String,
 	'--devtools': Boolean,
+	'--markdown-parser': String,
+	'--markdown-it-options': String,
 
 	// aliases
 	'-h': '--help',
@@ -114,6 +116,16 @@ async function main(args: typeof cliFlags, config: Config) {
 
 	if (args['--basedir']) {
 		config.basedir = args['--basedir'];
+	}
+
+	const VALID_MARKDOWN_PARSER_VALUES: Array<typeof config.markdown_parser> = ['marked', 'markdown-it'];
+	if (args['--markdown-parser']) {
+		config.markdown_parser = args['--markdown-parser'] as typeof config.markdown_parser;
+
+		// Validate the parser argument
+		if (!VALID_MARKDOWN_PARSER_VALUES.includes(config.markdown_parser)) {
+			throw new Error(`Unsupported markdown parser '${config.markdown_parser}'`);
+		}
 	}
 
 	config.port = args['--port'] ?? (await getPort());

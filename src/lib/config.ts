@@ -1,5 +1,6 @@
 import { WatchOptions } from 'chokidar';
 import { GrayMatterOption } from 'gray-matter';
+import type MarkdownIt from 'markdown-it';
 import { marked } from 'marked';
 import { resolve } from 'path';
 import { FrameAddScriptTagOptions, launch, PDFOptions } from 'puppeteer';
@@ -38,6 +39,9 @@ export const defaultConfig: Config = {
 	as_html: false,
 	devtools: false,
 	marked_extensions: [],
+	markdown_parser: 'marked',
+	markdown_it_options: {},
+	markdown_it_plugins: [],
 };
 
 /**
@@ -168,11 +172,33 @@ interface BasicConfig {
 	watch_options?: WatchOptions;
 
 	/**
-	 * Custm Extensions to be passed to marked.
+	 * Custom Extensions to be passed to marked.
 	 *
 	 * @see https://marked.js.org/using_pro#extensions
 	 */
 	marked_extensions: marked.MarkedExtension[];
+
+	/**
+	 * The parser to use. Defaults to marked
+	 */
+	markdown_parser: 'marked' | 'markdown-it';
+
+	/**
+	 * Options for markdown-it parser
+	 */
+	markdown_it_options: MarkdownIt.Options;
+
+	/**
+	 * Plugins to be passed to markdown-it
+	 *
+	 * If the extension uses arguments, wrap it in an arrow function
+	 *
+	 * markdown_it_plugins: [
+	 * 	 extensionWithoutOptions,
+	 *   (md) => extensionWithOptions(md, {strict: true})
+	 * ]
+	 */
+	markdown_it_plugins: MarkdownIt.PluginSimple[];
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
