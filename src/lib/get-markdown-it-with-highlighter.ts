@@ -28,7 +28,21 @@ export const getMarkdownIt = (options: markdownit.Options, plugins: MarkdownIt.P
 
 	// Add markdown-it-anchor
 	// This adds 'id' anchors to header elements, matching the default behavior of marked
-	markdownIt.use(markdownItAnchor, { tabIndex: false });
+	// We also tweak it to 'slugify' in the same way
+	markdownIt.use(markdownItAnchor, {
+		tabIndex: false,
+		slugify: (text: string) => {
+			const id = text
+				.toLowerCase()
+				.trim()
+				// remove html tags
+				.replace(/<[!/a-z].*?>/gi, '')
+				// remove unwanted chars
+				.replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, '')
+				.replace(/\s/g, '-');
+			return id;
+		},
+	});
 
 	// Add custom plugins
 	for (const plugin of plugins) {

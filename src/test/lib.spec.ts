@@ -198,6 +198,18 @@ test('getMarkdownIt can disable HTML', (t) => {
 	t.true(html.includes('&lt;figure&gt;!&lt;/figure&gt;'));
 });
 
+test('getMarkdownIt slugifies as per marked', (t) => {
+	const markdownIt = getMarkdownIt({}, []);
+	const marked = getMarked({}, []);
+
+	const markdownItHtml = markdownIt.render('# Markdown.it is an Italian website\n');
+	const markedHtml = marked('# Markdown.it is an Italian website\n');
+	const expected = '<h1 id="markdownit-is-an-italian-website">';
+
+	t.true(markdownItHtml.includes(expected));
+	t.true(markedHtml.includes(expected));
+});
+
 test('getMarkdownIt allows plugins', (t) => {
 	const plugin = (_: MarkdownIt) => {
 		plugin.callCount++;
