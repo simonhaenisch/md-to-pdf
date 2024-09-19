@@ -54,7 +54,7 @@
     "listr": "^0.14.3",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
-    "markdown-it-highlightjs": "^4.1.0",
+    "markdown-it-highlightjs": "^4.2.0",
     "marked": "^4.2.12",
     "puppeteer": ">=8.0.0",
     "semver": "^7.3.7",
