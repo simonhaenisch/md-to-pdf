@@ -294,6 +294,40 @@ css: |-
 ---
 ```
 
+### Markdown-it header IDs
+
+Markdown-it does not add `id` attributes to header elements by default. You can enable this using [markdown-it-anchor](https://www.npmjs.com/package/markdown-it-anchor).
+Just using the extension is enough to generate the `id` tags, but if you want to exactly match the marked behavior you can customize the extension.
+
+```javascript
+// config.js
+const markdownItAnchor = require('markdown-it-anchor');
+
+module.exports = {
+	markdown_parser: 'markdown-it',
+  // This will generate id tags, and may be sufficient for your use case
+	// markdown_it_plugins: [markdownItAnchor],
+
+  // This will match the output of marked
+  markdown_it_plugins: [(markdownIt) => {
+    markdownIt.use(markdownItAnchor, {
+      tabIndex: false,
+      slugify: (text: string) => {
+        const id = text
+          .toLowerCase()
+          .trim()
+          // remove html tags
+          .replace(/<[!/a-z].*?>/gi, '')
+          // remove unwanted chars
+          .replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, '')
+          .replace(/\s/g, '-');
+        return id;
+      },
+    });
+  }]
+};
+```
+
 ## Security Considerations
 
 ### Local file server
