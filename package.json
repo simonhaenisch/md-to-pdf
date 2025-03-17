@@ -52,7 +52,7 @@
     "highlight.js": "^11.7.0",
     "iconv-lite": "^0.6.3",
     "listr": "^0.14.3",
-    "marked": "^4.2.12",
+    "marked": "^15.0.7",
     "puppeteer": ">=8.0.0",
     "semver": "^7.3.7",
     "serve-handler": "^6.1.3"
