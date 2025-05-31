@@ -107,7 +107,7 @@ export async function generateOutput(
 		outputFileContent = await page.content();
 	} else {
 		await page.emulateMediaType(config.page_media_type);
-		outputFileContent = await page.pdf(config.pdf_options);
+		outputFileContent = new Buffer(await page.pdf(config.pdf_options));
 	}
 
 	await page.close();

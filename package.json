@@ -16,7 +16,7 @@
     "html-to-pdf"
   ],
   "engines": {
-    "node": ">=12.0"
+    "node": ">=22.0"
   },
   "files": [
     "/dist",
@@ -32,7 +32,8 @@
     "lint": "xo",
     "test": "xo && tsc -p tsconfig.type-test.json && nyc ava src/test/lib.spec.ts && ava src/test/api.spec.ts && ava src/test/cli.spec.ts --timeout=1m",
     "release": "npm test && npx standard-version --infile=changelog.md && git push --follow-tags origin master && npm publish",
-    "loc": "npx cloc src --exclude-dir=test --by-file"
+    "loc": "npx cloc src --exclude-dir=test --by-file",
+    "postinstall": "npx puppeteer browser install"
   },
   "bin": {
     "md-to-pdf": "dist/cli.js",
@@ -53,7 +54,7 @@
     "iconv-lite": "^0.6.3",
     "listr": "^0.14.3",
     "marked": "^4.2.12",
-    "puppeteer": ">=8.0.0",
+    "puppeteer": "^24.9.0",
     "semver": "^7.3.7",
     "serve-handler": "^6.1.3"
   },
