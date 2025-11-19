@@ -91,10 +91,20 @@ test('compile the MathJax test', async (t) => {
 	t.regex(textContent, /a\s≠\s0/);
 });
 
-test('the JS engine is disabled by default', async (t) => {
+test('the JS engine with `js` tag is disabled by default', async (t) => {
 	const css = '`body::before { display: block; content: "${"i am injected"}"}`'; // eslint-disable-line no-template-curly-in-string
 
 	const pdf = await mdToPdf({ content: `---js\n{ css: ${css} }\n---` });
+
+	const textContent = await getPdfTextContent(pdf.content);
+
+	t.is(textContent, '');
+});
+
+test('the JS engine with `javascript` tag is disabled by default', async (t) => {
+	const css = '`body::before { display: block; content: "${"i am injected"}"}`'; // eslint-disable-line no-template-curly-in-string
+
+	const pdf = await mdToPdf({ content: `---javascript\n{ css: ${css} }\n---` });
 
 	const textContent = await getPdfTextContent(pdf.content);
 

@@ -27,7 +27,7 @@ export const defaultConfig: Config = {
 	launch_options: {},
 	gray_matter_options: {
 		engines: {
-			js: () =>
+			javascript: () =>
 				new Error(
 					'The JS engine for front-matter is disabled by default for security reasons. You can enable it by configuring gray_matter_options.',
 				),
