@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "es2017",
-		"module": "commonjs",
+		"target": "ES2017",
+		"module": "CommonJS",
 		"lib": ["dom", "esnext"],
 		"declaration": true,
 		"outDir": "dist",
@@ -12,6 +12,8 @@
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedIndexedAccess": true,
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"moduleResolution": "Node"
 	}
 }

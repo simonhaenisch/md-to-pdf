@@ -31,17 +31,11 @@ export async function mdToPdf(input: Input, config: Partial<Config> = {}): Promi
 		throw new Error('The input is missing one of the properties "content" or "path".');
 	}
 
-	if (!config.port) {
-		config.port = await getPort();
-	}
+	config.port ||= await getPort();
 
-	if (!config.basedir) {
-		config.basedir = 'path' in input ? getDir(input.path) : process.cwd();
-	}
+	config.basedir ||= 'path' in input ? getDir(input.path) : require('process').cwd();
 
-	if (!config.dest) {
-		config.dest = '';
-	}
+	config.dest ||= '';
 
 	const mergedConfig: Config = {
 		...defaultConfig,
