@@ -16,7 +16,9 @@ const helpText = `
     --body-class ${chalk.dim('.............')} Classes to be added to the body tag (can be passed multiple times)
     --page-media-type ${chalk.dim('........')} Media type to emulate the page with (default: screen)
     --highlight-style ${chalk.dim('........')} Style to be used by highlight.js (default: github)
+  | --markdown-parser ${chalk.dim('........')} Markdown parser to use (default: marked)
     --marked-options ${chalk.dim('.........')} Set custom options for marked (as a JSON string)
+    --markdown-it-options ${chalk.dim('....')} Set custom options for markdown-it (as a JSON string)
     --pdf-options ${chalk.dim('............')} Set custom options for the generated PDF (as a JSON string)
     --launch-options ${chalk.dim('.........')} Set custom launch options for Puppeteer
 		--gray-matter-options ${chalk.dim('....')} Set custom options for gray-matter
@@ -68,6 +70,10 @@ const helpText = `
   ${chalk.gray('–')} Convert file.md but save the intermediate HTML instead
 
     ${chalk.cyan('$ md-to-pdf file.md --as-html')}
+
+  ${chalk.gray('–')} Convert file.md using markdown-it
+
+    ${chalk.cyan('$ md-to-pdf file.md --markdown-parser markdown-it')}
 `;
 
 export const help = () => console.log(helpText);

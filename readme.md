@@ -5,7 +5,7 @@
 
 ![Screenshot of markdown file and resulting PDF](https://files-iiiuxybjc.now.sh)
 
-**A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is ~only \~250 lines of JS~ ~500 lines of Typescript and ~100 lines of CSS, so it is easy to clone and customize.
+**A simple and hackable CLI tool for converting markdown to pdf**. It uses [Marked](https://github.com/markedjs/marked) or [markdown-it](https://github.com/markdown-it/markdown-it) to convert `markdown` to `html` and [Puppeteer](https://github.com/GoogleChrome/puppeteer) (headless Chromium) to further convert the `html` to `pdf`. It also uses [highlight.js](https://github.com/isagalaev/highlight.js) for code highlighting. The whole source code of this tool is ~only \~250 lines of JS~ ~500 lines of Typescript and ~100 lines of CSS, so it is easy to clone and customize.
 
 **Highlights:**
 
@@ -63,7 +63,9 @@ Options:
   --body-class ............. Classes to be added to the body tag (can be passed multiple times)
   --page-media-type ........ Media type to emulate the page with (default: screen)
   --highlight-style ........ Style to be used by highlight.js (default: github)
+  --markdown-parser ........ Set the markdown parser to use. Defaults to marked, but accept `marked` or `markdown-it`
   --marked-options ......... Set custom options for marked (as a JSON string)
+  --markdown-it-options .... Sets custom options for markdown-it (as a JSON string)
   --pdf-options ............ Set custom options for the generated PDF (as a JSON string)
   --launch-options ......... Set custom launch options for Puppeteer
   --gray-matter-options .... Set custom options for gray-matter
@@ -175,6 +177,7 @@ This can be achieved with [MathJax](https://www.mathjax.org/). A simple example 
 For default and advanced options see the following links. The default highlight.js styling for code blocks is `github`. The default PDF options are the A4 format and some margin (see `lib/config.ts` for the full default config).
 
 - [Marked Advanced Options](https://marked.js.org/using_advanced)
+- [Markdown-it Advanced Options](https://markdown-it.github.io/markdown-it/#MarkdownIt.new)
 - [Puppeteer PDF Options](https://pptr.dev/api/puppeteer.pdfoptions)
 - [Puppeteer Launch Options](https://pptr.dev/next/api/puppeteer.launchoptions)
 - [highlight.js Styles](https://github.com/highlightjs/highlight.js/tree/main/src/styles)
@@ -190,7 +193,9 @@ For default and advanced options see the following links. The default highlight.
 | `--body-class`          | `markdown-body`                                                       |
 | `--page-media-type`     | `print`                                                               |
 | `--highlight-style`     | `monokai`, `solarized-light`                                          |
+| `--markdown-parser`     | `marked`, `markdown-it`                                               |
 | `--marked-options`      | `'{ "gfm": false }'`                                                  |
+| `--markdown-it-options` | `{ "linkify": true }`                                                 |
 | `--pdf-options`         | `'{ "format": "Letter", "margin": "20mm", "printBackground": true }'` |
 | `--launch-options`      | `'{ "args": ["--no-sandbox"] }'`                                      |
 | `--gray-matter-options` | `null`                                                                |
@@ -256,6 +261,24 @@ Example `config.json`:
 }
 ```
 
+Example `config.json`:
+
+```json
+{
+	"highlight_style": "monokai",
+	"body_class": ["dark", "content"],
+	"markdown_parser": "markdown-it",
+	"markdown_it_options": {
+		"linkify": true,
+		"html": false
+	}
+}
+```
+
+If you want to add extensions to marked or markdown-it, you need to use a `.js` file.
+See `src/test/marked-extensions/config.js` for an example of using extensions with marked.
+See `src/test/markdown-it-extensions/config.js` for an example of using extensions with markdown-it.
+
 #### Github Styles
 
 Here is an example front-matter for how to get Github-like output:
@@ -269,6 +292,40 @@ css: |-
   .markdown-body { font-size: 11px; }
   .markdown-body pre > code { white-space: pre-wrap; }
 ---
+```
+
+### Markdown-it header IDs
+
+Markdown-it does not add `id` attributes to header elements by default. You can enable this using [markdown-it-anchor](https://www.npmjs.com/package/markdown-it-anchor).
+Just using the extension is enough to generate the `id` tags, but if you want to exactly match the marked behavior you can customize the extension.
+
+```javascript
+// config.js
+const markdownItAnchor = require('markdown-it-anchor');
+
+module.exports = {
+	markdown_parser: 'markdown-it',
+  // This will generate id tags, and may be sufficient for your use case
+	// markdown_it_plugins: [markdownItAnchor],
+
+  // This will match the output of marked
+  markdown_it_plugins: [(markdownIt) => {
+    markdownIt.use(markdownItAnchor, {
+      tabIndex: false,
+      slugify: (text: string) => {
+        const id = text
+          .toLowerCase()
+          .trim()
+          // remove html tags
+          .replace(/<[!/a-z].*?>/gi, '')
+          // remove unwanted chars
+          .replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, '')
+          .replace(/\s/g, '-');
+        return id;
+      },
+    });
+  }]
+};
 ```
 
 ## Security Considerations
