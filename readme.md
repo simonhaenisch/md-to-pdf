@@ -256,6 +256,28 @@ Example `config.json`:
 }
 ```
 
+#### Twemoji
+Using [marked-twemoji](https://github.com/rinzool/marked-twemoji) plugin it is possible to convert emojis `:tada:` into svg images. To do so, 
+* Install plugin `npm i marked-twemoji`
+* Create a `config.js` file:
+```js
+const { markedTwemoji } = require('marked-twemoji');
+
+module.exports = {
+	css: `
+          .emoji {
+                  background: transparent;
+                  height: 1em;
+                  margin: 0 0.05em 0 0.1em !important;
+                  vertical-align: -0.1em;
+                  width: 1em;
+          }
+        `,
+	marked_extensions: [markedTwemoji],
+};
+```
+* Use md-to-pdf with config file `md-to-pdf --config-file config.js example.md`
+
 #### Github Styles
 
 Here is an example front-matter for how to get Github-like output:
