@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.5](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.5...v5.2.6) (2025-11-19)
+
+
+### Bug Fixes
+
+* override the javascript engine of gray-matter correctly ([46bdcf2](https://github.com/simonhaenisch/md-to-pdf/commit/46bdcf2051c8d1758b391c1353185a179a47a4d9))
+
 ### [5.2.4](https://github.com/simonhaenisch/md-to-pdf/compare/v5.2.3...v5.2.4) (2023-04-04)
 
 
