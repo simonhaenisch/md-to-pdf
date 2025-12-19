@@ -38,6 +38,7 @@ export const defaultConfig: Config = {
 	as_html: false,
 	devtools: false,
 	marked_extensions: [],
+	concurrency: true,
 };
 
 /**
@@ -173,6 +174,13 @@ interface BasicConfig {
 	 * @see https://marked.js.org/using_pro#extensions
 	 */
 	marked_extensions: marked.MarkedExtension[];
+
+	/**
+	 * Listr concurrency setting. Set to a number to control how many files can be converted concurrently, or set to `false` to disable concurrency. Default: `true`.
+	 *
+	 * @see https://github.com/SamVerschueren/listr#concurrent
+	 */
+	concurrency: boolean | number;
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];
