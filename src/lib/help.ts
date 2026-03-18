@@ -26,6 +26,7 @@ const helpText = `
     --as-html ${chalk.dim('................')} Output as HTML instead
     --config-file ${chalk.dim('............')} Path to a JSON or JS configuration file
     --devtools ${chalk.dim('...............')} Open the browser with devtools instead of creating PDF
+    --mermaid ${chalk.dim('................')} Render mermaid diagrams in fenced code blocks
 
   ${chalk.dim.underline.bold('Examples:')}
 

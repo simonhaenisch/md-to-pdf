@@ -38,6 +38,7 @@ export const defaultConfig: Config = {
 	as_html: false,
 	devtools: false,
 	marked_extensions: [],
+	mermaid: false,
 };
 
 /**
@@ -154,6 +155,13 @@ interface BasicConfig {
 	 * meant for development only, to inspect the rendered HTML.
 	 */
 	devtools: boolean;
+
+	/**
+	 * If true, render mermaid diagrams in fenced code blocks.
+	 *
+	 * @see https://mermaid.js.org
+	 */
+	mermaid: boolean;
 
 	/**
 	 * Port to run the local server on.
