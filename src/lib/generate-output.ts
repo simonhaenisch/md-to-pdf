@@ -88,6 +88,21 @@ export async function generateOutput(
 		await page.addScriptTag(scriptTagOptions);
 	}
 
+	// Inject mermaid.js and render diagrams if the mermaid option is enabled
+	if (config.mermaid) {
+		const hasMermaidBlocks = await page.evaluate(() => document.querySelector('.mermaid') !== null);
+
+		if (hasMermaidBlocks) {
+			await page.addScriptTag({ url: 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js' });
+			await page.evaluate(() =>
+				new Promise<void>((resolve) => {
+					(window as any).mermaid.initialize({ startOnLoad: false, theme: 'default' });
+					(window as any).mermaid.run().then(() => resolve());
+				}),
+			);
+		}
+	}
+
 	/**
 	 * Trick to wait for network to be idle.
 	 *
