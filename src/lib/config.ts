@@ -11,6 +11,7 @@ export const defaultConfig: Config = {
 	css: '',
 	document_title: '',
 	body_class: [],
+	language: '',
 	page_media_type: 'screen',
 	highlight_style: 'github',
 	marked_options: {},
@@ -98,6 +99,11 @@ interface BasicConfig {
 	 * List of classes for the body tag.
 	 */
 	body_class: string[];
+
+	/**
+	 * BCP 47 language tag for the `lang` attribute on the `<html>` and `<body>` tags (e.g. `'en'`, `'de'`, `'zh-Hans'`).
+	 */
+	language: string;
 
 	/**
 	 * Media type to emulate the page with.
