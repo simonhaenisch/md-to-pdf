@@ -69,6 +69,21 @@ test('getHtml should have the title set', (t) => {
 	t.regex(html, /<title>Foo<\/title>/);
 });
 
+test('getHtml should add lang attribute to html and body tags when language is set', (t) => {
+	const html = getHtml('', { ...defaultConfig, language: 'en' }).replace(/\n/g, '');
+
+	t.regex(html, /<html lang="en">/);
+	t.regex(html, /<body class="" lang="en">/);
+});
+
+test('getHtml should not add lang attribute when language is not set', (t) => {
+	const html = getHtml('', { ...defaultConfig }).replace(/\n/g, '');
+
+	t.regex(html, /<html>/);
+	t.regex(html, /<body class="">/);
+	t.false(html.includes('lang='));
+});
+
 // --
 // get-marked
 

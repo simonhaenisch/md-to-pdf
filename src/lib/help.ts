@@ -14,6 +14,7 @@ const helpText = `
     --css ${chalk.dim('....................')} String of styles
     --document-title ${chalk.dim('.........')} Name of the HTML Document.
     --body-class ${chalk.dim('.............')} Classes to be added to the body tag (can be passed multiple times)
+    --language ${chalk.dim('...............')} BCP 47 language tag for the html and body tags (e.g. en, de, zh-Hans)
     --page-media-type ${chalk.dim('........')} Media type to emulate the page with (default: screen)
     --highlight-style ${chalk.dim('........')} Style to be used by highlight.js (default: github)
     --marked-options ${chalk.dim('.........')} Set custom options for marked (as a JSON string)
