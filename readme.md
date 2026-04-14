@@ -29,6 +29,12 @@
 npm i -g md-to-pdf
 ```
 
+If you're running aarch64, you'll likely need to do
+```
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true CHROME_PATH=/usr/bin/chromium-browser PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser npm i -g md-to-pdf
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true CHROME_PATH=/usr/bin/chromium-browser PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser md-to-pdf <...>
+```
+
 **Option 2: Git**
 
 If you want to have your own copy to hack around with, clone the repository instead:
