@@ -66,7 +66,7 @@ Options:
   --marked-options ......... Set custom options for marked (as a JSON string)
   --pdf-options ............ Set custom options for the generated PDF (as a JSON string)
   --launch-options ......... Set custom launch options for Puppeteer
-  --gray-matter-options .... Set custom options for gray-matter
+  --gray-matter-options .... Set custom options for the front-matter parser
   --port ................... Set the port to run the http server on
   --md-file-encoding ....... Set the file encoding for the markdown file
   --stylesheet-encoding .... Set the file encoding for the stylesheet
@@ -205,7 +205,7 @@ For default and advanced options see the following links. The default highlight.
 
 The options can also be set with front-matter or a config file (except `--md-file-encoding` can't be set by front-matter). In that case, remove the leading two hyphens (`--`) from the cli argument name and replace the hyphens (`-`) with underscores (`_`). `--stylesheet` and `--body-class` can be passed multiple times (i. e. to create an array). It's possible to set the output path for the PDF as `dest` in the config. If the same config option exists in multiple places, the priority (from low to high) is: defaults, config file, front-matter, cli arguments.
 
-The JS engine for front-matter is disabled by default for security reasons. You can enable it by overwriting the default gray-matter options (`--gray-matter-options null`, or `gray_matter_options: undefined` in the API).
+The JS engine for front-matter is disabled by default for security reasons. You can enable it by overwriting the default front-matter parser options (`--gray-matter-options null`, or `gray_matter_options: undefined` in the API).
 
 Example front-matter:
 

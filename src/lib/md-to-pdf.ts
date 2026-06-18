@@ -1,5 +1,4 @@
 import { promises as fs } from 'fs';
-import grayMatter from 'gray-matter';
 import { dirname, relative, resolve } from 'path';
 import { Browser } from 'puppeteer';
 import { Config } from './config';
@@ -7,6 +6,7 @@ import { generateOutput } from './generate-output';
 import { getHtml } from './get-html';
 import { getOutputFilePath } from './get-output-file-path';
 import { getMarginObject } from './helpers';
+import { FrontMatterOptions, parseFrontMatter } from './parse-front-matter';
 import { readFile } from './read-file';
 
 type CliArgs = typeof import('../cli').cliFlags;
@@ -30,19 +30,22 @@ export const convertMdToPdf = async (
 			? input.content
 			: await readFile(input.path, args['--md-file-encoding'] ?? config.md_file_encoding);
 
-	const { content: md, data: frontMatterConfig } = grayMatter(
-		mdFileContent,
-		args['--gray-matter-options'] ? JSON.parse(args['--gray-matter-options']) : config.gray_matter_options,
-	);
+	const frontMatterOptions = args['--gray-matter-options']
+		? (JSON.parse(args['--gray-matter-options']) as FrontMatterOptions | null)
+		: config.gray_matter_options;
+
+	const { content: md, data: frontMatterConfig } = parseFrontMatter(mdFileContent, frontMatterOptions);
 
 	// merge front-matter config
 	if (frontMatterConfig instanceof Error) {
 		console.warn('Warning: the front-matter was ignored because it could not be parsed:\n', frontMatterConfig);
 	} else {
+		const frontMatterConfigObject = frontMatterConfig as Partial<Config>;
+
 		config = {
 			...config,
-			...(frontMatterConfig as Config),
-			pdf_options: { ...config.pdf_options, ...frontMatterConfig.pdf_options },
+			...frontMatterConfigObject,
+			pdf_options: { ...config.pdf_options, ...frontMatterConfigObject.pdf_options },
 		};
 	}
 
