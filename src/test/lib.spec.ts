@@ -9,14 +9,29 @@ import { getOutputFilePath } from '../lib/get-output-file-path';
 import { getDir, getMarginObject } from '../lib/helpers';
 import { isHttpUrl } from '../lib/is-http-url';
 import { isMdFile } from '../lib/is-md-file';
+import { parseFrontMatter } from '../lib/parse-front-matter';
 import { readFile } from '../lib/read-file';
 
 // --
 // config
-test("gray-matter's js engine is disabled by default", (t) => {
+test('front-matter js engine is disabled by default', (t) => {
 	t.throws(() => {
 		throw (defaultConfig.gray_matter_options.engines!.js as () => Error)();
 	});
+});
+
+test('parseFrontMatter should parse yaml front-matter and return markdown content', (t) => {
+	const result = parseFrontMatter('---\ntitle: Front Matter\nitems:\n  - one\n  - two\n---\n# Content');
+
+	t.deepEqual(result.data, { title: 'Front Matter', items: ['one', 'two'] });
+	t.is(result.content, '# Content');
+});
+
+test('parseFrontMatter should report malformed yaml without dropping markdown content', (t) => {
+	const result = parseFrontMatter('---\ntitle: [\n---\n# Content');
+
+	t.true(result.data instanceof Error);
+	t.is(result.content, '# Content');
 });
 
 // --

@@ -57,6 +57,33 @@ test('compile some content to html', async (t) => {
 	t.truthy(html.content.includes('<h1 id="foo">Foo</h1>'));
 });
 
+test('compile content with front-matter config to pdf', async (t) => {
+	const pdf = await mdToPdf({
+		content: `---
+css: 'body::before { display: block; content: "from front matter"; }'
+---
+# Body`,
+	});
+
+	const textContent = await getPdfTextContent(pdf.content);
+
+	t.true(textContent.includes('from front matter'));
+	t.true(textContent.includes('Body'));
+});
+
+test('compile content with malformed front-matter to pdf', async (t) => {
+	const pdf = await mdToPdf({
+		content: `---
+pdf_options: [
+---
+# Still renders`,
+	});
+
+	const textContent = await getPdfTextContent(pdf.content);
+
+	t.true(textContent.includes('Still renders'));
+});
+
 test('compile the basic example to html and then to pdf', async (t) => {
 	const { content } = await mdToPdf({ path: resolve(__dirname, 'basic', 'test.md') }, { as_html: true });
 
