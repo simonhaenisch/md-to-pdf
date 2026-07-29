@@ -173,6 +173,17 @@ interface BasicConfig {
 	 * @see https://marked.js.org/using_pro#extensions
 	 */
 	marked_extensions: marked.MarkedExtension[];
+
+	/**
+	 * A function (or a string containing an expression) that is polled in the
+	 * page until it returns a truthy value, before the output is generated.
+	 *
+	 * This is useful when a script that is loaded via the `script` option
+	 * renders something asynchronously, e. g. Mermaid diagrams.
+	 *
+	 * @see https://pptr.dev/api/puppeteer.page.waitforfunction
+	 */
+	wait_for_function?: string | (() => unknown);
 }
 
 export type PuppeteerLaunchOptions = Parameters<typeof launch>[0];

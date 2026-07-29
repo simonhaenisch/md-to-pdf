@@ -170,6 +170,35 @@ Refer to the Puppeteer docs for more info about [header](https://pptr.dev/api/pu
 
 This can be achieved with [MathJax](https://www.mathjax.org/). A simple example can be found in [`/src/test/mathjax`](/src/test/mathjax).
 
+#### Diagrams
+
+Diagrams can be rendered with [Mermaid](https://mermaid.js.org/), by loading it with the `script` option and turning the `mermaid` code blocks into elements that Mermaid picks up. Because Mermaid renders asynchronously, use `wait_for_function` to make sure that the output isn't generated before the diagrams are done. A complete example can be found in [`/src/test/mermaid`](/src/test/mermaid).
+
+```markdown
+---
+script:
+  - url: https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js
+  - path: mermaid-init.js
+wait_for_function: 'window.mermaidRendered === true'
+---
+```
+
+#### Waiting for Asynchronous Scripts
+
+Before generating the output, md-to-pdf waits until the network has been idle for a moment. That covers scripts that keep loading resources, but not work that finishes later on its own (e. g. a rendering library that is done a second after it was loaded) — such content is silently missing from the output.
+
+Set `wait_for_function` to a function (or a string containing an expression) that becomes truthy once the page is ready, and it will be polled with [`page.waitForFunction`](https://pptr.dev/api/puppeteer.page.waitforfunction) before the PDF or HTML is generated.
+
+```js
+module.exports = {
+	script: [
+		{ url: 'https://example.org/chart-library.js' },
+		{ content: 'renderCharts().then(() => (window.charted = true))' },
+	],
+	wait_for_function: () => window.charted === true,
+};
+```
+
 #### Default and Advanced Options
 
 For default and advanced options see the following links. The default highlight.js styling for code blocks is `github`. The default PDF options are the A4 format and some margin (see `lib/config.ts` for the full default config).
@@ -198,6 +227,7 @@ For default and advanced options see the following links. The default highlight.
 | `--md-file-encoding`    | `utf-8`, `windows1252`                                                |
 | `--stylesheet-encoding` | `utf-8`, `windows1252`                                                |
 | `--config-file`         | `path/to/config.json`                                                 |
+| `--wait-for-function`   | `'window.isRendered === true'`                                        |
 
 **`margin`:** instead of an object (as stated in the Puppeteer docs), it is also possible to pass a CSS-like string, e. g. `1em` (all), `1in 2in` (top/bottom right/left), `10mm 20mm 30mm` (top right/left bottom) or `1px 2px 3px 4px` (top right bottom left).
 

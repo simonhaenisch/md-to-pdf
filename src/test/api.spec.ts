@@ -16,6 +16,16 @@ const getPdfTextContent = async (content: Buffer) => {
 	return textContent;
 };
 
+/**
+ * Appends `<p>rendered</p>` to the page, but only after the network has long been idle.
+ *
+ * The marker is assembled at runtime so that it doesn't show up in the page as part of the script tag itself.
+ */
+const delayedScript = `setTimeout(() => {
+	document.body.insertAdjacentHTML('beforeend', '<p>' + 'render' + 'ed</p>');
+	window.isRendered = true;
+}, 1500);`;
+
 before(() => {
 	const filesToDelete = [resolve(__dirname, 'basic', 'api-test.pdf'), resolve(__dirname, 'basic', 'api-test.html')];
 
@@ -89,6 +99,23 @@ test('compile the MathJax test', async (t) => {
 
 	t.true(textContent.startsWith('Formulas with MathJax'));
 	t.regex(textContent, /a\s≠\s0/);
+});
+
+test('`wait_for_function` waits for asynchronously rendered content', async (t) => {
+	const html = await mdToPdf(
+		{ content: '# Async' },
+		{ as_html: true, script: [{ content: delayedScript }], wait_for_function: 'window.isRendered === true' },
+	);
+
+	// without the option this content is missing, because the network goes idle long before the script is done
+	t.true(html.content.includes('<p>rendered</p>'));
+});
+
+test('compile the Mermaid test', async (t) => {
+	const html = await mdToPdf({ path: resolve(__dirname, 'mermaid', 'diagram.md') }, { as_html: true });
+
+	t.true(html.content.includes('<svg'));
+	t.true(html.content.includes('Puppeteer'));
 });
 
 test('the JS engine with `js` tag is disabled by default', async (t) => {

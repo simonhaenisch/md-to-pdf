@@ -89,6 +89,14 @@ export async function generateOutput(
 	}
 
 	/**
+	 * Scripts that render asynchronously (e. g. Mermaid) are not covered by the
+	 * network idle check below, so give them a chance to signal completion.
+	 */
+	if (config.wait_for_function) {
+		await page.waitForFunction(config.wait_for_function);
+	}
+
+	/**
 	 * Trick to wait for network to be idle.
 	 *
 	 * @todo replace with page.waitForNetworkIdle once exposed

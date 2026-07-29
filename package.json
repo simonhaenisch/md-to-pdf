@@ -103,7 +103,8 @@
   "xo": {
     "prettier": true,
     "ignores": [
-      "src/test/mathjax"
+      "src/test/mathjax",
+      "src/test/mermaid"
     ],
     "rules": {
       "@typescript-eslint/explicit-function-return-type": "off",

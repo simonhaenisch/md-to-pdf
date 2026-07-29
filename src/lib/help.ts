@@ -26,6 +26,7 @@ const helpText = `
     --as-html ${chalk.dim('................')} Output as HTML instead
     --config-file ${chalk.dim('............')} Path to a JSON or JS configuration file
     --devtools ${chalk.dim('...............')} Open the browser with devtools instead of creating PDF
+    --wait-for-function ${chalk.dim('......')} Expression that is polled in the page before the output is generated
 
   ${chalk.dim.underline.bold('Examples:')}
 
