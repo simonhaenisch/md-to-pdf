@@ -53,12 +53,12 @@ export async function mdToPdf(input: Input, config: Partial<Config> = {}): Promi
 
 	const browser = await puppeteer.launch({ devtools: config.devtools, ...config.launch_options });
 
-	const pdf = await convertMdToPdf(input, mergedConfig, { browser });
-
-	await browser.close();
-	await closeServer(server);
-
-	return pdf;
+	try {
+		return await convertMdToPdf(input, mergedConfig, { browser });
+	} finally {
+		await browser.close();
+		await closeServer(server);
+	}
 }
 
 export default mdToPdf;
