@@ -79,6 +79,17 @@ test('compile the basic example to html and write to disk', async (t) => {
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-test.html'), 'utf-8'));
 });
 
+test('compile the basic example using markdown-it', async (t) => {
+	const html = await mdToPdf(
+		{ path: resolve(__dirname, 'basic', 'test.md') },
+		{ dest: resolve(__dirname, 'basic', 'api-markdown-it.html'), markdown_parser: 'markdown-it' },
+	);
+
+	t.is(basename(html.filename!), 'api-markdown-it.html');
+
+	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-markdown-it.html'), 'utf-8'));
+});
+
 test('compile the MathJax test', async (t) => {
 	const pdf = await mdToPdf({ path: resolve(__dirname, 'mathjax', 'math.md') });
 

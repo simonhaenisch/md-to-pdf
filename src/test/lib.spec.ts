@@ -1,9 +1,11 @@
 import test from 'ava';
+import MarkdownIt from 'markdown-it';
 import { Renderer } from 'marked';
 import { EOL } from 'os';
 import { posix, resolve, sep } from 'path';
 import { defaultConfig } from '../lib/config';
 import { getHtml } from '../lib/get-html';
+import { getMarkdownIt } from '../lib/get-markdown-it-with-highlighter';
 import { getMarked } from '../lib/get-marked-with-highlighter';
 import { getOutputFilePath } from '../lib/get-output-file-path';
 import { getDir, getMarginObject } from '../lib/helpers';
@@ -67,6 +69,12 @@ test('getHtml should have the title set', (t) => {
 	const html = getHtml('', { ...defaultConfig, document_title: 'Foo' }).replace(/\n/g, '');
 
 	t.regex(html, /<title>Foo<\/title>/);
+});
+
+test('getHtml use a markdown-it parser if requested', (t) => {
+	const html = getHtml('# Foo', { ...defaultConfig, markdown_parser: 'markdown-it' }).replace(/\n/g, '');
+
+	t.regex(html, /<body class="">\s*<h1 id="foo">Foo<\/h1>\s*<\/body>/);
 });
 
 // --
@@ -160,4 +168,43 @@ test('isUrl should return true for strings that are valid http(s) urls', (t) => 
 	t.is(isHttpUrl('foo://bar'), false);
 	t.is(isHttpUrl('file:///foobar'), false);
 	t.is(isHttpUrl('C:\\foo\\bar'), false);
+});
+
+// --
+// get-markdown-it
+test('getMarkdownIt should highlight js code', (t) => {
+	const markdownIt = getMarkdownIt({}, []);
+	const html = markdownIt.render('```js\nvar foo="bar";\n```');
+	t.true(html.includes('<code class="hljs js">'));
+});
+
+test('getMarkdownIt should highlight unknown code as plaintext', (t) => {
+	const markdownIt = getMarkdownIt({}, []);
+	const html = markdownIt.render('```\nvar foo="bar";\n```');
+
+	t.true(html.includes('<code class="hljs">'));
+});
+
+test('getMarkdownIt should allow HTML snippets by default', (t) => {
+	const markdownIt = getMarkdownIt({}, []);
+	const html = markdownIt.render('# Header\n<figure>!</figure>');
+
+	t.true(html.includes('<figure>!</figure>'));
+});
+
+test('getMarkdownIt can disable HTML', (t) => {
+	const markdownIt = getMarkdownIt({ html: false }, []);
+	const html = markdownIt.render('# Header\n<figure>!</figure>');
+	t.true(html.includes('&lt;figure&gt;!&lt;/figure&gt;'));
+});
+
+test('getMarkdownIt allows plugins', (t) => {
+	const plugin = (_: MarkdownIt) => {
+		plugin.callCount++;
+	};
+
+	plugin.callCount = 0;
+
+	getMarkdownIt({}, [plugin]);
+	t.is(plugin.callCount, 1);
 });

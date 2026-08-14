@@ -61,7 +61,7 @@ export const convertMdToPdf = async (
 		}
 	}
 
-	const jsonArgs = new Set(['--marked-options', '--pdf-options', '--launch-options']);
+	const jsonArgs = new Set(['--marked-options', '--pdf-options', '--launch-options', '--markdown-it-options']);
 
 	// merge cli args into config
 	for (const arg of Object.entries(args)) {

@@ -1,9 +1,9 @@
-import test, { before } from 'ava';
+import test, { beforeEach } from 'ava';
 import { execSync } from 'child_process';
 import { readFileSync, unlinkSync } from 'fs';
 import { join, resolve } from 'path';
 
-before(() => {
+beforeEach(() => {
 	const filesToDelete = [
 		resolve(__dirname, 'basic', 'test.pdf'),
 		resolve(__dirname, 'basic', 'test-stdio.pdf'),
@@ -30,6 +30,20 @@ test('compile the basic example to pdf using --basedir', (t) => {
 		resolve(__dirname, 'basic', 'test.md'), // file to convert
 		'--basedir',
 		resolve(__dirname, 'basic'),
+	].join(' ');
+
+	t.notThrows(() => execSync(cmd));
+
+	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'test.pdf'), 'utf-8'));
+});
+
+test('compile the basic example to pdf using --markdown-parser markdown-it', (t) => {
+	const cmd = [
+		resolve(__dirname, '..', '..', 'node_modules', '.bin', 'ts-node'), // ts-node binary
+		resolve(__dirname, '..', 'cli'), // md-to-pdf cli script (typescript)
+		resolve(__dirname, 'basic', 'test.md'), // file to convert
+		'--markdown-parser',
+		'markdown-it',
 	].join(' ');
 
 	t.notThrows(() => execSync(cmd));
@@ -69,4 +83,44 @@ test('compile the nested example to pdfs', (t) => {
 	t.notThrows(() => readFileSync(resolve(__dirname, 'nested', 'root.pdf'), 'utf-8'));
 	t.notThrows(() => readFileSync(resolve(__dirname, 'nested', 'level-one', 'one.pdf'), 'utf-8'));
 	t.notThrows(() => readFileSync(resolve(__dirname, 'nested', 'level-one', 'level-two', 'two.pdf'), 'utf-8'));
+});
+
+test('compile with a marked extension', (t) => {
+	const cmd = [
+		resolve(__dirname, '..', '..', 'node_modules', '.bin', 'ts-node'), // ts-node binary
+		resolve(__dirname, '..', 'cli'), // md-to-pdf cli script (typescript)
+		resolve(__dirname, 'marked-extensions', 'doc.md'), // file to convert
+		'--config-file',
+		resolve(__dirname, 'marked-extensions', 'config.js'),
+	].join(' ');
+
+	t.notThrows(() => execSync(cmd));
+
+	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'test.pdf'), 'utf-8'));
+});
+
+test('compile with a markdown-it extension', (t) => {
+	const cmd = [
+		resolve(__dirname, '..', '..', 'node_modules', '.bin', 'ts-node'), // ts-node binary
+		resolve(__dirname, '..', 'cli'), // md-to-pdf cli script (typescript)
+		resolve(__dirname, 'markdown-it-extensions', 'doc.md'), // file to convert
+		'--config-file',
+		resolve(__dirname, 'markdown-it-extensions', 'config.js'),
+	].join(' ');
+
+	t.notThrows(() => execSync(cmd));
+
+	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'test.pdf'), 'utf-8'));
+});
+
+test('invalid markdown parser detected', (t) => {
+	const cmd = [
+		resolve(__dirname, '..', '..', 'node_modules', '.bin', 'ts-node'), // ts-node binary
+		resolve(__dirname, '..', 'cli'), // md-to-pdf cli script (typescript)
+		resolve(__dirname, 'basic', 'test.md'), // file to convert
+		'--markdown-parser',
+		'not_a_real_parser',
+	].join(' ');
+
+	t.throws(() => execSync(cmd));
 });
