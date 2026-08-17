@@ -1,5 +1,7 @@
 import test, { before } from 'ava';
 import { readFileSync, unlinkSync } from 'fs';
+import { createServer } from 'http';
+import getPort from 'get-port';
 import { basename, resolve } from 'path';
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf';
 import { TextItem } from 'pdfjs-dist/types/src/display/api';
@@ -119,4 +121,21 @@ test('the JS engine for front-matter can be enabled', async (t) => {
 	const textContent = await getPdfTextContent(pdf.content);
 
 	t.is(textContent, 'i am injected');
+});
+
+test('closes the server and browser when the conversion fails', async (t) => {
+	const port = await getPort();
+
+	await t.throwsAsync(() => mdToPdf({ path: resolve(__dirname, 'non-existent.md') }, { port }));
+
+	// If the file server wasn't closed, listening on the same port would fail.
+	await new Promise<void>((resolve, reject) => {
+		const server = createServer();
+
+		server.once('error', reject);
+		server.listen(port, () => {
+			server.close();
+			resolve();
+		});
+	});
 });
