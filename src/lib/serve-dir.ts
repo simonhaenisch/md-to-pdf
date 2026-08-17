@@ -8,9 +8,10 @@ import { Config } from './config';
  * @returns a promise that resolves with the server instance once the server is ready and listening.
  */
 export const serveDirectory = async ({ basedir, port }: Config) =>
-	new Promise<Server>((resolve) => {
+	new Promise<Server>((resolve, reject) => {
 		const server = createServer(async (request, response) => serveHandler(request, response, { public: basedir }));
 
+		server.on('error', reject);
 		server.listen(port, () => resolve(server));
 	});
 
