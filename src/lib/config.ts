@@ -85,7 +85,7 @@ interface BasicConfig {
 	/**
 	 * List of scripts to load into the page.
 	 *
-	 * @see https://github.com/puppeteer/puppeteer/blob/main/docs/api.md#pageaddscripttagoptions
+	 * @see https://pptr.dev/api/puppeteer.frameaddscripttagoptions
 	 */
 	script: FrameAddScriptTagOptions[];
 
@@ -121,14 +121,14 @@ interface BasicConfig {
 	/**
 	 * PDF options for Puppeteer.
 	 *
-	 * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions
+	 * @see https://pptr.dev/api/puppeteer.pdfoptions
 	 */
 	pdf_options: PDFOptions;
 
 	/**
 	 * Launch options for Puppeteer.
 	 *
-	 * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
+	 * @see https://pptr.dev/api/puppeteer.launchoptions
 	 */
 	launch_options: PuppeteerLaunchOptions;
 

@@ -132,7 +132,7 @@ Place an element with class `page-break` to force a page break at a certain poin
 
 #### Header/Footer
 
-Use `headerTemplate` and `footerTemplate` of Puppeteer's [`page.pdf()` options](https://pptr.dev/api/puppeteer.pdfoptions/). If either of the two is set, then `displayHeaderFooter` will be enabled by default. It's possible to inject a few dynamic values like page numbers by using certain class names, as stated in the Puppeteer docs. Please note that for some reason the font-size defaults to 1pt, and you need to make sure to have enough page margin, otherwise your header/footer might be overlayed by your content. If you add a `<style/>` tag in either of the templates, it will be applied to both header and footer.
+Use `headerTemplate` and `footerTemplate` of Puppeteer's [`page.pdf()` options](https://pptr.dev/api/puppeteer.pdfoptions). If either of the two is set, then `displayHeaderFooter` will be enabled by default. It's possible to inject a few dynamic values like page numbers by using certain class names, as stated in the Puppeteer docs. Please note that for some reason the font-size defaults to 1pt, and you need to make sure to have enough page margin, otherwise your header/footer might be overlayed by your content. If you add a `<style/>` tag in either of the templates, it will be applied to both header and footer.
 
 Example markdown frontmatter config that prints the date in the header and the page number in the footer:
 
@@ -164,7 +164,7 @@ pdf_options:
 ---
 ```
 
-Refer to the Puppeteer docs for more info about [header](https://pptr.dev/api/puppeteer.pdfoptions.headertemplate) and [footer](https://pptr.dev/api/puppeteer.pdfoptions.footertemplate) templates.
+Refer to the Puppeteer docs for more info about [header](https://pptr.dev/api/puppeteer.pdfoptions#headertemplate) and [footer](https://pptr.dev/api/puppeteer.pdfoptions#footertemplate) templates.
 
 #### Formulas
 
